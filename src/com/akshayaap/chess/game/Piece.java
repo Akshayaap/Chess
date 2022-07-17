@@ -107,9 +107,16 @@ public abstract class Piece {
         move.setSource(this.x,this.y);
         move.setDestination(x,y);
         if(this.map[x][y]){
-            move.setState(Move.NORMAL_MOVE);
+            if(this.board[x][y].getPiece()!=null){
+                move.setState(Move.CAPTURE_MOVE);
+            }
+            else{
+                move.setState(Move.NORMAL_MOVE);
+            }
             this.board[x][y].setPiece(this);
             this.board[this.x][this.y].setPiece(null);
+            this.x=x;
+            this.y=y;
             return move;
         }
         else {

@@ -27,9 +27,8 @@ public class ChessGui {
     private final JMenuBar menuBar;
     private final State state;
     private final ChessGame game;
-    private Move move;
-
     private final BoardPanel boardPanel;
+    private Move move;
 
     public ChessGui() throws IOException {
         this.game = new ChessGame();
@@ -79,7 +78,7 @@ public class ChessGui {
         return fileMenu;
     }
 
-    public void render() throws IOException {
+    public void render() {
         this.boardPanel.render();
     }
 
@@ -106,45 +105,54 @@ public class ChessGui {
             validate();
         }
 
-        public void movePiece(Move move) {
-            this.grid[move.getX2()][move.getY2()].render();
-            this.grid[move.getX1()][move.getY1()].render();
-        }
 
-        public void render() throws IOException {
+        public void render() {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
                     this.grid[i][j].render();
                 }
             }
+            this.setAnnotatted();
+            validate();
         }
 
-        public void selectTile(Move move) {
-            grid[move.getX1()][move.getY1()].setBackground(TilePanel.SELECT_TILE);
+        public void setAnnotatted() {
+            switch (ChessGui.this.move.getState()) {
+                case Move.INVALID_MOVE:
+                    break;
+                case Move.INVALID_SELECTION:
+                    break;
+                case Move.SELECT_MOVE:
+                    this.grid[ChessGui.this.move.getX1()][ChessGui.this.move.getY1()].setSelectTile();
+                    break;
+                case Move.NORMAL_MOVE:
+                    this.grid[ChessGui.this.move.getX1()][ChessGui.this.move.getY1()].setSourceTile();
+                    this.grid[ChessGui.this.move.getX2()][ChessGui.this.move.getY2()].setDestinationTile();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
     private class TilePanel extends JPanel {
-        private static final Dimension TILE_DIMENSION;
-        private static final Color DARK_SQUARE;
-        private static final Color LIGHT_SQUARE;
-        private static final Color SELECT_TILE;
-        private static final ImageIcon[][] IMGS;
+        private static final Dimension TILE_DIMENSION = new Dimension(10, 10);
+        private static final Color DARK_SQUARE = new Color(50, 0, 20);
+        private static final Color LIGHT_SQUARE = new Color(255, 255, 200);
+        private static final Color SELECT_TILE = new Color(255, 0, 0, 200);
+        private static final ImageIcon[][] IMGS = new ImageIcon[2][6];
+        private static final Color SOURCE_TILE = new Color(0, 0, 255);
+        private static final Color DESTINATION_TILE = new Color(0, 255, 0);
 
 
         static {
-            TILE_DIMENSION = new Dimension(10, 10);
-            DARK_SQUARE = new Color(50, 0, 20);
-            LIGHT_SQUARE = new Color(255, 255, 200);
-            SELECT_TILE=new Color(255,0,0,200);
 
-            IMGS = new ImageIcon[2][6];
-            String path="";
-            for(int i = 0; i < 2; i++) {
-                for(int j = 0; j < 6; j++) {
+            String path = "";
+            for (int i = 0; i < 2; i++) {
+                for (int j = 0; j < 6; j++) {
                     try {
-                        path=(i==1?"white_":"black_")+j+".png";
-                        IMGS[i][j] = new ImageIcon(ImageIO.read(new File("res/" + path)).getScaledInstance(60,60, Image.SCALE_SMOOTH));
+                        path = (i == 1 ? "white_" : "black_") + j + ".png";
+                        IMGS[i][j] = new ImageIcon(ImageIO.read(new File("res/" + path)).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -155,6 +163,7 @@ public class ChessGui {
         private final int x;
         private final int y;
 
+
         public TilePanel(int x, int y) {
             super(new GridBagLayout());
             this.x = x;
@@ -163,37 +172,42 @@ public class ChessGui {
             setBackground((this.x + this.y) % 2 == 0 ? LIGHT_SQUARE : DARK_SQUARE);
             setVisible(true);
             addMouseListener(new Input());
-            if(ChessGui.this.game.getPiece(this.x,this.y)!=null){
-                int i=ChessGui.this.game.getPiece(this.x,this.y).getColor()==true?1:0;
-                int j=ChessGui.this.game.getPiece(this.x,this.y).getType();
-            }
             validate();
         }
 
-        public void render()  {
-            setBackground((this.x + this.y) % 2 == 0 ? LIGHT_SQUARE : DARK_SQUARE);
+        public void render() {
             removeAll();
-            if(ChessGui.this.game.getPiece(this.x,this.y)!=null){
-                add(new JLabel(IMGS[ChessGui.this.game.getPiece(this.x,this.y).getColor()?1:0][ChessGui.this.game.getPiece(this.x,this.y).getType()]));
+            setBackground((this.x + this.y) % 2 == 0 ? LIGHT_SQUARE : DARK_SQUARE);
+            if (ChessGui.this.game.getPiece(this.x, this.y) != null) {
+                add(new JLabel(IMGS[ChessGui.this.game.getPiece(this.x, this.y).getColor() ? 1 : 0][ChessGui.this.game.getPiece(this.x, this.y).getType()]));
             }
-            validate();
+            revalidate();
+            repaint();
         }
 
+        public void setSourceTile() {
+            this.setBackground(SOURCE_TILE);
+        }
 
+        public void setDestinationTile() {
+            this.setBackground(DESTINATION_TILE);
+        }
 
+        public void setSelectTile() {
+            this.setBackground(SELECT_TILE);
+        }
 
         private class Input implements MouseListener {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-
+                //throw new UnsupportedOperationException("This bullshit is not supported yet you fool");
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-
                 if (e.getButton() == MouseEvent.BUTTON1) {
-                    ChessGui.this.move = ChessGui.this.game.onClick(TilePanel.this.x,TilePanel.this.y);
+                    ChessGui.this.move = ChessGui.this.game.onClick(TilePanel.this.x, TilePanel.this.y);
 
                     switch (ChessGui.this.move.getState()) {
 
@@ -201,16 +215,19 @@ public class ChessGui {
 
                             break;
                         case Move.SELECT_MOVE:
-                            ChessGui.this.boardPanel.selectTile(move);
+                            ChessGui.TilePanel.this.setBackground(TilePanel.SELECT_TILE);
+
                             break;
                         case Move.NORMAL_MOVE:
-                            ChessGui.this.boardPanel.movePiece(move);
+
                             break;
 
                         default:
                             break;
                     }
+                    ChessGui.this.render();
                 }
+
             }
 
             @Override

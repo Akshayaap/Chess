@@ -17,4 +17,7 @@
   <component name="ProjectType">
     <option name="id" value="jpab" />
   </component>
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+  </component>
 </project>

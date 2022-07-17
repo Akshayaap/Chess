@@ -76,11 +76,13 @@ public class ChessGame {
                         return move;
                     }
                     else {
-                        this.state.fallBack();
+                        //this.state.fallBack();
+                        this.state.setChXYPrev(x,y);
+                        this.state.setState(State.SELECTED);
                         move.reset();
-                        move.setState(Move.INVALID_MOVE);
+                        move.setState(Move.SELECT_MOVE);
                         move.setSource(this.state.getChXPrev(), this.state.getChYPrev());
-                        move.setDestination(x, y);
+                        move.setDestination(-1, -1);
                         return move;
                     }
                 }
@@ -89,6 +91,7 @@ public class ChessGame {
         }
         return new Move();
     }
+
 
     public Piece getPiece(int x, int y) {
         return this.board.getPiece(x, y);
