@@ -81,6 +81,7 @@ public class ChessGame {
                         move.setState(Move.SELECT_MOVE);
                         move.setSource(this.state.getChXPrev(), this.state.getChYPrev());
                         move.setDestination(-1, -1);
+                        move.setMap(board.getPiece(x,y).getMap());
                     }
                 }
                 break;

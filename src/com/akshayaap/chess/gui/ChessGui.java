@@ -230,8 +230,6 @@ public class ChessGui {
 
                             break;
                         case Move.SELECT_MOVE:
-                            ChessGui.TilePanel.this.setBackground(TilePanel.SELECT_TILE);
-
                             break;
                         case Move.NORMAL_MOVE:
 
