@@ -9,7 +9,67 @@ public class Pawn extends Piece{
     }
     @Override
     public void update(){
-        if(moved){
+        this.resetMap();
+        if(this.color){
+            if(this.x==1){
+                if(board[x+1][y].getPiece()==null) {
+                    this.map[x + 1][y] = true;
+                    if (board[x + 2][y].getPiece() == null) {
+                        this.map[x + 2][y] = true;
+                    }
+                }
+            }else{
+                if(x+1<8){
+                    if (board[x + 1][y].getPiece() == null) {
+                        this.map[x+1][y]=true;
+                    }
+                    if(y+1<8){
+                        if(board[x+1][y+1].getPiece()!=null){
+                            if(!board[x+1][y+1].getPiece().getColor()){
+                                this.map[x+1][y+1]=true;
+                            }
+                        }
+                    }
+                    if(y-1>=0){
+                        if(board[x+1][y-1].getPiece()!=null){
+                            if(!board[x+1][y-1].getPiece().getColor()){
+                                this.map[x+1][y-1]=true;
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+        else{
+            if(this.x==6){
+                if(board[x-1][y].getPiece()==null) {
+                    this.map[x - 1][y] = true;
+                    if (board[x - 2][y].getPiece() == null) {
+                        this.map[x - 2][y] = true;
+                    }
+                }
+            }else{
+                if(x-1>=0){
+                    if (board[x - 1][y].getPiece() == null) {
+                        this.map[x-1][y]=true;
+                    }
+                    if(y+1<8){
+                        if(board[x-1][y+1].getPiece()!=null){
+                            if(!board[x-1][y+1].getPiece().getColor()){
+                                this.map[x-1][y+1]=true;
+                            }
+                        }
+                    }
+                    if(y-1>=0){
+                        if(board[x-1][y-1].getPiece()!=null){
+                            if(board[x-1][y-1].getPiece().getColor()){
+                                this.map[x-1][y-1]=true;
+                            }
+                        }
+                    }
+                }
+            }
 
         }
     }

@@ -209,5 +209,27 @@ public class Player {
     public boolean getColor() {
         return this.color;
     }
+
+    public void update() {
+        this.pawn0.update();
+        this.pawn1.update();
+        this.pawn2.update();
+        this.pawn3.update();
+
+        this.pawn4.update();
+        this.pawn5.update();
+        this.pawn6.update();
+        this.pawn7.update();
+
+        this.knight0.update();
+        this.knight1.update();
+        this.bishop0.update();
+        this.bishop1.update();
+
+        this.rook0.update();
+        this.rook0.update();
+        this.queen.update();
+        this.king.update();
+    }
 }
 

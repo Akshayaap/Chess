@@ -19,6 +19,8 @@ public class Tile {
     }
 
     public void update(){
-
+        if(piece!=null){
+            piece.update();
+        }
     }
 }

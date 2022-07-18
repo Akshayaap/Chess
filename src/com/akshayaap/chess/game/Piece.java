@@ -33,42 +33,23 @@ public abstract class Piece {
     public static final int KING_TYPE=5;
 
 
-
-    /**
-     * x and y positions of piece
-     */
     protected int x;
     protected int y;
-    /**
-     * value of piece
-     */
+
     protected int value;
-    /**
-     * Type identifies the piece
-     */
     protected int type;
 
-    /**
-     * Individual AttackMap
-     */
     protected boolean[][] map;
-
-    /**
-     * Variable to indicate whether Piece is moved or not
-     */
     protected boolean moved=false;
 
-    /**
-     * Color is color of player
-     * true is for white and false is for black
-     */
     protected boolean color;
-
+    protected Player player;
     protected Tile[][] board;
 
     public Piece(int x,int y,Player player){
         this.x=x;
         this.y=y;
+        this.player=player;
         this.color=player.getColor();
         this.board=player.getBoard();
         this.map=new boolean[8][8];
@@ -87,9 +68,9 @@ public abstract class Piece {
     public abstract void update();
 
     public void resetMap(){
-        for(int i=0;i<ChessConfig.DEFAULT_SQUARE;i++){
-            for(int j=0;j<ChessConfig.DEFAULT_SQUARE;j++){
-                this.map[i][j]=true;
+        for(int i=0;i<8;i++){
+            for(int j=0;j<8;j++){
+                this.map[i][j]=false;
             }
         }
     }
@@ -123,5 +104,9 @@ public abstract class Piece {
             move.setState(Move.INVALID_MOVE);
             return move;
         }
+    }
+
+    public boolean[][] getMap() {
+        return map;
     }
 }

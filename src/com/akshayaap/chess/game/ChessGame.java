@@ -14,25 +14,25 @@ public class ChessGame {
         this.playerWhite=new Player(true,this.board.getBoard());
         this.playerBlack.setOpponent(this.playerWhite);
         this.playerWhite.setOpponent(this.playerBlack);
+        update();
 
     }
 
     public Move onClick(int x, int y) {
-        Move move=new Move();
+        Move move = new Move();
         switch (this.state.getState()) {
             case State.INVALID:
                 move.reset();
                 move.setState(Move.INVALID_SELECTION);
                 move.setSource(x, y);
-                move.setDestination(-1,-1);
-                return move;
+                move.setDestination(-1, -1);
+                break;
             case State.NORMAL:
                 if (this.board.getPiece(x, y) == null) {
                     move.reset();
                     move.setState(Move.INVALID_SELECTION);
                     move.setSource(x, y);
                     move.setDestination(-1, -1);
-                    return move;
                 }
                 if (this.state.getTurn() == this.board.getPiece(x, y).getColor()) {
                     this.state.setChXYPrev(x, y);
@@ -46,52 +46,54 @@ public class ChessGame {
                     move.setSource(x, y);
                     move.setDestination(-1, -1);
                     move.setTurn(this.state.getTurn());
-                    return move;
+                    move.setMap(board.getPiece(x,y).getMap());
                 } else {
                     move.reset();
                     move.setState(Move.INVALID_SELECTION);
-                    move.setSource(x,y);
-                    move.setDestination(-1,-1);
-                    return move;
+                    move.setSource(x, y);
+                    move.setDestination(-1, -1);
                 }
-                
+    break;
             case State.SELECTED:
                 if (this.board.getPiece(x, y) == null) {
-                    this.state.setChXY(x,y);
+                    this.state.setChXY(x, y);
                     move = this.board.move(this.state.getChXPrev(), this.state.getChYPrev(), x, y);
                     this.state.fallBack();
-                    if(move.getState()!=Move.INVALID_MOVE&&move.getState()!=Move.SOURCE_IS_EMPTY){
+                    move.setTurn(this.state.getTurn());
+                    if (move.getState() != Move.INVALID_MOVE && move.getState() != Move.SOURCE_IS_EMPTY) {
                         this.state.toggleTurn();
                     }
-                    return move;
                 } else {
                     if (this.board.getPiece(x, y).getColor() != this.state.getTurn()) {
                         this.state.setChXY(x, y);
                         move = this.board.move(this.state.getChXPrev(), this.state.getChYPrev(), x, y);
                         this.state.fallBack();
-                        if(move.getState()!=Move.INVALID_MOVE&&move.getState()!=Move.SOURCE_IS_EMPTY){
+                        move.setTurn(this.state.getTurn());
+                        if (move.getState() != Move.INVALID_MOVE && move.getState() != Move.SOURCE_IS_EMPTY) {
                             move.setState(Move.CAPTURE_MOVE);
                             this.state.toggleTurn();
                         }
-                        return move;
-                    }
-                    else {
+                    } else {
                         //this.state.fallBack();
-                        this.state.setChXYPrev(x,y);
+                        this.state.setChXYPrev(x, y);
                         this.state.setState(State.SELECTED);
                         move.reset();
                         move.setState(Move.SELECT_MOVE);
                         move.setSource(this.state.getChXPrev(), this.state.getChYPrev());
                         move.setDestination(-1, -1);
-                        return move;
                     }
                 }
+                break;
             default:
                 break;
         }
-        return new Move();
+        update();
+        return move;
     }
-
+    public void update(){
+        playerWhite.update();
+        playerBlack.update();
+    }
 
     public Piece getPiece(int x, int y) {
         return this.board.getPiece(x, y);

@@ -34,6 +34,8 @@ public class Move {
     private int x2;
     private int y2;
 
+    private boolean map[][];
+
     private boolean turn;
     public Move() {
         this.reset();
@@ -77,7 +79,15 @@ public class Move {
         this.x2 = -1;
         this.y2 = -1;
 
+        this.map=null;
         this.turn=true;
+    }
+
+    public void setMap(boolean [][] map){
+        this.map=map;
+    }
+    public boolean[][] getMap(){
+        return this.map;
     }
 
     public void setTurn(boolean turn) {

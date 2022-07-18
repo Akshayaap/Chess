@@ -132,18 +132,29 @@ public class ChessGui {
                 default:
                     break;
             }
+            if(ChessGui.this.move.getMap()!=null){
+                for (int i = 0; i < 8; i++) {
+                    for (int j = 0; j < 8; j++) {
+                        if(ChessGui.this.move.getMap()[i][j]){
+                            this.grid[i][j].setPossibleTile();
+                        }
+                    }
+                }
+            }
         }
     }
 
     private class TilePanel extends JPanel {
         private static final Dimension TILE_DIMENSION = new Dimension(10, 10);
+
         private static final Color DARK_SQUARE = new Color(50, 0, 20);
         private static final Color LIGHT_SQUARE = new Color(255, 255, 200);
-        private static final Color SELECT_TILE = new Color(255, 0, 0, 200);
-        private static final ImageIcon[][] IMGS = new ImageIcon[2][6];
+        private static final Color SELECT_TILE = new Color(255, 255, 0);
         private static final Color SOURCE_TILE = new Color(0, 0, 255);
         private static final Color DESTINATION_TILE = new Color(0, 255, 0);
+        public static final Color THREATEN_TILE = new Color(255, 0 , 0);
 
+        private static final ImageIcon[][] IMGS = new ImageIcon[2][6];
 
         static {
 
@@ -195,6 +206,10 @@ public class ChessGui {
 
         public void setSelectTile() {
             this.setBackground(SELECT_TILE);
+        }
+
+        public void setPossibleTile() {
+            this.setBackground(THREATEN_TILE);
         }
 
         private class Input implements MouseListener {

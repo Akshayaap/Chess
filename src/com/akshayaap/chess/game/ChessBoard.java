@@ -85,4 +85,12 @@ public class ChessBoard {
     public Tile[][] getBoard() {
         return this.board;
     }
-}
+
+    public void update() {
+        for(Tile[] i:board){
+            for(Tile j:i)
+                j.update();
+            }
+        }
+    }
+
