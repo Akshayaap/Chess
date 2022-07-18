@@ -58,5 +58,6 @@ public class Knight extends Piece {
                 map[x - 1][y + 2] = true;
             }
         }
+        updateAttackMap();
     }
 }

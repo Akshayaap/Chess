@@ -138,5 +138,6 @@ public class Queen extends Piece{
             }
             j--;
         }
+        updateAttackMap();
     }
 }

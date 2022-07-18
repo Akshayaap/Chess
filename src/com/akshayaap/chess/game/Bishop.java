@@ -77,5 +77,6 @@ public class Bishop extends Piece {
             i--;
             j--;
         }
+        updateAttackMap();
     }
 }

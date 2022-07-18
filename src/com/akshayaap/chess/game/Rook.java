@@ -78,5 +78,6 @@ public class Rook extends Piece{
             }
             j--;
         }
+        updateAttackMap();
     }
 }

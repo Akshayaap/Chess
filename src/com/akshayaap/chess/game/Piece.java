@@ -109,4 +109,13 @@ public abstract class Piece {
     public boolean[][] getMap() {
         return map;
     }
+    public void updateAttackMap(){
+        for(int i=0;i<8;i++){
+            for(int j=0;j<8;j++){
+                if(map[i][j]){
+                    player.setAttackMap(i,j);
+                }
+            }
+        }
+    }
 }

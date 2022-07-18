@@ -92,8 +92,12 @@ public class ChessGame {
         return move;
     }
     public void update(){
-        playerWhite.update();
-        playerBlack.update();
+        if(!this.state.getTurn()){
+            this.playerBlack.update();
+        }
+        else{
+            this.playerWhite.update();
+        }
     }
 
     public Piece getPiece(int x, int y) {

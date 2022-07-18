@@ -35,22 +35,21 @@ public class Player {
     /**
      * true for white and false for black
      */
-    private boolean color;
+    private final boolean color;
 
     /**
      * Map for threats created by opponent Player
      */
-    private boolean threatMap[][];
-
+    private  boolean threatMap[][];
     /**
      * All possible attacks by this player
      */
-    private boolean attackMap[][];
+    private final boolean attackMap[][]=new boolean[8][8];
 
     /**
      * A Board from ChessBoard to Examine Various Situations
      */
-    private Tile[][] board;
+    private final Tile[][] board;
 
     /**
      * Indicated Check
@@ -67,12 +66,11 @@ public class Player {
      */
     private boolean stallMate;
 
-    private Player opponent;
+    private  Player opponent;
 
     public Player(boolean color, Tile[][] board) {
         this.color = color;
         this.board = board;
-
         if(this.color){
             this.pawn0=new Pawn(1,0,this);
             this.pawn1=new Pawn(1,1,this);
@@ -117,63 +115,40 @@ public class Player {
         }
     }
 
-    /**
-     * Sets the Opponent Player
-     * @param player
-     */
     public void setOpponent(Player player){
         this.opponent=player;
+        this.threatMap=opponent.attackMap;
+        update();
     }
 
-    /**
-     * Resets everything
-     */
     public void reset() {
 
     }
 
-    /**
-     * Resets both maps
-     */
     public void resetMaps() {
 
     }
 
-    /**
-     * Resets the AttackMap
-     */
     public void resetAttackMap() {
-
+        for(int i=0;i<8;i++){
+            for(int j=0;j<8;j++){
+                this.attackMap[i][j]=false;
+            }
+        }
     }
 
-    /**
-     * Resets the threatMap
-     */
     public void resetThreatMap() {
 
     }
 
-    /**
-     * returns the check state
-     *
-     * @return
-     */
     public boolean isCheck() {
         return check;
     }
 
-    /**
-     * Returns the checkMate state
-     * @return
-     */
     public boolean isCheckMate(){
         return this.checkMate;
     }
 
-    /**
-     * returns a Stallmate state
-     * @return
-     */
     public boolean isStallMate(){
         return this.stallMate;
     }
@@ -192,6 +167,7 @@ public class Player {
 
     public Player getOpponent() {
         return opponent;
+
     }
 
     public void setCheck(boolean check) {
@@ -211,6 +187,8 @@ public class Player {
     }
 
     public void update() {
+        this.resetAttackMap();
+
         this.pawn0.update();
         this.pawn1.update();
         this.pawn2.update();
@@ -231,5 +209,10 @@ public class Player {
         this.queen.update();
         this.king.update();
     }
+
+    public void setAttackMap(int i, int j) {
+        this.attackMap[i][j]=true;
+    }
+
 }
 
