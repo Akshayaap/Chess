@@ -227,7 +227,7 @@ public class Player {
         this.bishop1.update();
 
         this.rook0.update();
-        this.rook0.update();
+        this.rook1.update();
         this.queen.update();
         this.king.update();
     }
