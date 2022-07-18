@@ -14,8 +14,9 @@ public class ChessGame {
         this.playerWhite=new Player(true,this.board.getBoard());
         this.playerBlack.setOpponent(this.playerWhite);
         this.playerWhite.setOpponent(this.playerBlack);
-        update();
 
+        playerBlack.update();
+        playerWhite.update();
     }
 
     public Move onClick(int x, int y) {
@@ -92,14 +93,15 @@ public class ChessGame {
         return move;
     }
     public void update(){
-        if(!this.state.getTurn()){
+        if(!state.getTurn()){
             this.playerBlack.update();
+            this.playerWhite.update();
         }
         else{
             this.playerWhite.update();
+            this.playerBlack.update();
         }
     }
-
     public Piece getPiece(int x, int y) {
         return this.board.getPiece(x, y);
     }

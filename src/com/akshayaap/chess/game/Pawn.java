@@ -20,11 +20,13 @@ public class Pawn extends Piece {
                     }
                 }
                 if (y + 1 < 8) {
+                    player.setAttackMap(x + 1, y + 1);
                     if (board[x + 1][y + 1].getPiece() != null && !board[x + 1][y + 1].getPiece().getColor()) {
                         map[x + 1][y + 1] = true;
                     }
                 }
                 if (y - 1 >= 0) {
+                    player.setAttackMap(x + 1, y - 1);
                     if (board[x + 1][y - 1].getPiece() != null && !board[x + 1][y - 1].getPiece().getColor()) {
                         map[x + 1][y - 1] = true;
                     }
@@ -39,17 +41,18 @@ public class Pawn extends Piece {
                     }
                 }
                 if (y + 1 < 8) {
+                    player.setAttackMap(x - 1, y + 1);
                     if (board[x - 1][y + 1].getPiece() != null && board[x - 1][y + 1].getPiece().getColor()) {
                         map[x - 1][y + 1] = true;
                     }
                 }
                 if (y - 1 >= 0) {
+                    player.setAttackMap(x - 1, y - 1);
                     if (board[x - 1][y - 1].getPiece() != null && board[x - 1][y - 1].getPiece().getColor()) {
                         map[x - 1][y - 1] = true;
                     }
                 }
             }
         }
-        updateAttackMap();
     }
 }

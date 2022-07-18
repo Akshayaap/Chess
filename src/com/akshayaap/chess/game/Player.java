@@ -113,12 +113,12 @@ public class Player {
             this.queen=new Queen(7,3,this);
             this.king=new King(7,4,this);
         }
+        resetAttackMap();
     }
 
     public void setOpponent(Player player){
         this.opponent=player;
-        this.threatMap=opponent.attackMap;
-        update();
+        this.threatMap=opponent.getAttackMap();
     }
 
     public void reset() {

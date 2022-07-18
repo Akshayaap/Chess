@@ -26,6 +26,7 @@ public class Queen extends Piece{
         int i = x + 1;
         int j = y + 1;
         while (i < 8 && j < 8) {
+            player.setAttackMap(i, j);
             if (board[i][j].getPiece() == null) {
                 map[i][j] = true;
             } else {
@@ -41,6 +42,7 @@ public class Queen extends Piece{
         i = x + 1;
         j = y - 1;
         while (i < 8 && j >= 0) {
+            player.setAttackMap(i, j);
             if (board[i][j].getPiece() == null) {
                 map[i][j] = true;
             } else {
@@ -56,6 +58,7 @@ public class Queen extends Piece{
         i = x - 1;
         j = y + 1;
         while (i >= 0 && j < 8) {
+            player.setAttackMap(i, j);
             if (board[i][j].getPiece() == null) {
                 map[i][j] = true;
             } else {
@@ -71,6 +74,7 @@ public class Queen extends Piece{
         i = x - 1;
         j = y - 1;
         while (i >= 0 && j >= 0) {
+            player.setAttackMap(i, j);
             if (board[i][j].getPiece() == null) {
                 map[i][j] = true;
             } else {
@@ -86,6 +90,7 @@ public class Queen extends Piece{
         i = x + 1;
         j=y;
         while (i < 8 ) {
+            player.setAttackMap(i, j);
             if (board[i][j].getPiece() == null) {
                 map[i][j] = true;
             } else {
@@ -100,6 +105,7 @@ public class Queen extends Piece{
         i = x - 1;
         j = y ;
         while (i  >= 0) {
+            player.setAttackMap(i, j);
             if (board[i][j].getPiece() == null) {
                 map[i][j] = true;
             } else {
@@ -114,6 +120,7 @@ public class Queen extends Piece{
         i = x ;
         j = y + 1;
         while (j < 8) {
+            player.setAttackMap(i, j);
             if (board[i][j].getPiece() == null) {
                 map[i][j] = true;
             } else {
@@ -128,6 +135,7 @@ public class Queen extends Piece{
         i = x ;
         j = y - 1;
         while ( j >= 0) {
+            player.setAttackMap(i, j);
             if (board[i][j].getPiece() == null) {
                 map[i][j] = true;
             } else {
@@ -138,6 +146,5 @@ public class Queen extends Piece{
             }
             j--;
         }
-        updateAttackMap();
     }
 }

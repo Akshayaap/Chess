@@ -117,6 +117,9 @@ public class ChessGui {
         }
 
         public void setAnnotatted() {
+            if(ChessGui.this.move==null){
+                return;
+            }
             switch (ChessGui.this.move.getState()) {
                 case Move.INVALID_MOVE:
                     break;
