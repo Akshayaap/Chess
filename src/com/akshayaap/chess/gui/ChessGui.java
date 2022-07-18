@@ -141,21 +141,6 @@ public class ChessGui {
                     }
                 }
             }
-
-            for(int i=0;i<8;i++){
-                for (int j=0;j<8;j++){
-                    if(ChessGui.this.move.getWhiteSpan()[i][j]){
-                        this.grid[i][j].setWhiteSpan(i,j);
-                    }
-                }
-            }
-            for(int i=0;i<8;i++){
-                for (int j=0;j<8;j++){
-                    if(ChessGui.this.move.getBlackSpan()[i][j]){
-                        this.grid[i][j].setBlackSpan(i,j);
-                    }
-                }
-            }
         }
     }
 
@@ -166,10 +151,8 @@ public class ChessGui {
         private static final Color LIGHT_SQUARE = new Color(255, 255, 200);
         private static final Color SELECT_TILE = new Color(255, 255, 0);
         private static final Color SOURCE_TILE = new Color(0, 0, 255);
-        private static final Color WHITE_SPAN_TILE = new Color(0, 255, 0,127);
-        public static final Color BLACK_SPAN_TILE = new Color(255, 0 , 0,127);
-        public static final Color DESTINATION_TILE=new Color(0, 255, 234,127);
-        public static final Color THREATEN_TILE=new Color(94, 0, 255,127);
+        public static final Color DESTINATION_TILE=new Color(0, 255, 0);
+        public static final Color THREATEN_TILE=new Color(255, 0, 0, 255);
 
         private static final ImageIcon[][] IMGS = new ImageIcon[2][6];
 
@@ -226,18 +209,7 @@ public class ChessGui {
         }
 
         public void setPossibleTile() {
-            setBackground(Color.white);
             this.setBackground(THREATEN_TILE);
-        }
-
-        public void setBlackSpan(int i, int j) {
-            setBackground(Color.white);
-            setBackground(BLACK_SPAN_TILE);
-        }
-
-        public void setWhiteSpan(int i, int j) {
-            setBackground(Color.white);
-            setBackground(WHITE_SPAN_TILE);
         }
 
         private class Input implements MouseListener {
