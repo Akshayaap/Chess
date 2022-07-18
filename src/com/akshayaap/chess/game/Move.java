@@ -28,6 +28,8 @@ public class Move {
     public static final int SOURCE_IS_EMPTY = 201;
     public static final int INVALID_SELECTION = 202;
 
+    private boolean whiteSpan[][];
+    private boolean blackSpan[][];
     private int state;
     private int x1;
     private int y1;
@@ -97,4 +99,19 @@ public class Move {
         return turn;
     }
 
+    public boolean[][]getWhiteSpan(){
+        return whiteSpan;
+    }
+
+    public boolean[][] getBlackSpan() {
+        return blackSpan;
+    }
+
+    public void setWhiteSpan(boolean[][] whiteSpan) {
+        this.whiteSpan = whiteSpan;
+    }
+
+    public void setBlackSpan(boolean[][] blackSpan) {
+        this.blackSpan = blackSpan;
+    }
 }

@@ -20,6 +20,8 @@ public class ChessGame {
 
     public Move onClick(int x, int y) {
         Move move = new Move();
+        move.setWhiteSpan(playerWhite.getAttackMap());
+        move.setBlackSpan(playerBlack.getAttackMap());
         switch (this.state.getState()) {
             case State.INVALID:
                 move.reset();
@@ -92,7 +94,7 @@ public class ChessGame {
         return move;
     }
     public void update(){
-        if(this.state.getTurn()){
+        if(!this.state.getTurn()){
             this.playerBlack.update();
         }
         else{

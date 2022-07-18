@@ -85,6 +85,11 @@ public abstract class Piece {
 
     public Move move(int x, int y) {
         Move move =new Move();
+        if(this.color){
+            move.setWhiteSpan(this.player.getAttackMap());
+        }else{
+            move.setBlackSpan(this.player.getAttackMap());
+        }
         move.setSource(this.x,this.y);
         move.setDestination(x,y);
         if(this.map[x][y]){
