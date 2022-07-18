@@ -92,7 +92,7 @@ public class ChessGame {
         return move;
     }
     public void update(){
-        if(!this.state.getTurn()){
+        if(this.state.getTurn()){
             this.playerBlack.update();
         }
         else{

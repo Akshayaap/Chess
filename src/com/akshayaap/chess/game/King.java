@@ -28,43 +28,43 @@ public class King extends Piece {
         this.resetMap();
 
         if (x + 1 < 8) {
-            if (!player.getThreatMap()[x + 1][y]&&(board[x+1][y].getPiece()==null||board[x+1][y].getPiece().getColor()!=this.color)) {
+            if (!player.getThreatMap()[x + 1][y] && (board[x + 1][y].getPiece() == null || (board[x + 1][y].getPiece() != null && board[x + 1][y].getPiece().getColor() != this.color))) {
                 map[x + 1][y] = true;
             }
         }
         if (x - 1 >= 0) {
-            if (!player.getThreatMap()[x - 1][y]&&(board[x-1][y].getPiece()==null||board[x-1][y].getPiece().getColor()!=this.color)) {
+            if (!player.getThreatMap()[x - 1][y] && (board[x - 1][y].getPiece() == null || (board[x - 1][y].getPiece() != null && board[x - 1][y].getPiece().getColor() != this.color))) {
                 map[x - 1][y] = true;
             }
         }
         if (y + 1 < 8) {
-            if (!player.getThreatMap()[x][y + 1]&&(board[x][y].getPiece()==null||board[x][y+1].getPiece().getColor()!=this.color)) {
+            if (!player.getThreatMap()[x][y + 1] && (board[x][y].getPiece() == null || (board[x][y + 1].getPiece() != null && board[x][y + 1].getPiece().getColor() != this.color))) {
                 map[x][y + 1] = true;
             }
         }
         if (y - 1 >= 0) {
-            if (!player.getThreatMap()[x][y - 1]&&(board[x][y].getPiece()==null||board[x][y-1].getPiece().getColor()!=this.color)) {
+            if (!player.getThreatMap()[x][y - 1] && (board[x][y].getPiece() == null || (board[x][y - 1].getPiece() != null && board[x][y - 1].getPiece().getColor() != this.color))) {
                 map[x][y - 1] = true;
             }
         }
 
         if (x + 1 < 8 && y + 1 < 8) {
-            if (!player.getThreatMap()[x + 1][y + 1]&&(board[x+1][y+1].getPiece()==null||board[x+1][y+1].getPiece().getColor()!=this.color)) {
+            if (!player.getThreatMap()[x + 1][y + 1] && (board[x + 1][y + 1].getPiece() == null || (board[x + 1][y + 1].getPiece() != null && board[x + 1][y + 1].getPiece().getColor() != this.color))) {
                 map[x + 1][y + 1] = true;
             }
         }
         if (x + 1 < 8 && y - 1 >= 0) {
-            if (!player.getThreatMap()[x + 1][y - 1]&&(board[x+1][y-1].getPiece()==null||board[x+1][y-1].getPiece().getColor()!=this.color)) {
+            if (!player.getThreatMap()[x + 1][y - 1] && (board[x + 1][y - 1].getPiece() == null || (board[x + 1][y - 1].getPiece() != null && board[x + 1][y - 1].getPiece().getColor() != this.color))) {
                 map[x + 1][y - 1] = true;
             }
         }
         if (x - 1 >= 0 && y + 1 < 8) {
-            if (!player.getThreatMap()[x - 1][y + 1]&&(board[x-1][y+1].getPiece()==null||board[x-1][y+1].getPiece().getColor()!=this.color)) {
+            if (!player.getThreatMap()[x - 1][y + 1] && (board[x - 1][y + 1].getPiece() == null || (board[x - 1][y + 1].getPiece() != null && board[x - 1][y + 1].getPiece().getColor() != this.color))) {
                 map[x - 1][y + 1] = true;
             }
         }
         if (x - 1 >= 0 && y - 1 >= 0) {
-            if (!player.getThreatMap()[x - 1][y - 1]&&(board[x-1][y-1].getPiece()==null||board[x-1][y-1].getPiece().getColor()!=this.color)) {
+            if (!player.getThreatMap()[x - 1][y - 1] && (board[x - 1][y - 1].getPiece() == null || (board[x - 1][y - 1].getPiece() != null && board[x - 1][y - 1].getPiece().getColor() != this.color))) {
                 map[x - 1][y - 1] = true;
             }
         }

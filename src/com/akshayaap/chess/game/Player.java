@@ -167,7 +167,6 @@ public class Player {
 
     public Player getOpponent() {
         return opponent;
-
     }
 
     public void setCheck(boolean check) {
