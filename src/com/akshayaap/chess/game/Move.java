@@ -34,7 +34,7 @@ public class Move {
     private int x2;
     private int y2;
 
-    private boolean map[][];
+    private boolean[][] map;
 
     private boolean turn;
     public Move() {

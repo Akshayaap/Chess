@@ -1,19 +1,9 @@
 package com.akshayaap.chess.game;
 
-/**
- * @Author Akshay
- */
 
-import com.akshayaap.chess.gui.ChessGui;
-
-/**
- * Piece Class
- */
 public abstract class Piece {
 
-    /**
-     * Static final variables for each pieces
-     */
+
     public static final int PAWN_VALUE=1;
     public static final int PAWN_TYPE=0;
 

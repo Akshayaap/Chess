@@ -15,8 +15,8 @@ public class ChessGame {
         this.playerBlack.setOpponent(this.playerWhite);
         this.playerWhite.setOpponent(this.playerBlack);
 
-        playerBlack.update();
         playerWhite.update();
+        playerBlack.update();
     }
 
     public Move onClick(int x, int y) {
@@ -63,6 +63,7 @@ public class ChessGame {
                     move.setTurn(this.state.getTurn());
                     if (move.getState() != Move.INVALID_MOVE && move.getState() != Move.SOURCE_IS_EMPTY) {
                         this.state.toggleTurn();
+                        update();
                     }
                 } else {
                     if (this.board.getPiece(x, y).getColor() != this.state.getTurn()) {
@@ -72,6 +73,7 @@ public class ChessGame {
                         move.setTurn(this.state.getTurn());
                         if (move.getState() != Move.INVALID_MOVE && move.getState() != Move.SOURCE_IS_EMPTY) {
                             move.setState(Move.CAPTURE_MOVE);
+                            update();
                             this.state.toggleTurn();
                         }
                     } else {
@@ -89,11 +91,10 @@ public class ChessGame {
             default:
                 break;
         }
-        update();
         return move;
     }
     public void update(){
-        if(!state.getTurn()){
+        if(state.getTurn()){
             this.playerBlack.update();
             this.playerWhite.update();
         }

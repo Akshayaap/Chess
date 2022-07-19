@@ -11,9 +11,7 @@ public class Knight extends Piece {
         this.value = Piece.KNIGHT_VALUE;
     }
 
-    /**
-     * Updates the game status
-     */
+
     @Override
     public void update() {
         this.resetMap();

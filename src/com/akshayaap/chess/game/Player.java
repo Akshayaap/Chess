@@ -1,15 +1,7 @@
 package com.akshayaap.chess.game;
 
-import javax.lang.model.element.NestingKind;
-import java.io.IOException;
 
-/**
- * class Player
- *
- * @Author Akshay
- */
 public class Player {
-
 
     private final Pawn pawn0;
     private final Pawn pawn1;
@@ -32,41 +24,15 @@ public class Player {
     private final King king;
 
 
-    /**
-     * true for white and false for black
-     */
     private final boolean color;
-
-    /**
-     * Map for threats created by opponent Player
-     */
-    private  boolean threatMap[][];
-    /**
-     * All possible attacks by this player
-     */
-    private final boolean attackMap[][]=new boolean[8][8];
-
-    /**
-     * A Board from ChessBoard to Examine Various Situations
-     */
+    private boolean[][] threatMap;
+    private final boolean[][] attackMap =new boolean[8][8];
     private final Tile[][] board;
-
-    /**
-     * Indicated Check
-     */
     private boolean check;
-
-    /**
-     * Indicates CheckMate
-     */
     private boolean checkMate;
-
-    /**
-     * Indicates Stall
-     */
     private boolean stallMate;
-
     private  Player opponent;
+
 
     public Player(boolean color, Tile[][] board) {
         this.color = color;
