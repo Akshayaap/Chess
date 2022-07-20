@@ -150,6 +150,10 @@ public class Player {
     public void setAttackMap(int i, int j) {
         this.attackMap[i][j] = true;
     }
+    public boolean calCheck(){
+        this.check=((King)pieces[5][0]).calCheck();
+        return check;
+    }
 
 }
 

@@ -29,7 +29,6 @@ public class ChessBoard {
         Move move = new Move();
         if (this.board[chXPrev][chYPrev].getPiece() != null) {
             move = this.board[chXPrev][chYPrev].getPiece().move(x, y);
-            this.printBord();
             return move;
         }
         move.reset();

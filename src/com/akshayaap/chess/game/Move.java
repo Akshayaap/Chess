@@ -2,16 +2,18 @@ package com.akshayaap.chess.game;
 
 public class Move {
 
-    public static final int INVALID_MOVE = -1;
+    public static final int NOT_APPLICABLE=-1;
     public static final int NORMAL_MOVE = 10;
     public static final int CAPTURE_MOVE = 11;
+    public static final int ILLEGAL_MOVE =20;
 
     public static final int SELECT_MOVE = 12;
     public static final int SOURCE_IS_EMPTY = 13;
     public static final int INVALID_SELECTION = 14;
 
-    public static final int WHITE_STALLMATE=100;
-    public static final int BLACK_STALLMATE=101;
+
+    public static final int WHITE_STALMATE =100;
+    public static final int BLACK_STALMATE =101;
     public static final int WHITE_CHECK=102;
     public static final int BLACK_CHECK=103;
     public static final int WHITE_CHECKMATE=104;
@@ -69,8 +71,8 @@ public class Move {
     }
 
     public void reset() {
-        this.state = INVALID_MOVE;
-        this.checkState=INVALID_MOVE;
+        this.state = NOT_APPLICABLE;
+        this.checkState=NOT_APPLICABLE;
         this.x1 = -1;
         this.y1 = -1;
         this.x2 = -1;

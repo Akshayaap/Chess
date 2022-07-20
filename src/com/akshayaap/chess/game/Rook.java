@@ -27,10 +27,10 @@ public class Rook extends Piece {
         while (i < 8) {
             player.setAttackMap(i, j);
             if (board[i][j].getPiece() == null) {
-                map[i][j] = true;
+                movaMap[i][j] = true;
             } else {
                 if (board[i][j].getPiece().getColor() != this.color) {
-                    map[i][j] = true;
+                    movaMap[i][j] = true;
                 }
                 break;
             }
@@ -42,10 +42,10 @@ public class Rook extends Piece {
         while (i >= 0) {
             player.setAttackMap(i, j);
             if (board[i][j].getPiece() == null) {
-                map[i][j] = true;
+                movaMap[i][j] = true;
             } else {
                 if (board[i][j].getPiece().getColor() != this.color) {
-                    map[i][j] = true;
+                    movaMap[i][j] = true;
                 }
                 break;
             }
@@ -57,10 +57,10 @@ public class Rook extends Piece {
         while (j < 8) {
             player.setAttackMap(i, j);
             if (board[i][j].getPiece() == null) {
-                map[i][j] = true;
+                movaMap[i][j] = true;
             } else {
                 if (board[i][j].getPiece().getColor() != this.color) {
-                    map[i][j] = true;
+                    movaMap[i][j] = true;
                 }
                 break;
             }
@@ -72,10 +72,10 @@ public class Rook extends Piece {
         while (j >= 0) {
             player.setAttackMap(i, j);
             if (board[i][j].getPiece() == null) {
-                map[i][j] = true;
+                movaMap[i][j] = true;
             } else {
                 if (board[i][j].getPiece().getColor() != this.color) {
-                    map[i][j] = true;
+                    movaMap[i][j] = true;
                 }
                 break;
             }

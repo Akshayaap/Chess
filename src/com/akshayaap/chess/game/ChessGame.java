@@ -6,6 +6,7 @@ public class ChessGame {
     private Player playerWhite;
     private Player playerBlack;
     private Move move = new Move();
+
     public ChessGame() {
         this.state = new State();
         this.board = new ChessBoard();
@@ -20,16 +21,15 @@ public class ChessGame {
     }
 
     public Move onClick(int x, int y) {
+        move.reset();
         switch (this.state.getState()) {
             case State.INVALID:
-                move.reset();
                 move.setState(Move.INVALID_SELECTION);
                 move.setSource(x, y);
                 move.setDestination(-1, -1);
                 break;
             case State.NORMAL:
                 if (this.board.getPiece(x, y) == null) {
-                    move.reset();
                     move.setState(Move.INVALID_SELECTION);
                     move.setSource(x, y);
                     move.setDestination(-1, -1);
@@ -41,14 +41,12 @@ public class ChessGame {
                     this.state.setChXYNext(-1, -1);
 
 
-                    move.reset();
                     move.setState(Move.SELECT_MOVE);
                     move.setSource(x, y);
                     move.setDestination(-1, -1);
                     move.setTurn(this.state.getTurn());
-                    move.setMap(board.getPiece(x, y).getMap());
+                    move.setMap(board.getPiece(x, y).getMovaMap());
                 } else {
-                    move.reset();
                     move.setState(Move.INVALID_SELECTION);
                     move.setSource(x, y);
                     move.setDestination(-1, -1);
@@ -60,7 +58,7 @@ public class ChessGame {
                     move = this.board.move(this.state.getChXPrev(), this.state.getChYPrev(), x, y);
                     this.state.fallBack();
                     move.setTurn(this.state.getTurn());
-                    if (move.getState() != Move.INVALID_MOVE && move.getState() != Move.SOURCE_IS_EMPTY) {
+                    if (move.getState() != Move.ILLEGAL_MOVE && move.getState() != Move.SOURCE_IS_EMPTY) {
                         this.state.toggleTurn();
                         update();
                     }
@@ -70,7 +68,7 @@ public class ChessGame {
                         move = this.board.move(this.state.getChXPrev(), this.state.getChYPrev(), x, y);
                         this.state.fallBack();
                         move.setTurn(this.state.getTurn());
-                        if (move.getState() != Move.INVALID_MOVE && move.getState() != Move.SOURCE_IS_EMPTY) {
+                        if (move.getState() != Move.ILLEGAL_MOVE && move.getState() != Move.SOURCE_IS_EMPTY) {
                             move.setState(Move.CAPTURE_MOVE);
                             update();
                             this.state.toggleTurn();
@@ -83,13 +81,14 @@ public class ChessGame {
                         move.setState(Move.SELECT_MOVE);
                         move.setSource(this.state.getChXPrev(), this.state.getChYPrev());
                         move.setDestination(-1, -1);
-                        move.setMap(board.getPiece(x, y).getMap());
+                        move.setMap(board.getPiece(x, y).getMovaMap());
                     }
                 }
                 break;
             default:
                 break;
         }
+        this.board.printBord();
         return move;
     }
 
@@ -107,7 +106,7 @@ public class ChessGame {
             }
             if (playerWhite.isStallMate()) {
                 state.setCheckState(State.WHITE_STALEMATE);
-                move.setCheckState(Move.WHITE_STALLMATE);
+                move.setCheckState(Move.WHITE_STALMATE);
             }
         } else {
             this.playerWhite.update();
@@ -118,11 +117,11 @@ public class ChessGame {
             }
             if (playerBlack.isCheckMate()) {
                 state.setCheckState(State.BLACK_CHECKMATE);
-                move.setCheckState(State.BLACK_CHECKMATE);
+                move.setCheckState(Move.BLACK_CHECKMATE);
             }
             if (playerBlack.isStallMate()) {
                 state.setCheckState(State.BLACK_STALEMATE);
-                move.setCheckState(State.BLACK_STALEMATE);
+                move.setCheckState(Move.BLACK_STALMATE);
             }
         }
     }

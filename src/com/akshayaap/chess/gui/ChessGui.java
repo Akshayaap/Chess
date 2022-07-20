@@ -1,6 +1,5 @@
 package com.akshayaap.chess.gui;
 
-import com.akshayaap.chess.Chess;
 import com.akshayaap.chess.game.ChessGame;
 import com.akshayaap.chess.game.Move;
 import com.akshayaap.chess.game.State;
@@ -12,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -121,7 +119,7 @@ public class ChessGui {
                 return;
             }
             switch (ChessGui.this.move.getState()) {
-                case Move.INVALID_MOVE:
+                case Move.ILLEGAL_MOVE:
                     break;
                 case Move.INVALID_SELECTION:
                     break;
@@ -227,8 +225,7 @@ public class ChessGui {
 
                     switch (ChessGui.this.move.getState()) {
 
-                        case Move.INVALID_MOVE:
-
+                        case Move.ILLEGAL_MOVE:
                             break;
                         case Move.SELECT_MOVE:
                             break;

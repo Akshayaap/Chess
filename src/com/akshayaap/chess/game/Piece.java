@@ -29,11 +29,11 @@ public abstract class Piece {
     protected int value;
     protected int type;
 
-    protected boolean[][] map;
+    protected boolean[][] movaMap;
     protected boolean moved = false;
-    protected boolean alive=true;
+    protected boolean alive = true;
 
-    protected int legalMoves=0;
+    protected int legalMoves = 0;
     protected boolean color;
     protected Player player;
     protected Tile[][] board;
@@ -44,25 +44,23 @@ public abstract class Piece {
         this.player = player;
         this.color = player.getColor();
         this.board = player.getBoard();
-        this.map = new boolean[8][8];
+        this.movaMap = new boolean[8][8];
         this.resetMap();
         this.board[x][y].setPiece(this);
     }
 
-    /**
-     * Deprecated
-     */
     @Deprecated
-    public void reset() {
-
-    }
-
+    public abstract void reset();
+    @Deprecated
     public abstract void update();
+
+    public abstract void calMoveMap();
+    public abstract boolean[][] calAttackMap();
 
     public void resetMap() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                this.map[i][j] = false;
+                this.movaMap[i][j] = false;
             }
         }
     }
@@ -79,42 +77,58 @@ public abstract class Piece {
         Move move = new Move();
         move.setSource(this.x, this.y);
         move.setDestination(x, y);
-        if (this.map[x][y]) {
+        Piece temp;
+        int pX = this.x;
+        int pY = this.y;
+        if (this.movaMap[x][y]) {
             if (this.board[x][y].getPiece() != null) {
                 move.setState(Move.CAPTURE_MOVE);
                 this.board[x][y].getPiece().capture();
             } else {
                 move.setState(Move.NORMAL_MOVE);
             }
+
+            temp = this.board[x][y].getPiece();
             this.board[x][y].setPiece(this);
             this.board[this.x][this.y].setPiece(null);
+
             this.x = x;
             this.y = y;
+            player.update();
+            player.getOpponent().getOpponent().update();
+            if (player.calCheck()) {
+                move.setState(Move.ILLEGAL_MOVE);
+                this.board[pX][pY].setPiece(this);
+                this.board[x][y].setPiece(temp);
+                this.x = pX;
+                this.y = pY;
+            }
             return move;
         } else {
-            move.setState(Move.INVALID_MOVE);
+            move.setState(Move.ILLEGAL_MOVE);
             return move;
         }
     }
 
     public void capture() {
-        this.alive=false;
-        this.x=-1;
-        this.y=-1;
+        this.alive = false;
+        this.x = -1;
+        this.y = -1;
     }
 
-    public int calLegalMoves(){
-        for(boolean[] i:map){
-            for(boolean j:i){
-                if(j){
+    public int calLegalMoves() {
+        for (boolean[] i : movaMap) {
+            for (boolean j : i) {
+                if (j) {
                     this.legalMoves++;
                 }
             }
         }
         return this.legalMoves;
     }
-    public boolean[][] getMap() {
-        return map;
+
+    public boolean[][] getMovaMap() {
+        return movaMap;
     }
 
 
@@ -126,7 +140,7 @@ public abstract class Piece {
         this.legalMoves = legalMoves;
     }
 
-    public boolean isAlive(){
+    public boolean isAlive() {
         return alive;
     }
 }

@@ -14,42 +14,42 @@ public class Pawn extends Piece {
         if (this.color) {
             if (x + 1 < 8) {
                 if (board[x + 1][y].getPiece() == null) {
-                    map[x + 1][y] = true;
+                    movaMap[x + 1][y] = true;
                     if (x == 1 && board[x + 2][y].getPiece() == null) {
-                        map[x + 2][y] = true;
+                        movaMap[x + 2][y] = true;
                     }
                 }
                 if (y + 1 < 8) {
                     player.setAttackMap(x + 1, y + 1);
                     if (board[x + 1][y + 1].getPiece() != null && !board[x + 1][y + 1].getPiece().getColor()) {
-                        map[x + 1][y + 1] = true;
+                        movaMap[x + 1][y + 1] = true;
                     }
                 }
                 if (y - 1 >= 0) {
                     player.setAttackMap(x + 1, y - 1);
                     if (board[x + 1][y - 1].getPiece() != null && !board[x + 1][y - 1].getPiece().getColor()) {
-                        map[x + 1][y - 1] = true;
+                        movaMap[x + 1][y - 1] = true;
                     }
                 }
             }
         } else {
             if (x - 1 >= 0) {
                 if (board[x - 1][y].getPiece() == null) {
-                    map[x - 1][y] = true;
+                    movaMap[x - 1][y] = true;
                     if (x == 6 && board[x - 2][y].getPiece() == null) {
-                        map[x - 2][y] = true;
+                        movaMap[x - 2][y] = true;
                     }
                 }
                 if (y + 1 < 8) {
                     player.setAttackMap(x - 1, y + 1);
                     if (board[x - 1][y + 1].getPiece() != null && board[x - 1][y + 1].getPiece().getColor()) {
-                        map[x - 1][y + 1] = true;
+                        movaMap[x - 1][y + 1] = true;
                     }
                 }
                 if (y - 1 >= 0) {
                     player.setAttackMap(x - 1, y - 1);
                     if (board[x - 1][y - 1].getPiece() != null && board[x - 1][y - 1].getPiece().getColor()) {
-                        map[x - 1][y - 1] = true;
+                        movaMap[x - 1][y - 1] = true;
                     }
                 }
             }
