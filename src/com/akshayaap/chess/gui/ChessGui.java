@@ -117,7 +117,7 @@ public class ChessGui {
         }
 
         public void setAnnotatted() {
-            if(ChessGui.this.move==null){
+            if (ChessGui.this.move == null) {
                 return;
             }
             switch (ChessGui.this.move.getState()) {
@@ -135,10 +135,10 @@ public class ChessGui {
                 default:
                     break;
             }
-            if(ChessGui.this.move.getMap()!=null){
+            if (ChessGui.this.move.getMap() != null) {
                 for (int i = 0; i < 8; i++) {
                     for (int j = 0; j < 8; j++) {
-                        if(ChessGui.this.move.getMap()[i][j]){
+                        if (ChessGui.this.move.getMap()[i][j]) {
                             this.grid[i][j].setPossibleTile();
                         }
                     }
@@ -148,15 +148,13 @@ public class ChessGui {
     }
 
     private class TilePanel extends JPanel {
+        public static final Color DESTINATION_TILE = new Color(0, 255, 0);
+        public static final Color THREATEN_TILE = new Color(255, 0, 0, 255);
         private static final Dimension TILE_DIMENSION = new Dimension(10, 10);
-
         private static final Color DARK_SQUARE = new Color(50, 0, 20);
         private static final Color LIGHT_SQUARE = new Color(255, 255, 200);
         private static final Color SELECT_TILE = new Color(255, 255, 0);
         private static final Color SOURCE_TILE = new Color(0, 0, 255);
-        public static final Color DESTINATION_TILE=new Color(0, 255, 0);
-        public static final Color THREATEN_TILE=new Color(255, 0, 0, 255);
-
         private static final ImageIcon[][] IMGS = new ImageIcon[2][6];
 
         static {

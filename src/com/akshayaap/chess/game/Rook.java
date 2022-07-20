@@ -3,29 +3,28 @@ package com.akshayaap.chess.game;
 /**
  * @Author Akshay
  */
-public class Rook extends Piece{
+public class Rook extends Piece {
 
     /**
-     *
      * @param x
      * @param y
      */
-    public Rook(int x,int y,Player player){
-        super(x,y,player);
-        this.type=Piece.ROOK_TYPE;
-        this.value=Piece.ROOK_VALUE;
+    public Rook(int x, int y, Player player) {
+        super(x, y, player);
+        this.type = Piece.ROOK_TYPE;
+        this.value = Piece.ROOK_VALUE;
     }
 
     /**
      * An Update Method
      */
     @Override
-    public void update(){
+    public void update() {
         this.resetMap();
 
         int i = x + 1;
-        int j=y;
-        while (i < 8 ) {
+        int j = y;
+        while (i < 8) {
             player.setAttackMap(i, j);
             if (board[i][j].getPiece() == null) {
                 map[i][j] = true;
@@ -39,8 +38,8 @@ public class Rook extends Piece{
         }
 
         i = x - 1;
-        j = y ;
-        while (i  >= 0) {
+        j = y;
+        while (i >= 0) {
             player.setAttackMap(i, j);
             if (board[i][j].getPiece() == null) {
                 map[i][j] = true;
@@ -53,7 +52,7 @@ public class Rook extends Piece{
             i--;
         }
 
-        i = x ;
+        i = x;
         j = y + 1;
         while (j < 8) {
             player.setAttackMap(i, j);
@@ -68,9 +67,9 @@ public class Rook extends Piece{
             j++;
         }
 
-        i = x ;
+        i = x;
         j = y - 1;
-        while ( j >= 0) {
+        while (j >= 0) {
             player.setAttackMap(i, j);
             if (board[i][j].getPiece() == null) {
                 map[i][j] = true;

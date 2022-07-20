@@ -3,88 +3,50 @@ package com.akshayaap.chess.game;
 
 public class Player {
 
-    private final Pawn pawn0;
-    private final Pawn pawn1;
-    private final Pawn pawn2;
-    private final Pawn pawn3;
-
-    private final Pawn pawn4;
-    private final Pawn pawn5;
-    private final Pawn pawn6;
-    private final Pawn pawn7;
-
-    private final Knight knight0;
-    private final Knight knight1;
-    private final Bishop bishop0;
-    private final Bishop bishop1;
-
-    private final Rook rook0;
-    private final Rook rook1;
-    private final Queen queen;
-    private final King king;
-
+    private final Piece[][] pieces;
 
     private final boolean color;
-    private boolean[][] threatMap;
-    private final boolean[][] attackMap =new boolean[8][8];
+    private final boolean[][] attackMap = new boolean[8][8];
     private final Tile[][] board;
+    private boolean[][] threatMap;
     private boolean check;
     private boolean checkMate;
     private boolean stallMate;
-    private  Player opponent;
-
+    private Player opponent;
 
     public Player(boolean color, Tile[][] board) {
         this.color = color;
         this.board = board;
-        if(this.color){
-            this.pawn0=new Pawn(1,0,this);
-            this.pawn1=new Pawn(1,1,this);
-            this.pawn2=new Pawn(1,2,this);
-            this.pawn3=new Pawn(1,3,this);
+        this.pieces = new Piece[6][];
 
-            this.pawn4=new Pawn(1,4,this);
-            this.pawn5=new Pawn(1,5,this);
-            this.pawn6=new Pawn(1,6,this);
-            this.pawn7=new Pawn(1,7,this);
-
-            this.knight0=new Knight(0,1,this);
-            this.knight1=new Knight(0,6,this);
-            this.bishop0=new Bishop(0,2,this);
-            this.bishop1=new Bishop(0,5,this);
-
-            this.rook0=new Rook(0,0,this);
-            this.rook1=new Rook(0,7,this);
-            this.queen=new Queen(0,3,this);
-            this.king=new King(0,4,this);
+        pieces[0] = new Piece[8];
+        for (int j = 0; j < 8; j++) {
+            pieces[0][j] = new Pawn(this.color ? 1 : 6, j, this);
         }
-        else {
-            this.pawn0=new Pawn(6,0,this);
-            this.pawn1=new Pawn(6,1,this);
-            this.pawn2=new Pawn(6,2,this);
-            this.pawn3=new Pawn(6,3,this);
 
-            this.pawn4=new Pawn(6,4,this);
-            this.pawn5=new Pawn(6,5,this);
-            this.pawn6=new Pawn(6,6,this);
-            this.pawn7=new Pawn(6,7,this);
+        pieces[1] = new Piece[2];
+        pieces[1][0] = new Knight(this.color ? 0 : 7, 1, this);
+        pieces[1][1] = new Knight(this.color ? 0 : 7, 6, this);
 
-            this.knight0=new Knight(7,1,this);
-            this.knight1=new Knight(7,6,this);
-            this.bishop0=new Bishop(7,2,this);
-            this.bishop1=new Bishop(7,5,this);
+        pieces[2] = new Piece[2];
+        pieces[2][0] = new Bishop(this.color ? 0 : 7, 2, this);
+        pieces[2][1] = new Bishop(this.color ? 0 : 7, 5, this);
 
-            this.rook0=new Rook(7,0,this);
-            this.rook1=new Rook(7,7,this);
-            this.queen=new Queen(7,3,this);
-            this.king=new King(7,4,this);
-        }
+        pieces[3] = new Piece[2];
+        pieces[3][0] = new Rook(this.color ? 0 : 7, 0, this);
+        pieces[3][1] = new Rook(this.color ? 0 : 7, 7, this);
+
+        pieces[4] = new Piece[1];
+        pieces[4][0] = new Queen(this.color ? 0 : 7, 4, this);
+
+        pieces[5] = new Piece[1];
+        pieces[5][0] = new King(this.color ? 0 : 7, 3, this);
+
         resetAttackMap();
     }
 
-    public void setOpponent(Player player){
-        this.opponent=player;
-        this.threatMap=opponent.getAttackMap();
+    public boolean isColor() {
+        return color;
     }
 
     public void reset() {
@@ -96,9 +58,9 @@ public class Player {
     }
 
     public void resetAttackMap() {
-        for(int i=0;i<8;i++){
-            for(int j=0;j<8;j++){
-                this.attackMap[i][j]=false;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                this.attackMap[i][j] = false;
             }
         }
     }
@@ -111,16 +73,32 @@ public class Player {
         return check;
     }
 
-    public boolean isCheckMate(){
+    public void setCheck(boolean check) {
+        this.check = check;
+    }
+
+    public boolean isCheckMate() {
         return this.checkMate;
     }
 
-    public boolean isStallMate(){
+    public void setCheckMate(boolean checkMate) {
+        this.checkMate = checkMate;
+    }
+
+    public boolean isStallMate() {
         return this.stallMate;
+    }
+
+    public void setStallMate(boolean stallMate) {
+        this.stallMate = stallMate;
     }
 
     public boolean[][] getThreatMap() {
         return threatMap;
+    }
+
+    public void setThreatMap(boolean[][] threatMap) {
+        this.threatMap = threatMap;
     }
 
     public boolean[][] getAttackMap() {
@@ -135,16 +113,9 @@ public class Player {
         return opponent;
     }
 
-    public void setCheck(boolean check) {
-        this.check = check;
-    }
-
-    public void setCheckMate(boolean checkMate) {
-        this.checkMate = checkMate;
-    }
-
-    public void setStallMate(boolean stallMate) {
-        this.stallMate = stallMate;
+    public void setOpponent(Player player) {
+        this.opponent = player;
+        this.threatMap = opponent.getAttackMap();
     }
 
     public boolean getColor() {
@@ -153,30 +124,31 @@ public class Player {
 
     public void update() {
         this.resetAttackMap();
-
-        this.pawn0.update();
-        this.pawn1.update();
-        this.pawn2.update();
-        this.pawn3.update();
-
-        this.pawn4.update();
-        this.pawn5.update();
-        this.pawn6.update();
-        this.pawn7.update();
-
-        this.knight0.update();
-        this.knight1.update();
-        this.bishop0.update();
-        this.bishop1.update();
-
-        this.rook0.update();
-        this.rook1.update();
-        this.queen.update();
-        this.king.update();
+        for(int i=0;i<6;i++){
+            if(i==0){
+                for(int j=0;j<8;j++){
+                    if(pieces[i][j].isAlive()){
+                        pieces[i][j].update();
+                    }
+                }
+            }
+            else if(i==4||i==5){
+                if(pieces[i][0].isAlive()){
+                    pieces[i][0].update();
+                }
+            }
+            else{
+                for(int j=0;j<2;j++){
+                    if(pieces[i][j].isAlive()){
+                        pieces[i][j].update();
+                    }
+                }
+            }
+        }
     }
 
     public void setAttackMap(int i, int j) {
-        this.attackMap[i][j]=true;
+        this.attackMap[i][j] = true;
     }
 
 }

@@ -5,12 +5,12 @@ public class Tile {
     private final int y;
     private Piece piece;
 
-    public Tile(int x,int y){
-        this.x=x;
-        this.y=y;
+    public Tile(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
-    public Piece getPiece(){
+    public Piece getPiece() {
         return this.piece;
     }
 
@@ -18,9 +18,10 @@ public class Tile {
         this.piece = piece;
     }
 
-    public void update(){
-        if(piece!=null){
+    public void update() {
+        if (piece != null) {
             piece.update();
         }
     }
+
 }

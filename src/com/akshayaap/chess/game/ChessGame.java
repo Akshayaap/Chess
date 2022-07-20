@@ -5,13 +5,13 @@ public class ChessGame {
     private final ChessBoard board;
     private Player playerWhite;
     private Player playerBlack;
-
+    private Move move = new Move();
     public ChessGame() {
         this.state = new State();
         this.board = new ChessBoard();
 
-        this.playerBlack=new Player(false,this.board.getBoard());
-        this.playerWhite=new Player(true,this.board.getBoard());
+        this.playerBlack = new Player(false, this.board.getBoard());
+        this.playerWhite = new Player(true, this.board.getBoard());
         this.playerBlack.setOpponent(this.playerWhite);
         this.playerWhite.setOpponent(this.playerBlack);
 
@@ -20,7 +20,6 @@ public class ChessGame {
     }
 
     public Move onClick(int x, int y) {
-        Move move = new Move();
         switch (this.state.getState()) {
             case State.INVALID:
                 move.reset();
@@ -47,14 +46,14 @@ public class ChessGame {
                     move.setSource(x, y);
                     move.setDestination(-1, -1);
                     move.setTurn(this.state.getTurn());
-                    move.setMap(board.getPiece(x,y).getMap());
+                    move.setMap(board.getPiece(x, y).getMap());
                 } else {
                     move.reset();
                     move.setState(Move.INVALID_SELECTION);
                     move.setSource(x, y);
                     move.setDestination(-1, -1);
                 }
-    break;
+                break;
             case State.SELECTED:
                 if (this.board.getPiece(x, y) == null) {
                     this.state.setChXY(x, y);
@@ -77,14 +76,14 @@ public class ChessGame {
                             this.state.toggleTurn();
                         }
                     } else {
-                        //this.state.fallBack();
+                        this.state.fallBack();
                         this.state.setChXYPrev(x, y);
                         this.state.setState(State.SELECTED);
                         move.reset();
                         move.setState(Move.SELECT_MOVE);
                         move.setSource(this.state.getChXPrev(), this.state.getChYPrev());
                         move.setDestination(-1, -1);
-                        move.setMap(board.getPiece(x,y).getMap());
+                        move.setMap(board.getPiece(x, y).getMap());
                     }
                 }
                 break;
@@ -93,16 +92,41 @@ public class ChessGame {
         }
         return move;
     }
-    public void update(){
-        if(state.getTurn()){
+
+    public void update() {
+        if (state.getTurn()) {
             this.playerBlack.update();
             this.playerWhite.update();
-        }
-        else{
+            if (playerWhite.isCheck()) {
+                state.setCheckState(State.WHITE_CHECK);
+                move.setCheckState(Move.WHITE_CHECK);
+            }
+            if (playerWhite.isCheckMate()) {
+                state.setCheckState(State.WHITE_CHECKMATE);
+                move.setCheckState(Move.WHITE_CHECKMATE);
+            }
+            if (playerWhite.isStallMate()) {
+                state.setCheckState(State.WHITE_STALEMATE);
+                move.setCheckState(Move.WHITE_STALLMATE);
+            }
+        } else {
             this.playerWhite.update();
             this.playerBlack.update();
+            if (playerBlack.isCheck()) {
+                state.setCheckState(State.BLACK_CHECK);
+                move.setCheckState(Move.BLACK_CHECK);
+            }
+            if (playerBlack.isCheckMate()) {
+                state.setCheckState(State.BLACK_CHECKMATE);
+                move.setCheckState(State.BLACK_CHECKMATE);
+            }
+            if (playerBlack.isStallMate()) {
+                state.setCheckState(State.BLACK_STALEMATE);
+                move.setCheckState(State.BLACK_STALEMATE);
+            }
         }
     }
+
     public Piece getPiece(int x, int y) {
         return this.board.getPiece(x, y);
     }

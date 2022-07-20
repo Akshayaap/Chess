@@ -3,24 +3,23 @@ package com.akshayaap.chess.game;
 /**
  * @Author Akshay
  */
-public class Queen extends Piece{
+public class Queen extends Piece {
 
     /**
-     *
      * @param x
      * @param y
      */
-    public Queen(int x, int y,Player player){
-        super(x,y,player);
-        this.type=Piece.QUEEN_TYPE;
-        this.value=Piece.QUEEN_VALUE;
+    public Queen(int x, int y, Player player) {
+        super(x, y, player);
+        this.type = Piece.QUEEN_TYPE;
+        this.value = Piece.QUEEN_VALUE;
     }
 
     /**
      * An Update Method
      */
     @Override
-    public void update(){
+    public void update() {
         this.resetMap();
 
         int i = x + 1;
@@ -88,8 +87,8 @@ public class Queen extends Piece{
         }
 
         i = x + 1;
-        j=y;
-        while (i < 8 ) {
+        j = y;
+        while (i < 8) {
             player.setAttackMap(i, j);
             if (board[i][j].getPiece() == null) {
                 map[i][j] = true;
@@ -103,8 +102,8 @@ public class Queen extends Piece{
         }
 
         i = x - 1;
-        j = y ;
-        while (i  >= 0) {
+        j = y;
+        while (i >= 0) {
             player.setAttackMap(i, j);
             if (board[i][j].getPiece() == null) {
                 map[i][j] = true;
@@ -117,7 +116,7 @@ public class Queen extends Piece{
             i--;
         }
 
-        i = x ;
+        i = x;
         j = y + 1;
         while (j < 8) {
             player.setAttackMap(i, j);
@@ -132,9 +131,9 @@ public class Queen extends Piece{
             j++;
         }
 
-        i = x ;
+        i = x;
         j = y - 1;
-        while ( j >= 0) {
+        while (j >= 0) {
             player.setAttackMap(i, j);
             if (board[i][j].getPiece() == null) {
                 map[i][j] = true;

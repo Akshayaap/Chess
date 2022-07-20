@@ -4,23 +4,23 @@ package com.akshayaap.chess.game;
 public abstract class Piece {
 
 
-    public static final int PAWN_VALUE=1;
-    public static final int PAWN_TYPE=0;
+    public static final int PAWN_VALUE = 1;
+    public static final int PAWN_TYPE = 0;
 
-    public static final int KNIGHT_VALUE=3;
-    public static final int KNIGHT_TYPE=1;
+    public static final int KNIGHT_VALUE = 3;
+    public static final int KNIGHT_TYPE = 1;
 
-    public static final int BISHOP_VALUE=3;
-    public static final int BISHOP_TYPE=2;
+    public static final int BISHOP_VALUE = 3;
+    public static final int BISHOP_TYPE = 2;
 
-    public static final int ROOK_VALUE=5;
-    public static final int ROOK_TYPE=3;
+    public static final int ROOK_VALUE = 5;
+    public static final int ROOK_TYPE = 3;
 
-    public static final int QUEEN_VALUE=9;
-    public static final int QUEEN_TYPE=4;
+    public static final int QUEEN_VALUE = 9;
+    public static final int QUEEN_TYPE = 4;
 
-    public static final int KING_VALUE=10000;
-    public static final int KING_TYPE=5;
+    public static final int KING_VALUE = 10000;
+    public static final int KING_TYPE = 5;
 
 
     protected int x;
@@ -30,19 +30,21 @@ public abstract class Piece {
     protected int type;
 
     protected boolean[][] map;
-    protected boolean moved=false;
+    protected boolean moved = false;
+    protected boolean alive=true;
 
+    protected int legalMoves=0;
     protected boolean color;
     protected Player player;
     protected Tile[][] board;
 
-    public Piece(int x,int y,Player player){
-        this.x=x;
-        this.y=y;
-        this.player=player;
-        this.color=player.getColor();
-        this.board=player.getBoard();
-        this.map=new boolean[8][8];
+    public Piece(int x, int y, Player player) {
+        this.x = x;
+        this.y = y;
+        this.player = player;
+        this.color = player.getColor();
+        this.board = player.getBoard();
+        this.map = new boolean[8][8];
         this.resetMap();
         this.board[x][y].setPiece(this);
     }
@@ -51,52 +53,80 @@ public abstract class Piece {
      * Deprecated
      */
     @Deprecated
-    public void reset(){
+    public void reset() {
 
     }
 
     public abstract void update();
 
-    public void resetMap(){
-        for(int i=0;i<8;i++){
-            for(int j=0;j<8;j++){
-                this.map[i][j]=false;
+    public void resetMap() {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                this.map[i][j] = false;
             }
         }
     }
 
-    public boolean getColor(){
+    public boolean getColor() {
         return this.color;
     }
 
-    public int getType(){
+    public int getType() {
         return this.type;
     }
 
     public Move move(int x, int y) {
-        Move move =new Move();
-        move.setSource(this.x,this.y);
-        move.setDestination(x,y);
-        if(this.map[x][y]){
-            if(this.board[x][y].getPiece()!=null){
+        Move move = new Move();
+        move.setSource(this.x, this.y);
+        move.setDestination(x, y);
+        if (this.map[x][y]) {
+            if (this.board[x][y].getPiece() != null) {
                 move.setState(Move.CAPTURE_MOVE);
-            }
-            else{
+                this.board[x][y].getPiece().capture();
+            } else {
                 move.setState(Move.NORMAL_MOVE);
             }
             this.board[x][y].setPiece(this);
             this.board[this.x][this.y].setPiece(null);
-            this.x=x;
-            this.y=y;
+            this.x = x;
+            this.y = y;
             return move;
-        }
-        else {
+        } else {
             move.setState(Move.INVALID_MOVE);
             return move;
         }
     }
 
+    public void capture() {
+        this.alive=false;
+        this.x=-1;
+        this.y=-1;
+    }
+
+    public int calLegalMoves(){
+        for(boolean[] i:map){
+            for(boolean j:i){
+                if(j){
+                    this.legalMoves++;
+                }
+            }
+        }
+        return this.legalMoves;
+    }
     public boolean[][] getMap() {
         return map;
+    }
+
+
+    public int getLegalMoves() {
+        return legalMoves;
+    }
+
+    public void setLegalMoves(int legalMoves) {
+        this.legalMoves = legalMoves;
+    }
+
+    public boolean isAlive(){
+        return alive;
     }
 }
