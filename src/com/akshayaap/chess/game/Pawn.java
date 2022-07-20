@@ -9,6 +9,12 @@ public class Pawn extends Piece {
     }
 
     @Override
+    @Deprecated
+    public void reset() {
+
+    }
+
+    @Override
     public void update() {
         this.resetMap();
         if (this.color) {
@@ -54,5 +60,15 @@ public class Pawn extends Piece {
                 }
             }
         }
+    }
+
+    @Override
+    public boolean[][] calMoveMap() {
+        return null;
+    }
+
+    @Override
+    public boolean[][] calAttackMap() {
+        return new boolean[0][];
     }
 }

@@ -54,7 +54,7 @@ public abstract class Piece {
     @Deprecated
     public abstract void update();
 
-    public abstract void calMoveMap();
+    public abstract boolean[][] calMoveMap();
     public abstract boolean[][] calAttackMap();
 
     public void resetMap() {
@@ -116,6 +116,7 @@ public abstract class Piece {
         this.y = -1;
     }
 
+    @Deprecated
     public int calLegalMoves() {
         for (boolean[] i : movaMap) {
             for (boolean j : i) {
