@@ -11,9 +11,13 @@ public class Bishop extends Piece {
         this.value = Piece.BISHOP_VALUE;
     }
 
-    /**
-     * An Update method
-     */
+    @Deprecated
+    @Override
+    public void reset() {
+
+    }
+
+    @Deprecated
     @Override
     public void update() {
         this.resetMap();
@@ -23,10 +27,10 @@ public class Bishop extends Piece {
         while (i < 8 && j < 8) {
             player.setAttackMap(i, j);
             if (board[i][j].getPiece() == null) {
-                movaMap[i][j] = true;
+                moveMap[i][j] = true;
             } else {
                 if (board[i][j].getPiece().getColor() != this.color) {
-                    movaMap[i][j] = true;
+                    moveMap[i][j] = true;
                 }
                 break;
             }
@@ -39,10 +43,10 @@ public class Bishop extends Piece {
         while (i < 8 && j >= 0) {
             player.setAttackMap(i, j);
             if (board[i][j].getPiece() == null) {
-                movaMap[i][j] = true;
+                moveMap[i][j] = true;
             } else {
                 if (board[i][j].getPiece().getColor() != this.color) {
-                    movaMap[i][j] = true;
+                    moveMap[i][j] = true;
                 }
                 break;
             }
@@ -55,10 +59,10 @@ public class Bishop extends Piece {
         while (i >= 0 && j < 8) {
             player.setAttackMap(i, j);
             if (board[i][j].getPiece() == null) {
-                movaMap[i][j] = true;
+                moveMap[i][j] = true;
             } else {
                 if (board[i][j].getPiece().getColor() != this.color) {
-                    movaMap[i][j] = true;
+                    moveMap[i][j] = true;
                 }
                 break;
             }
@@ -71,15 +75,155 @@ public class Bishop extends Piece {
         while (i >= 0 && j >= 0) {
             player.setAttackMap(i, j);
             if (board[i][j].getPiece() == null) {
-                movaMap[i][j] = true;
+                moveMap[i][j] = true;
             } else {
                 if (board[i][j].getPiece().getColor() != this.color) {
-                    movaMap[i][j] = true;
+                    moveMap[i][j] = true;
                 }
                 break;
             }
             i--;
             j--;
         }
+    }
+
+    @Override
+    public boolean[][] updateMoveMap() {
+        this.resetMoveMap();
+
+        int i = x + 1;
+        int j = y + 1;
+        while (i < 8 && j < 8) {
+            if (board[i][j].getPiece() == null) {
+                moveMap[i][j] = true;
+                this.legalMoves++;
+            } else {
+                if (board[i][j].getPiece().getColor() != this.color) {
+                    moveMap[i][j] = true;
+                    this.legalMoves++;
+                }
+                break;
+            }
+            i++;
+            j++;
+        }
+
+        i = x + 1;
+        j = y - 1;
+        while (i < 8 && j >= 0) {
+            if (board[i][j].getPiece() == null) {
+                moveMap[i][j] = true;
+                this.legalMoves++;
+            } else {
+                if (board[i][j].getPiece().getColor() != this.color) {
+                    moveMap[i][j] = true;
+                    this.legalMoves++;
+                }
+                break;
+            }
+            i++;
+            j--;
+        }
+
+        i = x - 1;
+        j = y + 1;
+        while (i >= 0 && j < 8) {
+            if (board[i][j].getPiece() == null) {
+                moveMap[i][j] = true;
+                this.legalMoves++;
+            } else {
+                if (board[i][j].getPiece().getColor() != this.color) {
+                    moveMap[i][j] = true;
+                    this.legalMoves++;
+                }
+                break;
+            }
+            i--;
+            j++;
+        }
+
+        i = x - 1;
+        j = y - 1;
+        while (i >= 0 && j >= 0) {
+            if (board[i][j].getPiece() == null) {
+                moveMap[i][j] = true;
+                this.legalMoves++;
+            } else {
+                if (board[i][j].getPiece().getColor() != this.color) {
+                    moveMap[i][j] = true;
+                    this.legalMoves++;
+                }
+                break;
+            }
+            i--;
+            j--;
+        }
+        return this.moveMap;
+    }
+
+    @Override
+    public boolean[][] updateAttackMap() {
+
+        this.resetAttackMap();
+        int i = x + 1;
+        int j = y + 1;
+        while (i < 8 && j < 8) {
+            if (board[i][j].getPiece() == null) {
+                attackMap[i][j] = true;
+            } else {
+                if (board[i][j].getPiece().getColor() != this.color) {
+                    attackMap[i][j] = true;
+                }
+                break;
+            }
+            i++;
+            j++;
+        }
+
+        i = x + 1;
+        j = y - 1;
+        while (i < 8 && j >= 0) {
+            if (board[i][j].getPiece() == null) {
+                attackMap[i][j] = true;
+            } else {
+                if (board[i][j].getPiece().getColor() != this.color) {
+                    attackMap[i][j] = true;
+                }
+                break;
+            }
+            i++;
+            j--;
+        }
+
+        i = x - 1;
+        j = y + 1;
+        while (i >= 0 && j < 8) {
+            if (board[i][j].getPiece() == null) {
+                attackMap[i][j] = true;
+            } else {
+                if (board[i][j].getPiece().getColor() != this.color) {
+                    attackMap[i][j] = true;
+                }
+                break;
+            }
+            i--;
+            j++;
+        }
+
+        i = x - 1;
+        j = y - 1;
+        while (i >= 0 && j >= 0) {
+            if (board[i][j].getPiece() == null) {
+                attackMap[i][j] = true;
+            } else {
+                if (board[i][j].getPiece().getColor() != this.color) {
+                    attackMap[i][j] = true;
+                }
+                break;
+            }
+            i--;
+            j--;
+        }
+        return this.attackMap;
     }
 }

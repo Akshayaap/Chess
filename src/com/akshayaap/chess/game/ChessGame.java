@@ -45,7 +45,7 @@ public class ChessGame {
                     move.setSource(x, y);
                     move.setDestination(-1, -1);
                     move.setTurn(this.state.getTurn());
-                    move.setMap(board.getPiece(x, y).getMovaMap());
+                    move.setMap(board.getPiece(x, y).getMoveMap());
                 } else {
                     move.setState(Move.INVALID_SELECTION);
                     move.setSource(x, y);
@@ -81,7 +81,7 @@ public class ChessGame {
                         move.setState(Move.SELECT_MOVE);
                         move.setSource(this.state.getChXPrev(), this.state.getChYPrev());
                         move.setDestination(-1, -1);
-                        move.setMap(board.getPiece(x, y).getMovaMap());
+                        move.setMap(board.getPiece(x, y).getMoveMap());
                     }
                 }
                 break;

@@ -14,48 +14,57 @@ public class Pawn extends Piece {
 
     }
 
+    @Deprecated
     @Override
     public void update() {
         this.resetMap();
         if (this.color) {
             if (x + 1 < 8) {
                 if (board[x + 1][y].getPiece() == null) {
-                    movaMap[x + 1][y] = true;
+                    moveMap[x + 1][y] = true;
+                    this.legalMoves++;
                     if (x == 1 && board[x + 2][y].getPiece() == null) {
-                        movaMap[x + 2][y] = true;
+                        moveMap[x + 2][y] = true;
+                        this.legalMoves++;
                     }
                 }
                 if (y + 1 < 8) {
                     player.setAttackMap(x + 1, y + 1);
                     if (board[x + 1][y + 1].getPiece() != null && !board[x + 1][y + 1].getPiece().getColor()) {
-                        movaMap[x + 1][y + 1] = true;
+                        moveMap[x + 1][y + 1] = true;
+                        this.legalMoves++;
                     }
                 }
                 if (y - 1 >= 0) {
                     player.setAttackMap(x + 1, y - 1);
                     if (board[x + 1][y - 1].getPiece() != null && !board[x + 1][y - 1].getPiece().getColor()) {
-                        movaMap[x + 1][y - 1] = true;
+                        moveMap[x + 1][y - 1] = true;
+                        this.legalMoves++;
                     }
                 }
             }
         } else {
             if (x - 1 >= 0) {
                 if (board[x - 1][y].getPiece() == null) {
-                    movaMap[x - 1][y] = true;
+                    moveMap[x - 1][y] = true;
+                    this.legalMoves++;
                     if (x == 6 && board[x - 2][y].getPiece() == null) {
-                        movaMap[x - 2][y] = true;
+                        moveMap[x - 2][y] = true;
+                        this.legalMoves++;
                     }
                 }
                 if (y + 1 < 8) {
                     player.setAttackMap(x - 1, y + 1);
                     if (board[x - 1][y + 1].getPiece() != null && board[x - 1][y + 1].getPiece().getColor()) {
-                        movaMap[x - 1][y + 1] = true;
+                        moveMap[x - 1][y + 1] = true;
+                        this.legalMoves++;
                     }
                 }
                 if (y - 1 >= 0) {
                     player.setAttackMap(x - 1, y - 1);
                     if (board[x - 1][y - 1].getPiece() != null && board[x - 1][y - 1].getPiece().getColor()) {
-                        movaMap[x - 1][y - 1] = true;
+                        moveMap[x - 1][y - 1] = true;
+                        this.legalMoves++;
                     }
                 }
             }
@@ -63,12 +72,80 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public boolean[][] calMoveMap() {
-        return null;
+    public boolean[][] updateMoveMap() {
+        this.resetMoveMap();
+        if (this.color) {
+            if (x + 1 < 8) {
+                if (board[x + 1][y].getPiece() == null) {
+                    moveMap[x + 1][y] = true;
+                    this.legalMoves++;
+                    if (x == 1 && board[x + 2][y].getPiece() == null) {
+                        moveMap[x + 2][y] = true;
+                        this.legalMoves++;
+                    }
+                }
+                if (y + 1 < 8) {
+                    if (board[x + 1][y + 1].getPiece() != null && !board[x + 1][y + 1].getPiece().getColor()) {
+                        moveMap[x + 1][y + 1] = true;
+                        this.legalMoves++;
+                    }
+                }
+                if (y - 1 >= 0) {
+                    if (board[x + 1][y - 1].getPiece() != null && !board[x + 1][y - 1].getPiece().getColor()) {
+                        moveMap[x + 1][y - 1] = true;
+                        this.legalMoves++;
+                    }
+                }
+            }
+        } else {
+            if (x - 1 >= 0) {
+                if (board[x - 1][y].getPiece() == null) {
+                    moveMap[x - 1][y] = true;
+                    this.legalMoves++;
+                    if (x == 6 && board[x - 2][y].getPiece() == null) {
+                        moveMap[x - 2][y] = true;
+                        this.legalMoves++;
+                    }
+                }
+                if (y + 1 < 8) {
+                    if (board[x - 1][y + 1].getPiece() != null && board[x - 1][y + 1].getPiece().getColor()) {
+                        moveMap[x - 1][y + 1] = true;
+                        this.legalMoves++;
+                    }
+                }
+                if (y - 1 >= 0) {
+                    if (board[x - 1][y - 1].getPiece() != null && board[x - 1][y - 1].getPiece().getColor()) {
+                        moveMap[x - 1][y - 1] = true;
+                        this.legalMoves++;
+                    }
+                }
+            }
+        }
+        return this.moveMap;
     }
 
     @Override
-    public boolean[][] calAttackMap() {
-        return new boolean[0][];
+    public boolean[][] updateAttackMap() {
+        this.resetAttackMap();
+        if (this.color) {
+            if (x + 1 < 8) {
+                if (y + 1 < 8) {
+                    attackMap[x + 1][y + 1] = true;
+                }
+                if (y - 1 >= 0) {
+                    attackMap[x + 1][y - 1] = true;
+                }
+            }
+        } else {
+            if (x - 1 >= 0) {
+                if (y + 1 < 8) {
+                    attackMap[x - 1][y + 1] = true;
+                }
+                if (y - 1 >= 0) {
+                    attackMap[x - 1][y - 1] = true;
+                }
+            }
+        }
+        return this.attackMap;
     }
 }

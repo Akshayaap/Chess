@@ -29,7 +29,8 @@ public abstract class Piece {
     protected int value;
     protected int type;
 
-    protected boolean[][] movaMap;
+    protected boolean[][] moveMap;
+    protected boolean[][] attackMap;
     protected boolean moved = false;
     protected boolean alive = true;
 
@@ -44,23 +45,43 @@ public abstract class Piece {
         this.player = player;
         this.color = player.getColor();
         this.board = player.getBoard();
-        this.movaMap = new boolean[8][8];
+        this.moveMap = new boolean[8][8];
         this.resetMap();
         this.board[x][y].setPiece(this);
     }
 
     @Deprecated
     public abstract void reset();
+
     @Deprecated
     public abstract void update();
 
-    public abstract boolean[][] calMoveMap();
-    public abstract boolean[][] calAttackMap();
+    public abstract boolean[][] updateMoveMap();
 
+    public abstract boolean[][] updateAttackMap();
+
+    public void resetMoveMap() {
+        this.legalMoves = 0;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                moveMap[i][j] = false;
+            }
+        }
+    }
+
+    public void resetAttackMap() {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                attackMap[i][j] = false;
+            }
+        }
+    }
+
+    @Deprecated
     public void resetMap() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                this.movaMap[i][j] = false;
+                this.moveMap[i][j] = false;
             }
         }
     }
@@ -80,7 +101,7 @@ public abstract class Piece {
         Piece temp;
         int pX = this.x;
         int pY = this.y;
-        if (this.movaMap[x][y]) {
+        if (this.moveMap[x][y]) {
             if (this.board[x][y].getPiece() != null) {
                 move.setState(Move.CAPTURE_MOVE);
                 this.board[x][y].getPiece().capture();
@@ -116,29 +137,12 @@ public abstract class Piece {
         this.y = -1;
     }
 
-    @Deprecated
-    public int calLegalMoves() {
-        for (boolean[] i : movaMap) {
-            for (boolean j : i) {
-                if (j) {
-                    this.legalMoves++;
-                }
-            }
-        }
-        return this.legalMoves;
+    public boolean[][] getMoveMap() {
+        return moveMap;
     }
-
-    public boolean[][] getMovaMap() {
-        return movaMap;
-    }
-
 
     public int getLegalMoves() {
         return legalMoves;
-    }
-
-    public void setLegalMoves(int legalMoves) {
-        this.legalMoves = legalMoves;
     }
 
     public boolean isAlive() {

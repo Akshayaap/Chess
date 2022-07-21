@@ -8,11 +8,13 @@ public class Player {
     private final boolean color;
     private final boolean[][] attackMap = new boolean[8][8];
     private final Tile[][] board;
+    private int legalMoves;
     private boolean[][] threatMap;
     private boolean check;
     private boolean checkMate;
     private boolean stallMate;
     private Player opponent;
+    private boolean[][] moveMap = new boolean[8][8];
 
     public Player(boolean color, Tile[][] board) {
         this.color = color;
@@ -42,7 +44,32 @@ public class Player {
         pieces[5] = new Piece[1];
         pieces[5][0] = new King(this.color ? 0 : 7, 3, this);
 
+        resetMoveMap();
         resetAttackMap();
+    }
+
+    private static boolean[][] arrayOR_ACC(boolean[][] dest, boolean[][] src) throws Throwable {
+        if (dest.length != src.length || dest[0].length != src[0].length) {
+            System.out.println("Can't Perform OR and Accumulation Operation Due to different Dimensions");
+        }
+        for (int i = 0; i < dest.length; i++) {
+            for (int j = 0; j < dest[i].length; j++) {
+                dest[i][j] |= src[i][j];
+            }
+        }
+        return dest;
+    }
+
+    public Piece[][] getPieces() {
+        return pieces;
+    }
+
+    public int getLegalMoves() {
+        return legalMoves;
+    }
+
+    public boolean[][] getMoveMap() {
+        return moveMap;
     }
 
     public boolean isColor() {
@@ -50,10 +77,6 @@ public class Player {
     }
 
     public void reset() {
-
-    }
-
-    public void resetMaps() {
 
     }
 
@@ -65,6 +88,18 @@ public class Player {
         }
     }
 
+    public void resetMoveMap() {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                this.moveMap[i][j] = false;
+            }
+        }
+    }
+
+    /**
+     * Do not use for god' sake
+     */
+    @Deprecated
     public void resetThreatMap() {
 
     }
@@ -122,24 +157,26 @@ public class Player {
         return this.color;
     }
 
+    /**
+     * Do not use this function for god’ sake
+     */
+    @Deprecated
     public void update() {
         this.resetAttackMap();
-        for(int i=0;i<6;i++){
-            if(i==0){
-                for(int j=0;j<8;j++){
-                    if(pieces[i][j].isAlive()){
+        for (int i = 0; i < 6; i++) {
+            if (i == 0) {
+                for (int j = 0; j < 8; j++) {
+                    if (pieces[i][j].isAlive()) {
                         pieces[i][j].update();
                     }
                 }
-            }
-            else if(i==4||i==5){
-                if(pieces[i][0].isAlive()){
+            } else if (i == 4 || i == 5) {
+                if (pieces[i][0].isAlive()) {
                     pieces[i][0].update();
                 }
-            }
-            else{
-                for(int j=0;j<2;j++){
-                    if(pieces[i][j].isAlive()){
+            } else {
+                for (int j = 0; j < 2; j++) {
+                    if (pieces[i][j].isAlive()) {
                         pieces[i][j].update();
                     }
                 }
@@ -147,12 +184,63 @@ public class Player {
         }
     }
 
-    public void setAttackMap(int i, int j) {
-        this.attackMap[i][j] = true;
+    public void updateAttackMap() {
+        this.resetAttackMap();
+        for (int i = 0; i < 6; i++) {
+            if (i == 0) {
+                for (int j = 0; j < 8; j++) {
+                    if (pieces[i][j].isAlive()) {
+                        pieces[i][j].updateAttackMap();
+                    }
+                }
+            } else if (i == 4 || i == 5) {
+                if (pieces[i][0].isAlive()) {
+                    pieces[i][0].updateAttackMap();
+                }
+            } else {
+                for (int j = 0; j < 2; j++) {
+                    if (pieces[i][j].isAlive()) {
+                        pieces[i][j].updateAttackMap();
+                    }
+                }
+            }
+        }
     }
-    public boolean calCheck(){
-        this.check=((King)pieces[5][0]).calCheck();
+
+    public void updateMoveMap() {
+        this.resetAttackMap();
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < pieces[i].length; j++) {
+                if (pieces[i][j].isAlive()) {
+                    arrayOR_ACC(this.moveMap, pieces[i][j].updateMoveMap());
+                }
+            }
+        }
+    }
+
+    @Deprecated
+    public boolean calCheck() {
+        this.check = ((King) pieces[5][0]).calCheck();
         return check;
+    }
+
+    public boolean updateCheck() {
+        this.check = ((King) pieces[5][0]).updateCheck();
+        return check;
+    }
+
+    public boolean updateCheckMate() {
+        this.checkMate = ((King) pieces[5][0]).updateCheckMate();
+        return this.checkMate;
+    }
+
+    public boolean updateStallMate() {
+        this.stallMate = ((King) pieces[5][0]).updateStallMate();
+        return this.stallMate;
+    }
+
+    public int updateLegalMoves() {
+        return this.legalMoves;
     }
 
 }
