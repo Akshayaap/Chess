@@ -16,8 +16,10 @@ public class ChessGame {
         this.playerBlack.setOpponent(this.playerWhite);
         this.playerWhite.setOpponent(this.playerBlack);
 
-        playerWhite.update();
-        playerBlack.update();
+        playerWhite.updateAttackMap();
+        playerBlack.updateAttackMap();
+        playerWhite.updateMoveMap();
+        playerBlack.updateMoveMap();
     }
 
     public Move onClick(int x, int y) {

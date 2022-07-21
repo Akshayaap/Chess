@@ -48,7 +48,7 @@ public class Player {
         resetAttackMap();
     }
 
-    private static boolean[][] arrayOR_ACC(boolean[][] dest, boolean[][] src) throws Throwable {
+    private static boolean[][] arrayOR_ACC(boolean[][] dest, boolean[][] src) {
         if (dest.length != src.length || dest[0].length != src[0].length) {
             System.out.println("Can't Perform OR and Accumulation Operation Due to different Dimensions");
         }
@@ -187,28 +187,16 @@ public class Player {
     public void updateAttackMap() {
         this.resetAttackMap();
         for (int i = 0; i < 6; i++) {
-            if (i == 0) {
-                for (int j = 0; j < 8; j++) {
-                    if (pieces[i][j].isAlive()) {
-                        pieces[i][j].updateAttackMap();
-                    }
-                }
-            } else if (i == 4 || i == 5) {
-                if (pieces[i][0].isAlive()) {
-                    pieces[i][0].updateAttackMap();
-                }
-            } else {
-                for (int j = 0; j < 2; j++) {
-                    if (pieces[i][j].isAlive()) {
-                        pieces[i][j].updateAttackMap();
-                    }
+            for (int j = 0; j < pieces[i].length; j++) {
+                if (pieces[i][j].isAlive()) {
+                    arrayOR_ACC(this.attackMap, pieces[i][j].updateAttackMap());
                 }
             }
         }
     }
 
     public void updateMoveMap() {
-        this.resetAttackMap();
+        this.resetMoveMap();
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < pieces[i].length; j++) {
                 if (pieces[i][j].isAlive()) {
@@ -216,6 +204,10 @@ public class Player {
                 }
             }
         }
+        this.updateLegalMoves();
+        updateCheck();
+        updateCheckMate();
+        updateStallMate();
     }
 
     @Deprecated
@@ -240,6 +232,13 @@ public class Player {
     }
 
     public int updateLegalMoves() {
+        for (boolean[] i : this.moveMap) {
+            for (boolean j : i) {
+                if (j) {
+                    this.legalMoves++;
+                }
+            }
+        }
         return this.legalMoves;
     }
 
