@@ -54,7 +54,7 @@ public class Player {
         }
         for (int i = 0; i < dest.length; i++) {
             for (int j = 0; j < dest[i].length; j++) {
-                dest[i][j] |= src[i][j];
+                dest[i][j] = dest[i][j] || src[i][j];
             }
         }
         return dest;
@@ -157,33 +157,6 @@ public class Player {
         return this.color;
     }
 
-    /**
-     * Do not use this function for god’ sake
-     */
-    @Deprecated
-    public void update() {
-        this.resetAttackMap();
-        for (int i = 0; i < 6; i++) {
-            if (i == 0) {
-                for (int j = 0; j < 8; j++) {
-                    if (pieces[i][j].isAlive()) {
-                        pieces[i][j].update();
-                    }
-                }
-            } else if (i == 4 || i == 5) {
-                if (pieces[i][0].isAlive()) {
-                    pieces[i][0].update();
-                }
-            } else {
-                for (int j = 0; j < 2; j++) {
-                    if (pieces[i][j].isAlive()) {
-                        pieces[i][j].update();
-                    }
-                }
-            }
-        }
-    }
-
     public void updateAttackMap() {
         this.resetAttackMap();
         for (int i = 0; i < 6; i++) {
@@ -210,11 +183,6 @@ public class Player {
         updateStallMate();
     }
 
-    @Deprecated
-    public boolean calCheck() {
-        this.check = ((King) pieces[5][0]).calCheck();
-        return check;
-    }
 
     public boolean updateCheck() {
         this.check = ((King) pieces[5][0]).updateCheck();

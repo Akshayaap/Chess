@@ -8,68 +8,6 @@ public class Pawn extends Piece {
         this.type = Piece.PAWN_TYPE;
     }
 
-    @Override
-    @Deprecated
-    public void reset() {
-
-    }
-
-    @Deprecated
-    @Override
-    public void update() {
-        this.resetMap();
-        if (this.color) {
-            if (x + 1 < 8) {
-                if (board[x + 1][y].getPiece() == null) {
-                    moveMap[x + 1][y] = true;
-                    this.legalMoves++;
-                    if (x == 1 && board[x + 2][y].getPiece() == null) {
-                        moveMap[x + 2][y] = true;
-                        this.legalMoves++;
-                    }
-                }
-                if (y + 1 < 8) {
-                    player.setAttackMap(x + 1, y + 1);
-                    if (board[x + 1][y + 1].getPiece() != null && !board[x + 1][y + 1].getPiece().getColor()) {
-                        moveMap[x + 1][y + 1] = true;
-                        this.legalMoves++;
-                    }
-                }
-                if (y - 1 >= 0) {
-                    player.setAttackMap(x + 1, y - 1);
-                    if (board[x + 1][y - 1].getPiece() != null && !board[x + 1][y - 1].getPiece().getColor()) {
-                        moveMap[x + 1][y - 1] = true;
-                        this.legalMoves++;
-                    }
-                }
-            }
-        } else {
-            if (x - 1 >= 0) {
-                if (board[x - 1][y].getPiece() == null) {
-                    moveMap[x - 1][y] = true;
-                    this.legalMoves++;
-                    if (x == 6 && board[x - 2][y].getPiece() == null) {
-                        moveMap[x - 2][y] = true;
-                        this.legalMoves++;
-                    }
-                }
-                if (y + 1 < 8) {
-                    player.setAttackMap(x - 1, y + 1);
-                    if (board[x - 1][y + 1].getPiece() != null && board[x - 1][y + 1].getPiece().getColor()) {
-                        moveMap[x - 1][y + 1] = true;
-                        this.legalMoves++;
-                    }
-                }
-                if (y - 1 >= 0) {
-                    player.setAttackMap(x - 1, y - 1);
-                    if (board[x - 1][y - 1].getPiece() != null && board[x - 1][y - 1].getPiece().getColor()) {
-                        moveMap[x - 1][y - 1] = true;
-                        this.legalMoves++;
-                    }
-                }
-            }
-        }
-    }
 
     @Override
     public boolean[][] updateMoveMap() {

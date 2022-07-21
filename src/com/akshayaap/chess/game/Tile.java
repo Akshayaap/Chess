@@ -18,11 +18,4 @@ public class Tile {
         this.piece = piece;
     }
 
-    @Deprecated
-    public void update() {
-        if (piece != null) {
-            piece.update();
-        }
-    }
-
 }

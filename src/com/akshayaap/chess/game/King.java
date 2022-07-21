@@ -15,70 +15,6 @@ public class King extends Piece {
         this.value = Piece.KING_VALUE;
     }
 
-    @Deprecated
-    @Override
-    public void reset() {
-    }
-
-    @Deprecated
-    @Override
-    public void update() {
-        this.legalMoves = 0;
-        this.resetMap();
-
-        if (x + 1 < 8) {
-            player.setAttackMap(x + 1, y);
-            if (!player.getThreatMap()[x + 1][y] && (board[x + 1][y].getPiece() == null || (board[x + 1][y].getPiece() != null && board[x + 1][y].getPiece().getColor() != this.color))) {
-                moveMap[x + 1][y] = true;
-            }
-        }
-        if (x - 1 >= 0) {
-            player.setAttackMap(x - 1, y);
-            if (!player.getThreatMap()[x - 1][y] && (board[x - 1][y].getPiece() == null || (board[x - 1][y].getPiece() != null && board[x - 1][y].getPiece().getColor() != this.color))) {
-                moveMap[x - 1][y] = true;
-            }
-        }
-        if (y + 1 < 8) {
-            player.setAttackMap(x, y + 1);
-            if (!player.getThreatMap()[x][y + 1] && (board[x][y + 1].getPiece() == null || (board[x][y + 1].getPiece() != null && board[x][y + 1].getPiece().getColor() != this.color))) {
-                moveMap[x][y + 1] = true;
-            }
-        }
-        if (y - 1 >= 0) {
-            player.setAttackMap(x, y - 1);
-            if (!player.getThreatMap()[x][y - 1] && (board[x][y - 1].getPiece() == null || (board[x][y - 1].getPiece() != null && board[x][y - 1].getPiece().getColor() != this.color))) {
-                moveMap[x][y - 1] = true;
-            }
-        }
-
-        if (x + 1 < 8 && y + 1 < 8) {
-            player.setAttackMap(x + 1, y + 1);
-            if (!player.getThreatMap()[x + 1][y + 1] && (board[x + 1][y + 1].getPiece() == null || (board[x + 1][y + 1].getPiece() != null && board[x + 1][y + 1].getPiece().getColor() != this.color))) {
-                moveMap[x + 1][y + 1] = true;
-            }
-        }
-        if (x + 1 < 8 && y - 1 >= 0) {
-            player.setAttackMap(x + 1, y - 1);
-            if (!player.getThreatMap()[x + 1][y - 1] && (board[x + 1][y - 1].getPiece() == null || (board[x + 1][y - 1].getPiece() != null && board[x + 1][y - 1].getPiece().getColor() != this.color))) {
-                moveMap[x + 1][y - 1] = true;
-            }
-        }
-        if (x - 1 >= 0 && y + 1 < 8) {
-            player.setAttackMap(x - 1, y + 1);
-            if (!player.getThreatMap()[x - 1][y + 1] && (board[x - 1][y + 1].getPiece() == null || (board[x - 1][y + 1].getPiece() != null && board[x - 1][y + 1].getPiece().getColor() != this.color))) {
-                moveMap[x - 1][y + 1] = true;
-            }
-        }
-        if (x - 1 >= 0 && y - 1 >= 0) {
-            player.setAttackMap(x - 1, y - 1);
-            if (!player.getThreatMap()[x - 1][y - 1] && (board[x - 1][y - 1].getPiece() == null || (board[x - 1][y - 1].getPiece() != null && board[x - 1][y - 1].getPiece().getColor() != this.color))) {
-                moveMap[x - 1][y - 1] = true;
-            }
-        }
-        calCheck();
-        calCheckMate();
-        calStallMate();
-    }
 
     @Override
     public boolean[][] updateMoveMap() {
@@ -176,27 +112,6 @@ public class King extends Piece {
             }
         }
         return this.attackMap;
-    }
-
-    @Deprecated
-    public boolean calCheck() {
-        this.check = player.getThreatMap()[x][y];
-        this.player.setCheck(check);
-        return this.check;
-    }
-
-    @Deprecated
-    public boolean calCheckMate() {
-        this.checkMate = this.legalMoves > 0 && this.check;
-        this.player.setCheckMate(this.checkMate);
-        return this.checkMate;
-    }
-
-    @Deprecated
-    public boolean calStallMate() {
-        this.stallMate = this.legalMoves == 0 && !this.check;
-        player.setStallMate(this.stallMate);
-        return this.stallMate;
     }
 
     public boolean isCheck() {

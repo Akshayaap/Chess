@@ -45,15 +45,11 @@ public abstract class Piece {
         this.player = player;
         this.color = player.getColor();
         this.board = player.getBoard();
-        this.resetMap();
+        this.resetAttackMap();
+        this.resetMoveMap();
         this.board[x][y].setPiece(this);
     }
 
-    @Deprecated
-    public abstract void reset();
-
-    @Deprecated
-    public abstract void update();
 
     public abstract boolean[][] updateMoveMap();
 
@@ -76,15 +72,6 @@ public abstract class Piece {
         }
     }
 
-    @Deprecated
-    public void resetMap() {
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                this.moveMap[i][j] = false;
-            }
-        }
-    }
-
     public boolean getColor() {
         return this.color;
     }
@@ -93,48 +80,19 @@ public abstract class Piece {
         return this.type;
     }
 
-    @Deprecated
-    public Move move(int x, int y) {
-        Move move = new Move();
-        move.setSource(this.x, this.y);
-        move.setDestination(x, y);
-        Piece temp;
-        int pX = this.x;
-        int pY = this.y;
-        if (this.moveMap[x][y]) {
-            if (this.board[x][y].getPiece() != null) {
-                move.setState(Move.CAPTURE_MOVE);
-                this.board[x][y].getPiece().capture();
-            } else {
-                move.setState(Move.NORMAL_MOVE);
-            }
-
-            temp = this.board[x][y].getPiece();
-            this.board[x][y].setPiece(this);
-            this.board[this.x][this.y].setPiece(null);
-
-            this.x = x;
-            this.y = y;
-            player.update();
-            player.getOpponent().getOpponent().update();
-            if (player.calCheck()) {
-                move.setState(Move.ILLEGAL_MOVE);
-                this.board[pX][pY].setPiece(this);
-                this.board[x][y].setPiece(temp);
-                this.x = pX;
-                this.y = pY;
-            }
-
-        } else {
-            move.setState(Move.ILLEGAL_MOVE);
-        }
-        return move;
-    }
 
     public void capture() {
         this.alive = false;
         this.x = -1;
         this.y = -1;
+    }
+
+    public void giveLife(int x, int y) {
+        this.x = x;
+        this.y = y;
+        alive = true;
+        updateAttackMap();
+        updateMoveMap();
     }
 
     public boolean[][] getMoveMap() {
@@ -183,17 +141,33 @@ public abstract class Piece {
         return move;
     }
 
-    public boolean testForMoveMap(int x, int y) {
-        int pX = this.x;
-        int pY = this.y;
-        moveForTest(x, y);
+    public boolean testForMoveMap(final int x, final int y) {
+
+        final int pX = this.x;
+        final int pY = this.y;
+
+        Piece temp = board[x][y].getPiece();
+        board[x][y].setPiece(this);
+        if (temp != null) {
+            temp.capture();
+        }
+        this.x = x;
+        this.y = y;
+
         this.player.getOpponent().updateAttackMap();
-        boolean legal = !this.player.isCheck();
+        boolean legal = !this.player.updateCheck();
         if (legal) {
             moveMap[x][y] = true;
             this.legalMoves++;
         }
-        moveForTest(pX, pY);
+        if (temp != null) {
+            temp.giveLife(x, y);
+        }
+        board[x][y].setPiece(temp);
+        board[pX][pY].setPiece(this);
+        this.x = pX;
+        this.y = pY;
+
         return legal;
     }
 }

@@ -29,7 +29,7 @@ public class ChessBoard {
     public Move move(int chXPrev, int chYPrev, int x, int y) {
         Move move = new Move();
         if (this.board[chXPrev][chYPrev].getPiece() != null) {
-            move = this.board[chXPrev][chYPrev].getPiece().move(x, y);
+            move = this.board[chXPrev][chYPrev].getPiece().moveTo(x, y);
             return move;
         }
         move.reset();
@@ -85,12 +85,6 @@ public class ChessBoard {
         return this.board;
     }
 
-    public void update() {
-        for (Tile[] i : board) {
-            for (Tile j : i)
-                j.update();
-        }
-    }
 
     public Move moveTo(int chXPrev, int chYPrev, int x, int y) {
         Move move = new Move();
