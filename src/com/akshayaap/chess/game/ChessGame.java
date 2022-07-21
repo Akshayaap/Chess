@@ -3,8 +3,8 @@ package com.akshayaap.chess.game;
 public class ChessGame {
     private final State state;
     private final ChessBoard board;
-    private Player playerWhite;
-    private Player playerBlack;
+    private final Player playerWhite;
+    private final Player playerBlack;
     private Move move = new Move();
 
     public ChessGame() {
@@ -57,7 +57,7 @@ public class ChessGame {
             case State.SELECTED:
                 if (this.board.getPiece(x, y) == null) {
                     this.state.setChXY(x, y);
-                    move = this.board.move(this.state.getChXPrev(), this.state.getChYPrev(), x, y);
+                    move = this.board.moveTo(this.state.getChXPrev(), this.state.getChYPrev(), x, y);
                     this.state.fallBack();
                     move.setTurn(this.state.getTurn());
                     if (move.getState() != Move.ILLEGAL_MOVE && move.getState() != Move.SOURCE_IS_EMPTY) {
@@ -95,35 +95,35 @@ public class ChessGame {
     }
 
     public void update() {
-        if (state.getTurn()) {
-            this.playerBlack.update();
-            this.playerWhite.update();
+        if (!state.getTurn()) {
+            this.playerBlack.updateAttackMap();
+            this.playerWhite.updateMoveMap();
             if (playerWhite.isCheck()) {
-                state.setCheckState(State.WHITE_CHECK);
-                move.setCheckState(Move.WHITE_CHECK);
-            }
-            if (playerWhite.isCheckMate()) {
-                state.setCheckState(State.WHITE_CHECKMATE);
-                move.setCheckState(Move.WHITE_CHECKMATE);
-            }
-            if (playerWhite.isStallMate()) {
-                state.setCheckState(State.WHITE_STALEMATE);
-                move.setCheckState(Move.WHITE_STALMATE);
-            }
-        } else {
-            this.playerWhite.update();
-            this.playerBlack.update();
-            if (playerBlack.isCheck()) {
                 state.setCheckState(State.BLACK_CHECK);
                 move.setCheckState(Move.BLACK_CHECK);
             }
-            if (playerBlack.isCheckMate()) {
+            if (playerWhite.isCheckMate()) {
                 state.setCheckState(State.BLACK_CHECKMATE);
                 move.setCheckState(Move.BLACK_CHECKMATE);
             }
-            if (playerBlack.isStallMate()) {
+            if (playerWhite.isStallMate()) {
                 state.setCheckState(State.BLACK_STALEMATE);
                 move.setCheckState(Move.BLACK_STALMATE);
+            }
+        } else {
+            this.playerWhite.updateAttackMap();
+            this.playerBlack.updateMoveMap();
+            if (playerBlack.isCheck()) {
+                state.setCheckState(State.WHITE_CHECK);
+                move.setCheckState(Move.WHITE_CHECK);
+            }
+            if (playerBlack.isCheckMate()) {
+                state.setCheckState(State.WHITE_CHECKMATE);
+                move.setCheckState(Move.WHITE_CHECKMATE);
+            }
+            if (playerBlack.isStallMate()) {
+                state.setCheckState(State.WHITE_STALEMATE);
+                move.setCheckState(Move.WHITE_STALMATE);
             }
         }
     }

@@ -232,6 +232,7 @@ public class Player {
     }
 
     public int updateLegalMoves() {
+        this.legalMoves = 0;
         for (boolean[] i : this.moveMap) {
             for (boolean j : i) {
                 if (j) {
@@ -242,5 +243,9 @@ public class Player {
         return this.legalMoves;
     }
 
+    @Deprecated
+    public void setAttackMap(int i, int j) {
+        this.attackMap[i][j] = true;
+    }
 }
 

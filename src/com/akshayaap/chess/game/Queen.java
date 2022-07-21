@@ -159,12 +159,10 @@ public class Queen extends Piece {
         int j = y + 1;
         while (i < 8 && j < 8) {
             if (board[i][j].getPiece() == null) {
-                moveMap[i][j] = true;
-                this.legalMoves++;
+                testForMoveMap(i, j);
             } else {
                 if (board[i][j].getPiece().getColor() != this.color) {
-                    moveMap[i][j] = true;
-                    this.legalMoves++;
+                    testForMoveMap(i, j);
                 }
                 break;
             }
@@ -176,12 +174,10 @@ public class Queen extends Piece {
         j = y - 1;
         while (i < 8 && j >= 0) {
             if (board[i][j].getPiece() == null) {
-                moveMap[i][j] = true;
-                this.legalMoves++;
+                testForMoveMap(i, j);
             } else {
                 if (board[i][j].getPiece().getColor() != this.color) {
-                    moveMap[i][j] = true;
-                    this.legalMoves++;
+                    testForMoveMap(i, j);
                 }
                 break;
             }
@@ -193,12 +189,10 @@ public class Queen extends Piece {
         j = y + 1;
         while (i >= 0 && j < 8) {
             if (board[i][j].getPiece() == null) {
-                moveMap[i][j] = true;
-                this.legalMoves++;
+                testForMoveMap(i, j);
             } else {
                 if (board[i][j].getPiece().getColor() != this.color) {
-                    moveMap[i][j] = true;
-                    this.legalMoves++;
+                    testForMoveMap(i, j);
                 }
                 break;
             }
@@ -210,12 +204,10 @@ public class Queen extends Piece {
         j = y - 1;
         while (i >= 0 && j >= 0) {
             if (board[i][j].getPiece() == null) {
-                moveMap[i][j] = true;
-                this.legalMoves++;
+                testForMoveMap(i, j);
             } else {
                 if (board[i][j].getPiece().getColor() != this.color) {
-                    moveMap[i][j] = true;
-                    this.legalMoves++;
+                    testForMoveMap(i, j);
                 }
                 break;
             }
@@ -227,12 +219,10 @@ public class Queen extends Piece {
         j = y;
         while (i < 8) {
             if (board[i][j].getPiece() == null) {
-                moveMap[i][j] = true;
-                this.legalMoves++;
+                testForMoveMap(i, j);
             } else {
                 if (board[i][j].getPiece().getColor() != this.color) {
-                    moveMap[i][j] = true;
-                    this.legalMoves++;
+                    testForMoveMap(i, j);
                 }
                 break;
             }
@@ -243,12 +233,10 @@ public class Queen extends Piece {
         j = y;
         while (i >= 0) {
             if (board[i][j].getPiece() == null) {
-                moveMap[i][j] = true;
-                this.legalMoves++;
+                testForMoveMap(i, j);
             } else {
                 if (board[i][j].getPiece().getColor() != this.color) {
-                    moveMap[i][j] = true;
-                    this.legalMoves++;
+                    testForMoveMap(i, j);
                 }
                 break;
             }
@@ -259,12 +247,10 @@ public class Queen extends Piece {
         j = y + 1;
         while (j < 8) {
             if (board[i][j].getPiece() == null) {
-                moveMap[i][j] = true;
-                this.legalMoves++;
+                testForMoveMap(i, j);
             } else {
                 if (board[i][j].getPiece().getColor() != this.color) {
-                    moveMap[i][j] = true;
-                    this.legalMoves++;
+                    testForMoveMap(i, j);
                 }
                 break;
             }
@@ -275,12 +261,10 @@ public class Queen extends Piece {
         j = y - 1;
         while (j >= 0) {
             if (board[i][j].getPiece() == null) {
-                moveMap[i][j] = true;
-                this.legalMoves++;
+                testForMoveMap(i, j);
             } else {
                 if (board[i][j].getPiece().getColor() != this.color) {
-                    moveMap[i][j] = true;
-                    this.legalMoves++;
+                    testForMoveMap(i, j);
                 }
                 break;
             }

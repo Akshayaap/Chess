@@ -74,49 +74,42 @@ public class Pawn extends Piece {
     @Override
     public boolean[][] updateMoveMap() {
         this.resetMoveMap();
+
         if (this.color) {
             if (x + 1 < 8) {
                 if (board[x + 1][y].getPiece() == null) {
-                    moveMap[x + 1][y] = true;
-                    this.legalMoves++;
+                    testForMoveMap(x + 1, y);
                     if (x == 1 && board[x + 2][y].getPiece() == null) {
-                        moveMap[x + 2][y] = true;
-                        this.legalMoves++;
+                        testForMoveMap(x + 2, y);
                     }
                 }
                 if (y + 1 < 8) {
                     if (board[x + 1][y + 1].getPiece() != null && !board[x + 1][y + 1].getPiece().getColor()) {
-                        moveMap[x + 1][y + 1] = true;
-                        this.legalMoves++;
+                        testForMoveMap(x + 1, y + 1);
                     }
                 }
                 if (y - 1 >= 0) {
                     if (board[x + 1][y - 1].getPiece() != null && !board[x + 1][y - 1].getPiece().getColor()) {
-                        moveMap[x + 1][y - 1] = true;
-                        this.legalMoves++;
+                        testForMoveMap(x + 1, y - 1);
                     }
                 }
             }
         } else {
             if (x - 1 >= 0) {
                 if (board[x - 1][y].getPiece() == null) {
-                    moveMap[x - 1][y] = true;
-                    this.legalMoves++;
+                    testForMoveMap(x - 1, y);
                     if (x == 6 && board[x - 2][y].getPiece() == null) {
-                        moveMap[x - 2][y] = true;
-                        this.legalMoves++;
+                        testForMoveMap(x - 2, y);
                     }
                 }
                 if (y + 1 < 8) {
                     if (board[x - 1][y + 1].getPiece() != null && board[x - 1][y + 1].getPiece().getColor()) {
-                        moveMap[x - 1][y + 1] = true;
-                        this.legalMoves++;
+                        testForMoveMap(x - 1, y + 1);
                     }
                 }
                 if (y - 1 >= 0) {
                     if (board[x - 1][y - 1].getPiece() != null && board[x - 1][y - 1].getPiece().getColor()) {
-                        moveMap[x - 1][y - 1] = true;
-                        this.legalMoves++;
+                        testForMoveMap(x - 1, y - 1);
                     }
                 }
             }

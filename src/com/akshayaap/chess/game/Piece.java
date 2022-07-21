@@ -29,8 +29,8 @@ public abstract class Piece {
     protected int value;
     protected int type;
 
-    protected boolean[][] moveMap;
-    protected boolean[][] attackMap;
+    protected boolean[][] moveMap = new boolean[8][8];
+    protected boolean[][] attackMap = new boolean[8][8];
     protected boolean moved = false;
     protected boolean alive = true;
 
@@ -45,7 +45,6 @@ public abstract class Piece {
         this.player = player;
         this.color = player.getColor();
         this.board = player.getBoard();
-        this.moveMap = new boolean[8][8];
         this.resetMap();
         this.board[x][y].setPiece(this);
     }
@@ -94,6 +93,7 @@ public abstract class Piece {
         return this.type;
     }
 
+    @Deprecated
     public Move move(int x, int y) {
         Move move = new Move();
         move.setSource(this.x, this.y);
@@ -124,11 +124,11 @@ public abstract class Piece {
                 this.x = pX;
                 this.y = pY;
             }
-            return move;
+
         } else {
             move.setState(Move.ILLEGAL_MOVE);
-            return move;
         }
+        return move;
     }
 
     public void capture() {
@@ -147,5 +147,53 @@ public abstract class Piece {
 
     public boolean isAlive() {
         return alive;
+    }
+
+    public Move moveForTest(int x, int y) {
+        Move move = new Move();
+        board[x][y].setPiece(this);
+        board[this.x][this.y].setPiece(null);
+        this.x = x;
+        this.y = y;
+        return move;
+    }
+
+    public Move moveTo(int x, int y) {
+        Move move = new Move();
+        move.setSource(this.x, this.y);
+        move.setDestination(x, y);
+
+        if (this.moveMap[x][y]) {
+            if (this.board[x][y].getPiece() != null) {
+                move.setState(Move.CAPTURE_MOVE);
+                this.board[x][y].getPiece().capture();
+            } else {
+                move.setState(Move.NORMAL_MOVE);
+            }
+
+            this.board[x][y].setPiece(this);
+            this.board[this.x][this.y].setPiece(null);
+
+            this.x = x;
+            this.y = y;
+
+        } else {
+            move.setState(Move.ILLEGAL_MOVE);
+        }
+        return move;
+    }
+
+    public boolean testForMoveMap(int x, int y) {
+        int pX = this.x;
+        int pY = this.y;
+        moveForTest(x, y);
+        this.player.getOpponent().updateAttackMap();
+        boolean legal = !this.player.isCheck();
+        if (legal) {
+            moveMap[x][y] = true;
+            this.legalMoves++;
+        }
+        moveForTest(pX, pY);
+        return legal;
     }
 }

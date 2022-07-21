@@ -74,51 +74,43 @@ public class Knight extends Piece {
         this.resetMoveMap();
         if (x + 2 < 8 && y + 1 < 8) {
             if (board[x + 2][y + 1].getPiece() == null || board[x + 2][y + 1].getPiece().getColor() != this.color) {
-                moveMap[x + 2][y + 1] = true;
-                this.legalMoves++;
+                testForMoveMap(x + 2, y + 1);
             }
         }
         if (x + 1 < 8 && y + 2 < 8) {
             if (board[x + 1][y + 2].getPiece() == null || board[x + 1][y + 2].getPiece().getColor() != this.color) {
-                moveMap[x + 1][y + 2] = true;
-                this.legalMoves++;
+                testForMoveMap(x + 1, y + 2);
             }
         }
         if (x + 2 < 8 && y - 1 >= 0) {
             if (board[x + 2][y - 1].getPiece() == null || board[x + 2][y - 1].getPiece().getColor() != this.color) {
-                moveMap[x + 2][y - 1] = true;
-                this.legalMoves++;
+                testForMoveMap(x + 2, y - 1);
             }
         }
         if (x + 1 < 8 && y - 2 >= 0) {
             if (board[x + 1][y - 2].getPiece() == null || board[x + 1][y - 2].getPiece().getColor() != this.color) {
-                moveMap[x + 1][y - 2] = true;
-                this.legalMoves++;
+                testForMoveMap(x + 1, y - 2);
             }
         }
 
         if (x - 2 >= 0 && y + 1 < 8) {
             if (board[x - 2][y + 1].getPiece() == null || board[x - 2][y + 1].getPiece().getColor() != this.color) {
-                moveMap[x - 2][y + 1] = true;
-                this.legalMoves++;
+                testForMoveMap(x - 2, y + 1);
             }
         }
         if (x - 1 >= 0 && y - 2 >= 0) {
             if (board[x - 1][y - 2].getPiece() == null || board[x - 1][y - 2].getPiece().getColor() != this.color) {
-                moveMap[x - 1][y - 2] = true;
-                this.legalMoves++;
+                testForMoveMap(x - 1, y - 2);
             }
         }
         if (x - 2 >= 0 && y - 1 >= 0) {
             if (board[x - 2][y - 1].getPiece() == null || board[x - 2][y - 1].getPiece().getColor() != this.color) {
-                moveMap[x - 2][y - 1] = true;
-                this.legalMoves++;
+                testForMoveMap(x - 2, y - 1);
             }
         }
         if (x - 1 >= 0 && y + 2 < 8) {
             if (board[x - 1][y + 2].getPiece() == null || board[x - 1][y + 2].getPiece().getColor() != this.color) {
-                moveMap[x - 1][y + 2] = true;
-                this.legalMoves++;
+                testForMoveMap(x - 1, y + 2);
             }
         }
         return this.attackMap;
