@@ -174,10 +174,10 @@ public class Player {
             for (int j = 0; j < pieces[i].length; j++) {
                 if (pieces[i][j].isAlive()) {
                     arrayOR_ACC(this.moveMap, pieces[i][j].updateMoveMap());
+                    this.legalMoves += pieces[i][j].getLegalMoves();
                 }
             }
         }
-        this.updateLegalMoves();
         updateCheck();
         updateCheckMate();
         updateStallMate();
@@ -199,17 +199,6 @@ public class Player {
         return this.stallMate;
     }
 
-    public int updateLegalMoves() {
-        this.legalMoves = 0;
-        for (boolean[] i : this.moveMap) {
-            for (boolean j : i) {
-                if (j) {
-                    this.legalMoves++;
-                }
-            }
-        }
-        return this.legalMoves;
-    }
 
     @Deprecated
     public void setAttackMap(int i, int j) {

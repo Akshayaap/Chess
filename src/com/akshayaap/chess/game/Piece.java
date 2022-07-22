@@ -85,6 +85,8 @@ public abstract class Piece {
         this.alive = false;
         this.x = -1;
         this.y = -1;
+        resetMoveMap();
+        resetAttackMap();
     }
 
     public void giveLife(int x, int y) {
@@ -107,14 +109,6 @@ public abstract class Piece {
         return alive;
     }
 
-    public Move moveForTest(int x, int y) {
-        Move move = new Move();
-        board[x][y].setPiece(this);
-        board[this.x][this.y].setPiece(null);
-        this.x = x;
-        this.y = y;
-        return move;
-    }
 
     public Move moveTo(int x, int y) {
         Move move = new Move();
@@ -163,8 +157,8 @@ public abstract class Piece {
         if (temp != null) {
             temp.giveLife(x, y);
         }
-        board[x][y].setPiece(temp);
         board[pX][pY].setPiece(this);
+        board[x][y].setPiece(temp);
         this.x = pX;
         this.y = pY;
 

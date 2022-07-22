@@ -95,7 +95,7 @@ public class ChessGame {
     }
 
     public void update() {
-        if (!state.getTurn()) {
+        if (state.getTurn()) {
             this.playerBlack.updateAttackMap();
             this.playerWhite.updateMoveMap();
             if (playerWhite.isCheck()) {
