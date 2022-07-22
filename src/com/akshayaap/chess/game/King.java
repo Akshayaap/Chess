@@ -69,47 +69,37 @@ public class King extends Piece {
 
     @Override
     public boolean[][] updateAttackMap() {
-        this.resetMoveMap();
+        this.resetAttackMap();
         if (x + 1 < 8) {
-            if (!player.getThreatMap()[x + 1][y] && (board[x + 1][y].getPiece() == null || (board[x + 1][y].getPiece() != null && board[x + 1][y].getPiece().getColor() != this.color))) {
-                attackMap[x + 1][y] = true;
-            }
+            attackMap[x + 1][y] = true;
         }
         if (x - 1 >= 0) {
-            if (!player.getThreatMap()[x - 1][y] && (board[x - 1][y].getPiece() == null || (board[x - 1][y].getPiece() != null && board[x - 1][y].getPiece().getColor() != this.color))) {
-                attackMap[x - 1][y] = true;
-            }
+            attackMap[x - 1][y] = true;
         }
         if (y + 1 < 8) {
-            if (!player.getThreatMap()[x][y + 1] && (board[x][y + 1].getPiece() == null || (board[x][y + 1].getPiece() != null && board[x][y + 1].getPiece().getColor() != this.color))) {
-                attackMap[x][y + 1] = true;
-            }
+            attackMap[x][y + 1] = true;
+
         }
         if (y - 1 >= 0) {
-            if (!player.getThreatMap()[x][y - 1] && (board[x][y - 1].getPiece() == null || (board[x][y - 1].getPiece() != null && board[x][y - 1].getPiece().getColor() != this.color))) {
-                attackMap[x][y - 1] = true;
-            }
+            attackMap[x][y - 1] = true;
+
         }
 
         if (x + 1 < 8 && y + 1 < 8) {
-            if (!player.getThreatMap()[x + 1][y + 1] && (board[x + 1][y + 1].getPiece() == null || (board[x + 1][y + 1].getPiece() != null && board[x + 1][y + 1].getPiece().getColor() != this.color))) {
-                attackMap[x + 1][y + 1] = true;
-            }
+            attackMap[x + 1][y + 1] = true;
         }
+
         if (x + 1 < 8 && y - 1 >= 0) {
-            if (!player.getThreatMap()[x + 1][y - 1] && (board[x + 1][y - 1].getPiece() == null || (board[x + 1][y - 1].getPiece() != null && board[x + 1][y - 1].getPiece().getColor() != this.color))) {
-                attackMap[x + 1][y - 1] = true;
-            }
+            attackMap[x + 1][y - 1] = true;
+
         }
         if (x - 1 >= 0 && y + 1 < 8) {
-            if (!player.getThreatMap()[x - 1][y + 1] && (board[x - 1][y + 1].getPiece() == null || (board[x - 1][y + 1].getPiece() != null && board[x - 1][y + 1].getPiece().getColor() != this.color))) {
-                attackMap[x - 1][y + 1] = true;
-            }
+            attackMap[x - 1][y + 1] = true;
+
         }
         if (x - 1 >= 0 && y - 1 >= 0) {
-            if (!player.getThreatMap()[x - 1][y - 1] && (board[x - 1][y - 1].getPiece() == null || (board[x - 1][y - 1].getPiece() != null && board[x - 1][y - 1].getPiece().getColor() != this.color))) {
-                attackMap[x - 1][y - 1] = true;
-            }
+            attackMap[x - 1][y - 1] = true;
+
         }
         return this.attackMap;
     }
