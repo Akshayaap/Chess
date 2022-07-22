@@ -21,25 +21,22 @@ public abstract class Piece {
 
     public static final int KING_VALUE = 10000;
     public static final int KING_TYPE = 5;
-
-
+    protected final int index;
     protected int x;
     protected int y;
-
     protected int value;
     protected int type;
-
     protected boolean[][] moveMap = new boolean[8][8];
     protected boolean[][] attackMap = new boolean[8][8];
     protected boolean moved = false;
     protected boolean alive = true;
-
     protected int legalMoves = 0;
     protected boolean color;
     protected Player player;
     protected Tile[][] board;
 
-    public Piece(int x, int y, Player player) {
+    public Piece(int x, int y, Player player, int index) {
+        this.index = index;
         this.x = x;
         this.y = y;
         this.player = player;

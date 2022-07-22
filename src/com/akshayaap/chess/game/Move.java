@@ -3,13 +3,13 @@ package com.akshayaap.chess.game;
 public class Move {
 
     public static final int NOT_APPLICABLE = -1;
+    public static final int ILLEGAL_MOVE = 0;
+    public static final int SOURCE_IS_EMPTY = 1;
+    public static final int INVALID_SELECTION = 2;
+    public static final int SELECT_MOVE = 13;
     public static final int NORMAL_MOVE = 10;
     public static final int CAPTURE_MOVE = 11;
-    public static final int ILLEGAL_MOVE = 20;
-
-    public static final int SELECT_MOVE = 12;
-    public static final int SOURCE_IS_EMPTY = 13;
-    public static final int INVALID_SELECTION = 14;
+    public static final int PROMOTION_MOVE = 12;
 
 
     public static final int WHITE_STALMATE = 100;

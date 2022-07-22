@@ -10,7 +10,7 @@ public class King extends Piece {
     private boolean stallMate = false;
 
     public King(int x, int y, Player player) {
-        super(x, y, player);
+        super(x, y, player, 0);
         this.type = Piece.KING_TYPE;
         this.value = Piece.KING_VALUE;
     }

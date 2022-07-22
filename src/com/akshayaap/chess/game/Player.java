@@ -23,20 +23,20 @@ public class Player {
 
         pieces[0] = new Piece[8];
         for (int j = 0; j < 8; j++) {
-            pieces[0][j] = new Pawn(this.color ? 1 : 6, j, this);
+            pieces[0][j] = new Pawn(this.color ? 1 : 6, j, this, j);
         }
 
         pieces[1] = new Piece[2];
-        pieces[1][0] = new Knight(this.color ? 0 : 7, 1, this);
-        pieces[1][1] = new Knight(this.color ? 0 : 7, 6, this);
+        pieces[1][0] = new Knight(this.color ? 0 : 7, 1, this, 0);
+        pieces[1][1] = new Knight(this.color ? 0 : 7, 6, this, 1);
 
         pieces[2] = new Piece[2];
-        pieces[2][0] = new Bishop(this.color ? 0 : 7, 2, this);
-        pieces[2][1] = new Bishop(this.color ? 0 : 7, 5, this);
+        pieces[2][0] = new Bishop(this.color ? 0 : 7, 2, this, 0);
+        pieces[2][1] = new Bishop(this.color ? 0 : 7, 5, this, 1);
 
         pieces[3] = new Piece[2];
-        pieces[3][0] = new Rook(this.color ? 0 : 7, 0, this);
-        pieces[3][1] = new Rook(this.color ? 0 : 7, 7, this);
+        pieces[3][0] = new Rook(this.color ? 0 : 7, 0, this, 0);
+        pieces[3][1] = new Rook(this.color ? 0 : 7, 7, this, 1);
 
         pieces[4] = new Piece[1];
         pieces[4][0] = new Queen(this.color ? 0 : 7, 4, this);
@@ -96,13 +96,6 @@ public class Player {
         }
     }
 
-    /**
-     * Do not use for god' sake
-     */
-    @Deprecated
-    public void resetThreatMap() {
-
-    }
 
     public boolean isCheck() {
         return check;

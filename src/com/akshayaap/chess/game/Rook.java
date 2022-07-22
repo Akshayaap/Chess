@@ -5,8 +5,8 @@ package com.akshayaap.chess.game;
  */
 public class Rook extends Piece {
 
-    public Rook(int x, int y, Player player) {
-        super(x, y, player);
+    public Rook(int x, int y, Player player, int index) {
+        super(x, y, player, index);
         this.type = Piece.ROOK_TYPE;
         this.value = Piece.ROOK_VALUE;
     }

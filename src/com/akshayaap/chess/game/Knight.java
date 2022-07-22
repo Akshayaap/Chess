@@ -2,8 +2,8 @@ package com.akshayaap.chess.game;
 
 public class Knight extends Piece {
 
-    public Knight(int x, int y, Player player) {
-        super(x, y, player);
+    public Knight(int x, int y, Player player, int index) {
+        super(x, y, player, index);
         this.type = Piece.KNIGHT_TYPE;
         this.value = Piece.KNIGHT_VALUE;
     }

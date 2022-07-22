@@ -5,8 +5,8 @@ package com.akshayaap.chess.game;
  */
 public class Bishop extends Piece {
 
-    public Bishop(int x, int y, Player player) {
-        super(x, y, player);
+    public Bishop(int x, int y, Player player, int index) {
+        super(x, y, player, index);
         this.type = Piece.BISHOP_TYPE;
         this.value = Piece.BISHOP_VALUE;
     }

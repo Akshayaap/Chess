@@ -13,6 +13,6 @@ public class Util {
             }
             System.out.println();
         }
-        System.out.println("#################END BORAD#################");
+        System.out.println("#################END MAP#################");
     }
 }
