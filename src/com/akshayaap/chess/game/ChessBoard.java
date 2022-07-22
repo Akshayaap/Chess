@@ -25,19 +25,6 @@ public class ChessBoard {
         }
     }
 
-    @Deprecated
-    public Move move(int chXPrev, int chYPrev, int x, int y) {
-        Move move = new Move();
-        if (this.board[chXPrev][chYPrev].getPiece() != null) {
-            move = this.board[chXPrev][chYPrev].getPiece().moveTo(x, y);
-            return move;
-        }
-        move.reset();
-        move.setState(Move.SOURCE_IS_EMPTY);
-        move.setSource(chXPrev, chYPrev);
-        move.setDestination(x, y);
-        return move;
-    }
 
     public void printBord() {
         System.out.println("################BEGIN BORAD################");

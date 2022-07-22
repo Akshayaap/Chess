@@ -85,16 +85,12 @@ public abstract class Piece {
         this.alive = false;
         this.x = -1;
         this.y = -1;
-        resetMoveMap();
-        resetAttackMap();
     }
 
     public void giveLife(int x, int y) {
         this.x = x;
         this.y = y;
         alive = true;
-        updateAttackMap();
-        updateMoveMap();
     }
 
     public boolean[][] getMoveMap() {
@@ -125,7 +121,6 @@ public abstract class Piece {
 
             this.board[x][y].setPiece(this);
             this.board[this.x][this.y].setPiece(null);
-
             this.x = x;
             this.y = y;
 
@@ -142,11 +137,12 @@ public abstract class Piece {
 
         Piece temp = board[x][y].getPiece();
         board[x][y].setPiece(this);
+        board[this.x][this.y].setPiece(null);
+        this.x = x;
+        this.y = y;
         if (temp != null) {
             temp.capture();
         }
-        this.x = x;
-        this.y = y;
 
         this.player.getOpponent().updateAttackMap();
         boolean legal = !this.player.updateCheck();
@@ -157,8 +153,10 @@ public abstract class Piece {
         if (temp != null) {
             temp.giveLife(x, y);
         }
-        board[pX][pY].setPiece(this);
+
         board[x][y].setPiece(temp);
+        board[pX][pY].setPiece(this);
+
         this.x = pX;
         this.y = pY;
 

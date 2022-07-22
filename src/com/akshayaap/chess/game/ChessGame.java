@@ -16,10 +16,10 @@ public class ChessGame {
         this.playerBlack.setOpponent(this.playerWhite);
         this.playerWhite.setOpponent(this.playerBlack);
 
-        playerWhite.updateAttackMap();
-        playerBlack.updateAttackMap();
-        playerWhite.updateMoveMap();
-        playerBlack.updateMoveMap();
+        this.playerWhite.updateAttackMap();
+        this.playerBlack.updateAttackMap();
+        this.playerWhite.updateMoveMap();
+        this.playerBlack.updateMoveMap();
     }
 
     public Move onClick(int x, int y) {
@@ -35,14 +35,11 @@ public class ChessGame {
                     move.setState(Move.INVALID_SELECTION);
                     move.setSource(x, y);
                     move.setDestination(-1, -1);
-                }
-                if (this.state.getTurn() == this.board.getPiece(x, y).getColor()) {
+                } else if (this.state.getTurn() == this.board.getPiece(x, y).getColor()) {
                     this.state.setChXYPrev(x, y);
                     this.state.setState(State.SELECTED);
                     this.state.setChXY(-1, -1);
                     this.state.setChXYNext(-1, -1);
-
-
                     move.setState(Move.SELECT_MOVE);
                     move.setSource(x, y);
                     move.setDestination(-1, -1);
@@ -60,26 +57,26 @@ public class ChessGame {
                     move = this.board.moveTo(this.state.getChXPrev(), this.state.getChYPrev(), x, y);
                     this.state.fallBack();
                     move.setTurn(this.state.getTurn());
-                    if (move.getState() != Move.ILLEGAL_MOVE && move.getState() != Move.SOURCE_IS_EMPTY) {
+                    if (move.getState() != Move.ILLEGAL_MOVE && move.getState() != Move.SOURCE_IS_EMPTY && move.getState() != Move.INVALID_SELECTION) {
                         this.state.toggleTurn();
                         update();
                     }
                 } else {
                     if (this.board.getPiece(x, y).getColor() != this.state.getTurn()) {
                         this.state.setChXY(x, y);
-                        move = this.board.move(this.state.getChXPrev(), this.state.getChYPrev(), x, y);
+                        move = this.board.moveTo(this.state.getChXPrev(), this.state.getChYPrev(), x, y);
                         this.state.fallBack();
                         move.setTurn(this.state.getTurn());
-                        if (move.getState() != Move.ILLEGAL_MOVE && move.getState() != Move.SOURCE_IS_EMPTY) {
+                        if (move.getState() != Move.ILLEGAL_MOVE && move.getState() != Move.SOURCE_IS_EMPTY && move.getState() != Move.INVALID_SELECTION) {
                             move.setState(Move.CAPTURE_MOVE);
-                            update();
                             this.state.toggleTurn();
+                            update();
                         }
                     } else {
                         this.state.fallBack();
                         this.state.setChXYPrev(x, y);
                         this.state.setState(State.SELECTED);
-                        move.reset();
+
                         move.setState(Move.SELECT_MOVE);
                         move.setSource(this.state.getChXPrev(), this.state.getChYPrev());
                         move.setDestination(-1, -1);
@@ -96,35 +93,11 @@ public class ChessGame {
 
     public void update() {
         if (state.getTurn()) {
-            this.playerBlack.updateAttackMap();
-            this.playerWhite.updateMoveMap();
-            if (playerWhite.isCheck()) {
-                state.setCheckState(State.BLACK_CHECK);
-                move.setCheckState(Move.BLACK_CHECK);
-            }
-            if (playerWhite.isCheckMate()) {
-                state.setCheckState(State.BLACK_CHECKMATE);
-                move.setCheckState(Move.BLACK_CHECKMATE);
-            }
-            if (playerWhite.isStallMate()) {
-                state.setCheckState(State.BLACK_STALEMATE);
-                move.setCheckState(Move.BLACK_STALMATE);
-            }
+            playerBlack.updateAttackMap();
+            playerWhite.updateMoveMap();
         } else {
-            this.playerWhite.updateAttackMap();
-            this.playerBlack.updateMoveMap();
-            if (playerBlack.isCheck()) {
-                state.setCheckState(State.WHITE_CHECK);
-                move.setCheckState(Move.WHITE_CHECK);
-            }
-            if (playerBlack.isCheckMate()) {
-                state.setCheckState(State.WHITE_CHECKMATE);
-                move.setCheckState(Move.WHITE_CHECKMATE);
-            }
-            if (playerBlack.isStallMate()) {
-                state.setCheckState(State.WHITE_STALEMATE);
-                move.setCheckState(Move.WHITE_STALMATE);
-            }
+            playerWhite.updateAttackMap();
+            playerBlack.updateMoveMap();
         }
     }
 
