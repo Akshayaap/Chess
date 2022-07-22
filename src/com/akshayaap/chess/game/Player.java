@@ -16,6 +16,9 @@ public class Player {
     private Player opponent;
     private boolean[][] moveMap = new boolean[8][8];
 
+    private PromotionCallback callback;
+    private Pawn promotionPawn = null;
+
     public Player(boolean color, Tile[][] board) {
         this.color = color;
         this.board = board;
@@ -60,6 +63,39 @@ public class Player {
         return dest;
     }
 
+    public void promot(int type, Pawn pawn) {
+        Piece piece = null;
+        callback.promot(this);
+        switch (type) {
+            case -1:
+                System.out.println("Aah Snap !");
+            case 0:
+                System.out.println("WTF !!!");
+                return;
+            case 1:
+                piece = new Knight(pawn.x, pawn.y, this, pawn.index);
+                break;
+            case 2:
+                piece = new Bishop(pawn.x, pawn.y, this, pawn.index);
+                break;
+            case 3:
+                piece = new Rook(pawn.x, pawn.y, this, pawn.index);
+                break;
+            case 4:
+                piece = new Queen(pawn.x, pawn.y, this);
+                break;
+            case 5:
+                System.out.println("WTF are you serious ?!?");
+                piece = new King(pawn.x, pawn.y, this);
+                break;
+            default:
+                System.out.println("Solar radiation detected !!");
+                break;
+        }
+        this.pieces[0][pawn.index] = piece;
+        pawn.promot();
+    }
+
     public Piece[][] getPieces() {
         return pieces;
     }
@@ -95,7 +131,6 @@ public class Player {
             }
         }
     }
-
 
     public boolean isCheck() {
         return check;
@@ -176,7 +211,6 @@ public class Player {
         updateStallMate();
     }
 
-
     public boolean updateCheck() {
         this.check = ((King) pieces[5][0]).updateCheck();
         return check;
@@ -192,10 +226,16 @@ public class Player {
         return this.stallMate;
     }
 
+    public PromotionCallback getPromotionCallback() {
+        return this.callback;
+    }
 
-    @Deprecated
-    public void setAttackMap(int i, int j) {
-        this.attackMap[i][j] = true;
+    public void setPromotionCallback(PromotionCallback callback) {
+        this.callback = callback;
+    }
+
+    public void setPromotionPawn(Pawn pawn) {
+        this.promotionPawn = pawn;
     }
 }
 

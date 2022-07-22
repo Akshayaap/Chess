@@ -78,11 +78,9 @@ public class King extends Piece {
         }
         if (y + 1 < 8) {
             attackMap[x][y + 1] = true;
-
         }
         if (y - 1 >= 0) {
             attackMap[x][y - 1] = true;
-
         }
 
         if (x + 1 < 8 && y + 1 < 8) {
@@ -91,15 +89,12 @@ public class King extends Piece {
 
         if (x + 1 < 8 && y - 1 >= 0) {
             attackMap[x + 1][y - 1] = true;
-
         }
         if (x - 1 >= 0 && y + 1 < 8) {
             attackMap[x - 1][y + 1] = true;
-
         }
         if (x - 1 >= 0 && y - 1 >= 0) {
             attackMap[x - 1][y - 1] = true;
-
         }
         return this.attackMap;
     }

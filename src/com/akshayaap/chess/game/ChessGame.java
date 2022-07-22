@@ -1,5 +1,7 @@
 package com.akshayaap.chess.game;
 
+import com.akshayaap.chess.gui.Promotion;
+
 public class ChessGame {
     private final State state;
     private final ChessBoard board;
@@ -105,4 +107,8 @@ public class ChessGame {
         return this.board.getPiece(x, y);
     }
 
+    public void setPromotionCallback(Promotion promotionCallback) {
+        this.playerBlack.setPromotionCallback(promotionCallback);
+        this.playerWhite.setPromotionCallback(promotionCallback);
+    }
 }

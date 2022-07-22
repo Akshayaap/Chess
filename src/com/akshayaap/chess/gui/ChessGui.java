@@ -21,6 +21,8 @@ public class ChessGui {
         OUTER_FRAME_DIMENSION = new Dimension(800, 800);
     }
 
+    private final Promotion promotionCallback = new Promotion();
+
     private final JFrame gameFrame;
     private final JMenuBar menuBar;
     private final State state;
@@ -30,6 +32,7 @@ public class ChessGui {
 
     public ChessGui() throws IOException {
         this.game = new ChessGame();
+        game.setPromotionCallback(promotionCallback);
         this.gameFrame = new JFrame("A Chess Game !");
         this.gameFrame.setLayout(new BorderLayout());
         this.menuBar = populateMenuBar();
