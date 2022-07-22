@@ -63,9 +63,8 @@ public class Player {
         return dest;
     }
 
-    public void promot(int type, Pawn pawn) {
+    public void promot(int type) {
         Piece piece = null;
-        callback.promot(this);
         switch (type) {
             case -1:
                 System.out.println("Aah Snap !");
@@ -73,27 +72,27 @@ public class Player {
                 System.out.println("WTF !!!");
                 return;
             case 1:
-                piece = new Knight(pawn.x, pawn.y, this, pawn.index);
+                piece = new Knight(promotionPawn.x, promotionPawn.y, this, promotionPawn.index);
                 break;
             case 2:
-                piece = new Bishop(pawn.x, pawn.y, this, pawn.index);
+                piece = new Bishop(promotionPawn.x, promotionPawn.y, this, promotionPawn.index);
                 break;
             case 3:
-                piece = new Rook(pawn.x, pawn.y, this, pawn.index);
+                piece = new Rook(promotionPawn.x, promotionPawn.y, this, promotionPawn.index);
                 break;
             case 4:
-                piece = new Queen(pawn.x, pawn.y, this);
+                piece = new Queen(promotionPawn.x, promotionPawn.y, this);
                 break;
             case 5:
                 System.out.println("WTF are you serious ?!?");
-                piece = new King(pawn.x, pawn.y, this);
+                piece = new King(promotionPawn.x, promotionPawn.y, this);
                 break;
             default:
                 System.out.println("Solar radiation detected !!");
                 break;
         }
-        this.pieces[0][pawn.index] = piece;
-        pawn.promot();
+        this.pieces[0][promotionPawn.index] = piece;
+        promotionPawn.promot();
     }
 
     public Piece[][] getPieces() {

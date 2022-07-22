@@ -20,23 +20,21 @@ public class Promotion implements PromotionCallback {
     private Player player;
 
     public Promotion() {
-        prompt.setSize(new Dimension(60, 10));
+        prompt.setLayout(new BorderLayout());
+        prompt.setSize(new Dimension(600, 100));
         prompt.setVisible(false);
-        prompt.setResizable(false);
-        Tile tile;
-        Listener listener = new Listener();
+        //prompt.setResizable(false);
         for (int i = 0; i < 6; i++) {
             try {
-                tile = new Tile(i, true);
-                tile.addMouseListener(listener);
-                white.add(tile);
-                tile = new Tile(i, false);
-                tile.addMouseListener(listener);
-                black.add(tile);
+                white.add(new Tile(i, true), BorderLayout.CENTER);
+                black.add(new Tile(i, false), BorderLayout.CENTER);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
+        white.validate();
+        black.validate();
+        prompt.validate();
     }
 
     @Override
@@ -48,11 +46,33 @@ public class Promotion implements PromotionCallback {
         } else {
             prompt.add(black);
         }
-        prompt.validate();
+        prompt.revalidate();
+        prompt.repaint();
         prompt.setVisible(true);
     }
 
+    private class Panel extends JPanel {
+        Tile[] tiles = new Tile[6];
+
+        public Panel() {
+            for (int i = 0; i < 6; i++) {
+                try {
+                    tiles[i] = new Tile(i, true);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            setPreferredSize(new Dimension(100, 100));
+            setVisible(true);
+            setLayout(new GridLayout(6, 1));
+            for (int i = 0; i < 6; i++) {
+                add(tiles[i]);
+            }
+        }
+    }
+
     private class Tile extends JPanel {
+        private static final Dimension TILE_DIMENSION = new Dimension(100, 100);
         private static final Color DARK_SQUARE = new Color(50, 0, 20);
         private static final Color LIGHT_SQUARE = new Color(255, 255, 200);
 
@@ -60,39 +80,46 @@ public class Promotion implements PromotionCallback {
 
         Tile(int type, boolean color) throws IOException {
             super(new GridBagLayout());
+            setPreferredSize(TILE_DIMENSION);
             setBackground(color ? DARK_SQUARE : LIGHT_SQUARE);
+            setVisible(true);
             this.type = type;
             String path = (color ? "white_" : "black_") + type + ".png";
             add(new JLabel(new ImageIcon(ImageIO.read(new File("res/" + path)).getScaledInstance(60, 60, Image.SCALE_SMOOTH))));
+            addMouseListener(new Listener());
             validate();
         }
+
+        private class Listener implements MouseListener {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                Promotion.this.player.promot(Tile.this.type);
+                Promotion.this.player = null;
+                Promotion.this.prompt.setVisible(false);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        }
     }
 
-    private class Listener implements MouseListener {
 
-        @Override
-        public void mouseClicked(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            player.promot(Tile.this.type);
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-
-        }
-    }
 }

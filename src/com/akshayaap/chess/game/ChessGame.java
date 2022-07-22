@@ -8,7 +8,6 @@ public class ChessGame {
     private final Player playerWhite;
     private final Player playerBlack;
     private Move move = new Move();
-
     public ChessGame() {
         this.state = new State();
         this.board = new ChessBoard();
@@ -22,6 +21,10 @@ public class ChessGame {
         this.playerBlack.updateAttackMap();
         this.playerWhite.updateMoveMap();
         this.playerBlack.updateMoveMap();
+    }
+
+    public Player getPlayerWhite() {
+        return playerWhite;
     }
 
     public Move onClick(int x, int y) {

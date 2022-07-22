@@ -21,15 +21,13 @@ public class ChessGui {
         OUTER_FRAME_DIMENSION = new Dimension(800, 800);
     }
 
+    private final ChessGame game;
     private final Promotion promotionCallback = new Promotion();
-
     private final JFrame gameFrame;
     private final JMenuBar menuBar;
     private final State state;
-    private final ChessGame game;
     private final BoardPanel boardPanel;
     private Move move;
-
     public ChessGui() throws IOException {
         this.game = new ChessGame();
         game.setPromotionCallback(promotionCallback);
@@ -50,6 +48,10 @@ public class ChessGui {
         this.state = new State();
         this.render();
 
+    }
+
+    public ChessGame getGame() {
+        return game;
     }
 
     private JMenuBar populateMenuBar() {
