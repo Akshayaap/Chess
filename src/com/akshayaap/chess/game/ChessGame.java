@@ -8,6 +8,7 @@ public class ChessGame {
     private final Player playerWhite;
     private final Player playerBlack;
     private Move move = new Move();
+
     public ChessGame() {
         this.state = new State();
         this.board = new ChessBoard();
@@ -62,7 +63,7 @@ public class ChessGame {
                     move = this.board.moveTo(this.state.getChXPrev(), this.state.getChYPrev(), x, y);
                     this.state.fallBack();
                     move.setTurn(this.state.getTurn());
-                    if (move.getState() != Move.ILLEGAL_MOVE && move.getState() != Move.SOURCE_IS_EMPTY && move.getState() != Move.INVALID_SELECTION) {
+                    if (move.getState() != Move.ILLEGAL_MOVE && move.getState() != Move.SOURCE_IS_EMPTY && move.getState() != Move.INVALID_SELECTION && move.getState() != Move.NOT_APPLICABLE) {
                         this.state.toggleTurn();
                         update();
                     }
@@ -72,7 +73,7 @@ public class ChessGame {
                         move = this.board.moveTo(this.state.getChXPrev(), this.state.getChYPrev(), x, y);
                         this.state.fallBack();
                         move.setTurn(this.state.getTurn());
-                        if (move.getState() != Move.ILLEGAL_MOVE && move.getState() != Move.SOURCE_IS_EMPTY && move.getState() != Move.INVALID_SELECTION) {
+                        if (move.getState() != Move.ILLEGAL_MOVE && move.getState() != Move.SOURCE_IS_EMPTY && move.getState() != Move.INVALID_SELECTION && move.getState() != Move.NOT_APPLICABLE) {
                             move.setState(Move.CAPTURE_MOVE);
                             this.state.toggleTurn();
                             update();

@@ -90,15 +90,16 @@ public class Pawn extends Piece {
                 if (this.x == 7) {
                     player.setPromotionPawn(this);
                     player.getPromotionCallback().prompt(this.player);
+                    move.setState(Move.PROMOTION_MOVE);
                 }
             } else {
                 if (this.x == 0) {
                     player.setPromotionPawn(this);
                     player.getPromotionCallback().prompt(this.player);
+                    move.setState(Move.PROMOTION_MOVE);
                 }
             }
         }
-        move.setState(Move.PROMOTION_MOVE);
         return move;
     }
 
