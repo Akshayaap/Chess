@@ -1,5 +1,7 @@
 package com.akshayaap.chess.game;
 
+import java.io.IOException;
+
 public class Pawn extends Piece {
 
     private boolean promoted = false;
@@ -89,14 +91,22 @@ public class Pawn extends Piece {
             if (this.color) {
                 if (this.x == 7) {
                     player.setPromotionPawn(this);
-                    player.getPromotionCallback().prompt(this.player);
-                    move.setState(Move.PROMOTION_MOVE);
+                    try {
+                        player.getPromotionCallback().prompt(this.player);
+                        move.setState(Move.PROMOTION_MOVE);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             } else {
                 if (this.x == 0) {
                     player.setPromotionPawn(this);
-                    player.getPromotionCallback().prompt(this.player);
-                    move.setState(Move.PROMOTION_MOVE);
+                    try {
+                        player.getPromotionCallback().prompt(this.player);
+                        move.setState(Move.PROMOTION_MOVE);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
