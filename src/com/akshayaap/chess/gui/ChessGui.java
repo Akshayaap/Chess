@@ -15,11 +15,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class ChessGui {
-    private static final Dimension OUTER_FRAME_DIMENSION;
-
-    static {
-        OUTER_FRAME_DIMENSION = new Dimension(800, 800);
-    }
+    private static final Dimension OUTER_FRAME_DIMENSION = new Dimension(800, 800);
 
     private final ChessGame game;
     private final Promotion promotionCallback = new Promotion();
@@ -28,6 +24,7 @@ public class ChessGui {
     private final State state;
     private final BoardPanel boardPanel;
     private Move move;
+
     public ChessGui() throws IOException {
         this.game = new ChessGame();
         game.setPromotionCallback(promotionCallback);
@@ -43,6 +40,8 @@ public class ChessGui {
 
         this.boardPanel = new BoardPanel();
         this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
+        this.gameFrame.add(new CaptureWindow(game.getPlayerWhite()), BorderLayout.WEST);
+        this.gameFrame.add(new CaptureWindow(game.getPlayerBlack()), BorderLayout.EAST);
         this.gameFrame.pack();
 
         this.state = new State();

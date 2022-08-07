@@ -115,4 +115,8 @@ public class ChessGame {
         this.playerBlack.setPromotionCallback(promotionCallback);
         this.playerWhite.setPromotionCallback(promotionCallback);
     }
+
+    public Player getPlayerBlack() {
+        return this.playerBlack;
+    }
 }
