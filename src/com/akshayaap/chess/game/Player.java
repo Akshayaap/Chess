@@ -26,7 +26,7 @@ public class Player {
 
         pieces[0] = new Piece[8];
         for (int j = 0; j < 8; j++) {
-            pieces[0][j] = new Pawn(!this.color ? 1 : 6, j, this, j);
+            pieces[0][j] = new Pawn(this.color ? 1 : 6, j, this, j);
         }
 
         pieces[1] = new Piece[2];
@@ -45,7 +45,7 @@ public class Player {
         pieces[4][0] = new Queen(this.color ? 0 : 7, 4, this);
 
         pieces[5] = new Piece[1];
-        pieces[5][0] = new King(this.color ? 2 : 5, 3, this);
+        pieces[5][0] = new King(this.color ? 0 : 7, 3, this);
 
         resetMoveMap();
         resetAttackMap();
