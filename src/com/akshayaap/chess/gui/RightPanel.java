@@ -1,6 +1,7 @@
 package com.akshayaap.chess.gui;
 
 import com.akshayaap.chess.game.ChessGame;
+import com.akshayaap.chess.game.util.Logable;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -13,18 +14,23 @@ import java.awt.event.AdjustmentListener;
 
 public class RightPanel extends JPanel {
     private ChessGame game;
+    private Logger logger = new Logger();
 
     public RightPanel(ChessGame game) {
         super();
-        setPreferredSize(new Dimension(200, 800));
+        setPreferredSize(new Dimension(400, 800));
         this.game = game;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         add(new StatusBar());
         add(new ChatPane());
-        add(new Logger());
+        add(logger);
         validate();
+        game.setLogable(logger);
     }
 
+    public Logable getLogable() {
+        return logger;
+    }
 
     private class StatusBar extends JPanel {
         private final JLabel status = new JLabel("Start The Game");
@@ -44,16 +50,30 @@ public class RightPanel extends JPanel {
         }
     }
 
-    private class Logger extends JPanel {
+    private class Logger extends JPanel implements Logable {
         private final JTextArea log = new JTextArea();
+        private final JScrollPane scroll = new JScrollPane(log);
 
         public Logger() {
             super();
             setLayout(new BorderLayout());
-            setPreferredSize(new Dimension(200, 200));
+            setPreferredSize(new Dimension(400, 200));
             setBorder(BasicBorders.getInternalFrameBorder());
-            add(log, BorderLayout.CENTER);
+            scroll.setWheelScrollingEnabled(true);
+            scroll.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+                public void adjustmentValueChanged(AdjustmentEvent e) {
+                    e.getAdjustable().setValue(e.getAdjustable().getMaximum());
+                }
+            });
+            add(scroll, BorderLayout.CENTER);
+
             validate();
+        }
+
+        @Override
+        public void log(String message) {
+            log.append(message + "\n");
+            log.setCaretPosition(log.getDocument().getLength());
         }
     }
 
@@ -83,13 +103,13 @@ public class RightPanel extends JPanel {
                 public void actionPerformed(ActionEvent e) {
                     JLabel next = new JLabel("Message :#" + ++messageCount);
                     next.setBorder(new LineBorder(Color.BLACK, 1));
-                    next.setSize(new Dimension(200, 200));
+                    next.setSize(new Dimension(400, 200));
                     chat.add(next);
                     chat.validate();
                     validate();
                 }
             });
-            message.setSize(new Dimension(200, 10));
+            message.setSize(new Dimension(400, 10));
             add(scrollPane);
             add(message);
             add(send);

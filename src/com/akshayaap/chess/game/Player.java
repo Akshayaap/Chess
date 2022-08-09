@@ -1,6 +1,8 @@
 package com.akshayaap.chess.game;
 
 
+import com.akshayaap.chess.game.util.Logable;
+
 public class Player {
 
     private final Piece[][] pieces;
@@ -19,6 +21,7 @@ public class Player {
     private PromotionCallback promotionCallback;
     private CaptureCallBack captureCallBack;
     private Pawn promotionPawn = null;
+    private Logable logable;
 
     public Player(boolean color, Tile[][] board) {
         this.color = color;
@@ -261,6 +264,10 @@ public class Player {
 
     public void setCaptrueCallback(CaptureCallBack captureCallBack) {
         this.captureCallBack = captureCallBack;
+    }
+
+    public void setLogable(Logable logable) {
+        this.logable = logable;
     }
 }
 

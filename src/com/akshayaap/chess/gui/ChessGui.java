@@ -47,7 +47,7 @@ public class ChessGui {
         this.menuBar = new ChessMenu(game);
         this.gameFrame.setJMenuBar(this.menuBar);
         this.gameFrame.setVisible(true);
-        this.gameFrame.setResizable(true);
+        this.gameFrame.setResizable(false);
         this.gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
