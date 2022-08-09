@@ -24,7 +24,6 @@ public class CaptureWindow extends JPanel implements CaptureCallBack {
     public void capture(Piece piece) {
         String path = "res/" + ((piece.getColor() ? "white_" : "black_")) + piece.getType() + ".png";
         try {
-            System.out.println(path);
             add(new JLabel(new ImageIcon(ImageIO.read(new File(path)).getScaledInstance(60, 60, Image.SCALE_SMOOTH))));
             validate();
         } catch (IOException ex) {
