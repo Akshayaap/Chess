@@ -8,27 +8,34 @@ import com.akshayaap.chess.game.State;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 
 public class ChessGui {
-    private static final Dimension OUTER_FRAME_DIMENSION = new Dimension(800, 800);
-
-    private final ChessGame game;
     private final Promotion promotionCallback = new Promotion();
     private final JFrame gameFrame;
+    private final JPanel gamePanel = new JPanel();
     private final JMenuBar menuBar;
     private final State state;
     private final BoardPanel boardPanel;
+    private final ChessGame game;
     private CaptureCallBack captureCallBackBlack = null;
     private CaptureCallBack captureCallBackWhite = null;
     private Move move;
 
     public ChessGui() throws IOException {
+        try {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         this.game = new ChessGame();
         captureCallBackWhite = new CaptureWindow(game.getPlayerWhite());
         captureCallBackBlack = new CaptureWindow(game.getPlayerBlack());
@@ -36,19 +43,25 @@ public class ChessGui {
         game.getPlayerWhite().setCaptrueCallback(captureCallBackWhite);
         game.getPlayerBlack().setCaptrueCallback(captureCallBackBlack);
         this.gameFrame = new JFrame("A Chess Game !");
-        this.gameFrame.setLayout(new BorderLayout());
-        this.menuBar = populateMenuBar();
+        this.gameFrame.setLayout(new FlowLayout());
+        this.menuBar = new ChessMenu(game);
         this.gameFrame.setJMenuBar(this.menuBar);
-        this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
         this.gameFrame.setVisible(true);
-        this.gameFrame.setResizable(false);
+        this.gameFrame.setResizable(true);
         this.gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
         this.boardPanel = new BoardPanel();
-        this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
-        this.gameFrame.add((CaptureWindow) captureCallBackWhite, BorderLayout.WEST);
-        this.gameFrame.add((CaptureWindow) captureCallBackBlack, BorderLayout.EAST);
+        this.gamePanel.setLayout(new BorderLayout());
+        this.gamePanel.add(new ChessControlPanel(game), BorderLayout.NORTH);
+        this.gamePanel.add(this.boardPanel, BorderLayout.CENTER);
+        this.gamePanel.add((CaptureWindow) captureCallBackWhite, BorderLayout.WEST);
+        this.gamePanel.add((CaptureWindow) captureCallBackBlack, BorderLayout.EAST);
+
+        this.gameFrame.add(this.gamePanel, BorderLayout.CENTER);
+        this.gameFrame.add(new RightPanel(game));
+
+        this.gameFrame.validate();
         this.gameFrame.pack();
 
         this.state = new State();
@@ -60,37 +73,9 @@ public class ChessGui {
         return game;
     }
 
-    private JMenuBar populateMenuBar() {
-        final JMenuBar menubar = new JMenuBar();
-        menubar.add(createFileMenu());
-        return menubar;
-    }
-
-    private JMenu createFileMenu() {
-        final JMenu fileMenu = new JMenu("File");
-        final JMenuItem openPGN = new JMenuItem("Load pGN ");
-        openPGN.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Open PGN");
-            }
-        });
-        fileMenu.add(openPGN);
-        final JMenuItem exitMenu = new JMenuItem("exit");
-        exitMenu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
-        fileMenu.add(exitMenu);
-        return fileMenu;
-    }
-
     public void render() {
         this.boardPanel.render();
         gameFrame.validate();
-        gameFrame.pack();
     }
 
     private class BoardPanel extends JPanel {

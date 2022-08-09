@@ -113,7 +113,24 @@ public class Player {
     }
 
     public void reset() {
+        for (int j = 0; j < 8; j++) {
+            pieces[0][j].giveLife(this.color ? 1 : 6, j);
+        }
 
+        pieces[1][0].giveLife(this.color ? 0 : 7, 1);
+        pieces[1][1].giveLife(this.color ? 0 : 7, 6);
+
+        pieces[2][0].giveLife(this.color ? 0 : 7, 2);
+        pieces[2][1].giveLife(this.color ? 0 : 7, 5);
+
+        pieces[3][0].giveLife(this.color ? 0 : 7, 0);
+        pieces[3][1].giveLife(this.color ? 0 : 7, 7);
+
+        pieces[4][0].giveLife(this.color ? 0 : 7, 4);
+
+        pieces[5][0].giveLife(this.color ? 0 : 7, 3);
+        resetMoveMap();
+        resetAttackMap();
     }
 
     public void resetAttackMap() {

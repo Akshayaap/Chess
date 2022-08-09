@@ -119,4 +119,12 @@ public class ChessGame {
     public Player getPlayerBlack() {
         return this.playerBlack;
     }
+
+    public void reset() {
+        this.move.reset();
+        this.state.reset();
+        this.board.resetBoard();
+        this.playerWhite.reset();
+        this.playerWhite.reset();
+    }
 }
