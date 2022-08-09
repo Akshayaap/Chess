@@ -1,6 +1,7 @@
 package com.akshayaap.chess.gui;
 
 import com.akshayaap.chess.game.ChessGame;
+import com.akshayaap.chess.game.State;
 import com.akshayaap.chess.game.util.Logable;
 
 import javax.swing.*;
@@ -15,14 +16,16 @@ import java.awt.event.AdjustmentListener;
 public class RightPanel extends JPanel {
     private ChessGame game;
     private Logger logger = new Logger();
+    private ChatPane chatPane = new ChatPane();
+    private StatusBar statusBar = new StatusBar();
 
     public RightPanel(ChessGame game) {
         super();
         setPreferredSize(new Dimension(400, 800));
         this.game = game;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        add(new StatusBar());
-        add(new ChatPane());
+        add(statusBar);
+        add(chatPane);
         add(logger);
         validate();
         game.setLogable(logger);
@@ -32,21 +35,54 @@ public class RightPanel extends JPanel {
         return logger;
     }
 
+    public void update() {
+        statusBar.update();
+    }
+
     private class StatusBar extends JPanel {
         private final JLabel status = new JLabel("Start The Game");
         private final Font font = new Font("Arial", Font.BOLD, 20);
+        private final JLabel turn = new JLabel("Turn: ");
+        private final JLabel turnValue = new JLabel("White");
+        private final JLabel turnColor = new JLabel("Color: ");
 
         public StatusBar() {
             super();
+            setPreferredSize(new Dimension(400, 200));
+            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             setBorder(BasicBorders.getInternalFrameBorder());
+
             status.setFont(font);
             status.setForeground(Color.RED);
             add(status);
+            add(turn);
+            add(turnValue);
+            add(turnColor);
+
             validate();
         }
 
         public void update() {
+            switch (game.getState().getState()) {
+                case State.NORMAL -> status.setText("Normal");
+                case State.SELECTED -> status.setText("Setected Piece: " + game.getState().getChX() + " " + game.getState().getChY());
+                case State.INVALID -> status.setText("INVALID");
 
+            }
+            switch (game.getState().getCheckState()) {
+                case State.WHITE_CHECKMATE -> turnValue.setText("White Checkmate");
+                case State.BLACK_CHECKMATE -> turnValue.setText("Black Checkmate");
+                case State.WHITE_CHECK -> turnValue.setText("White Check");
+                case State.BLACK_CHECK -> turnValue.setText("Black Check");
+                case State.WHITE_STALEMATE -> turnValue.setText("White Stalemate");
+                case State.BLACK_STALEMATE -> turnValue.setText("Black Stalemate");
+            }
+            if (game.getState().getTurn()) {
+                turnColor.setText("Color: White");
+            } else {
+                turnColor.setText("Color: Black");
+            }
+            validate();
         }
     }
 

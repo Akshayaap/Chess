@@ -3,7 +3,6 @@ package com.akshayaap.chess.gui;
 import com.akshayaap.chess.game.CaptureCallBack;
 import com.akshayaap.chess.game.ChessGame;
 import com.akshayaap.chess.game.Move;
-import com.akshayaap.chess.game.State;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -18,9 +17,10 @@ public class ChessGui {
     private final JFrame gameFrame;
     private final JPanel gamePanel = new JPanel();
     private final JMenuBar menuBar;
-    private final State state;
     private final BoardPanel boardPanel;
     private final ChessGame game;
+    private ChessControlPanel controlPanel;
+    private RightPanel rightPanel;
     private CaptureCallBack captureCallBackBlack = null;
     private CaptureCallBack captureCallBackWhite = null;
     private Move move;
@@ -53,21 +53,24 @@ public class ChessGui {
 
         this.boardPanel = new BoardPanel();
         this.gamePanel.setLayout(new BorderLayout());
-        this.gamePanel.add(new ChessControlPanel(game), BorderLayout.NORTH);
+        controlPanel = new ChessControlPanel(game);
+        this.gamePanel.add(controlPanel, BorderLayout.NORTH);
         this.gamePanel.add(this.boardPanel, BorderLayout.CENTER);
         this.gamePanel.add((CaptureWindow) captureCallBackWhite, BorderLayout.WEST);
         this.gamePanel.add((CaptureWindow) captureCallBackBlack, BorderLayout.EAST);
 
         this.gameFrame.add(this.gamePanel, BorderLayout.CENTER);
-        this.gameFrame.add(new RightPanel(game));
+        rightPanel = new RightPanel(game);
+        controlPanel = new ChessControlPanel(game);
+        this.gameFrame.add(rightPanel);
 
         this.gameFrame.validate();
         this.gameFrame.pack();
 
-        this.state = new State();
+        update();
         this.render();
-
     }
+
 
     public ChessGame getGame() {
         return game;
@@ -76,6 +79,10 @@ public class ChessGui {
     public void render() {
         this.boardPanel.render();
         gameFrame.validate();
+    }
+
+    private void update() {
+        rightPanel.update();
     }
 
     private class BoardPanel extends JPanel {
@@ -152,6 +159,8 @@ public class ChessGui {
         private static final Color SELECT_TILE = new Color(255, 255, 0);
         private static final Color SOURCE_TILE = new Color(0, 0, 255);
         private static final ImageIcon[][] IMGS = new ImageIcon[2][6];
+        private static ImageIcon CIRCLE_GREEN;
+        private static ImageIcon CIRCLE;
 
         static {
 
@@ -166,6 +175,13 @@ public class ChessGui {
                     }
                 }
             }
+
+            try {
+                CIRCLE = new ImageIcon(ImageIO.read(new File("res/circle.png")).getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+                CIRCLE_GREEN = new ImageIcon(ImageIO.read(new File("res/circle_green.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         private final int x;
@@ -173,7 +189,8 @@ public class ChessGui {
 
 
         public TilePanel(int x, int y) {
-            super(new GridBagLayout());
+            super();
+            setLayout(new OverlayLayout(this));
             this.x = x;
             this.y = y;
             setPreferredSize(TILE_DIMENSION);
@@ -187,7 +204,10 @@ public class ChessGui {
             removeAll();
             setBackground((this.x + this.y) % 2 == 0 ? LIGHT_SQUARE : DARK_SQUARE);
             if (ChessGui.this.game.getPiece(this.x, this.y) != null) {
-                add(new JLabel(IMGS[ChessGui.this.game.getPiece(this.x, this.y).getColor() ? 1 : 0][ChessGui.this.game.getPiece(this.x, this.y).getType()]));
+                JLabel label = new JLabel(IMGS[ChessGui.this.game.getPiece(this.x, this.y).getColor() ? 1 : 0][ChessGui.this.game.getPiece(this.x, this.y).getType()]);
+                label.setAlignmentX(CENTER_ALIGNMENT);
+                label.setAlignmentY(CENTER_ALIGNMENT);
+                add(label);
             }
             revalidate();
             repaint();
@@ -206,7 +226,10 @@ public class ChessGui {
         }
 
         public void setPossibleTile() {
-            this.setBackground(THREATEN_TILE);
+            JLabel label = new JLabel(CIRCLE);
+            label.setAlignmentX(CENTER_ALIGNMENT);
+            label.setAlignmentY(CENTER_ALIGNMENT);
+            this.add(label);
         }
 
         private class Input implements MouseListener {
@@ -234,6 +257,7 @@ public class ChessGui {
                         default:
                             break;
                     }
+                    ChessGui.this.update();
                     ChessGui.this.render();
                 }
 

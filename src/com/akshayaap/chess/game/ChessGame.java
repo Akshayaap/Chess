@@ -40,7 +40,6 @@ public class ChessGame {
                 move.setDestination(-1, -1);
                 break;
             case State.NORMAL:
-                logger.log("Normal state");
                 if (this.board.getPiece(x, y) == null) {
                     logger.log("No piece selected");
                     move.setState(Move.INVALID_SELECTION);
@@ -65,18 +64,18 @@ public class ChessGame {
                 }
                 break;
             case State.SELECTED:
-                logger.log("Selected state");
                 if (this.board.getPiece(x, y) == null) {
                     this.state.setChXY(x, y);
                     move = this.board.moveTo(this.state.getChXPrev(), this.state.getChYPrev(), x, y);
                     this.state.fallBack();
                     move.setTurn(this.state.getTurn());
-                    logger.log("Normal Move:" + move.getState() + " " + move.getX1() + " " + move.getY1() + " " + move.getX2() + " " + move.getY2());
                     if (move.getState() != Move.ILLEGAL_MOVE && move.getState() != Move.SOURCE_IS_EMPTY && move.getState() != Move.INVALID_SELECTION && move.getState() != Move.NOT_APPLICABLE) {
-                        logger.log("Move:" + move.getState() + " " + move.getX1() + " " + move.getY1() + " " + move.getX2() + " " + move.getY2());
+                        logger.log("Normal Move:" + move.getState() + " " + move.getX1() + " " + move.getY1() + " " + move.getX2() + " " + move.getY2());
                         this.state.toggleTurn();
                         logger.log("Turn:" + this.state.getTurn());
                         update();
+                    } else {
+                        logger.log("Illegal Move:" + move.getState() + " " + move.getX1() + " " + move.getY1() + " " + move.getX2() + " " + move.getY2());
                     }
                 } else {
                     if (this.board.getPiece(x, y).getColor() != this.state.getTurn()) {
@@ -89,6 +88,8 @@ public class ChessGame {
                             logger.log("Capture Move:" + move.getState() + " " + move.getX1() + " " + move.getY1() + " " + move.getX2() + " " + move.getY2());
                             this.state.toggleTurn();
                             update();
+                        } else {
+                            logger.log("Illegal Move:" + move.getState() + " " + move.getX1() + " " + move.getY1() + " " + move.getX2() + " " + move.getY2());
                         }
                     } else {
                         logger.log("Piece Selected:" + this.board.getPiece(x, y).getType() + " " + this.board.getPiece(x, y).getColor() + " " + x + " " + y);
@@ -113,17 +114,36 @@ public class ChessGame {
 
     public void update() {
         if (state.getTurn()) {
-            logger.log("White's turn");
             logger.log("Updating Black's aattackMap...");
             playerBlack.updateAttackMap();
             logger.log("Updating White's moveMap...");
             playerWhite.updateMoveMap();
+
+            if (playerBlack.isCheckMate()) {
+                logger.log("Black is CheckMate");
+                state.setCheckState(State.BLACK_CHECKMATE);
+            } else if (playerBlack.isCheck()) {
+                logger.log("Black is Check");
+                state.setCheckState(State.BLACK_CHECK);
+            } else if (playerBlack.isStallMate()) {
+                logger.log("Black is Stalemate");
+                state.setCheckState(State.BLACK_STALEMATE);
+            }
         } else {
-            logger.log("Black's turn");
             logger.log("Updating White's aattackMap...");
             playerWhite.updateAttackMap();
             logger.log("Updating Black's moveMap...");
             playerBlack.updateMoveMap();
+            if (playerWhite.isCheckMate()) {
+                logger.log("Black is CheckMate");
+                state.setCheckState(State.WHITE_CHECKMATE);
+            } else if (playerWhite.isCheck()) {
+                logger.log("Black is Check");
+                state.setCheckState(State.WHITE_CHECK);
+            } else if (playerWhite.isStallMate()) {
+                logger.log("Black is Stalemate");
+                state.setCheckState(State.WHITE_STALEMATE);
+            }
         }
     }
 
@@ -153,5 +173,9 @@ public class ChessGame {
         this.logger = logable;
         playerWhite.setLogable(logable);
         playerBlack.setLogable(logable);
+    }
+
+    public State getState() {
+        return this.state;
     }
 }
