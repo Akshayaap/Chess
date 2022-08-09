@@ -16,7 +16,8 @@ public class Player {
     private Player opponent;
     private boolean[][] moveMap = new boolean[8][8];
 
-    private PromotionCallback callback;
+    private PromotionCallback promotionCallback;
+    private CaptureCallBack captureCallBack;
     private Pawn promotionPawn = null;
 
     public Player(boolean color, Tile[][] board) {
@@ -226,15 +227,23 @@ public class Player {
     }
 
     public PromotionCallback getPromotionCallback() {
-        return this.callback;
+        return this.promotionCallback;
     }
 
     public void setPromotionCallback(PromotionCallback callback) {
-        this.callback = callback;
+        this.promotionCallback = callback;
     }
 
     public void setPromotionPawn(Pawn pawn) {
         this.promotionPawn = pawn;
+    }
+
+    public void capture(Piece piece) {
+        captureCallBack.capture(piece);
+    }
+
+    public void setCaptrueCallback(CaptureCallBack captureCallBack) {
+        this.captureCallBack = captureCallBack;
     }
 }
 

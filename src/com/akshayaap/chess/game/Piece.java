@@ -111,6 +111,7 @@ public abstract class Piece {
         if (this.moveMap[x][y]) {
             if (this.board[x][y].getPiece() != null) {
                 move.setState(Move.CAPTURE_MOVE);
+                this.player.capture(this.board[x][y].getPiece());
                 this.board[x][y].getPiece().capture();
             } else {
                 move.setState(Move.NORMAL_MOVE);

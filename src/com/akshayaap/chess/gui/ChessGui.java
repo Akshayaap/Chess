@@ -1,5 +1,6 @@
 package com.akshayaap.chess.gui;
 
+import com.akshayaap.chess.game.CaptureCallBack;
 import com.akshayaap.chess.game.ChessGame;
 import com.akshayaap.chess.game.Move;
 import com.akshayaap.chess.game.State;
@@ -23,11 +24,17 @@ public class ChessGui {
     private final JMenuBar menuBar;
     private final State state;
     private final BoardPanel boardPanel;
+    private CaptureCallBack captureCallBackBlack = null;
+    private CaptureCallBack captureCallBackWhite = null;
     private Move move;
 
     public ChessGui() throws IOException {
         this.game = new ChessGame();
+        captureCallBackWhite = new CaptureWindow(game.getPlayerWhite());
+        captureCallBackBlack = new CaptureWindow(game.getPlayerBlack());
         game.setPromotionCallback(promotionCallback);
+        game.getPlayerWhite().setCaptrueCallback(captureCallBackWhite);
+        game.getPlayerBlack().setCaptrueCallback(captureCallBackBlack);
         this.gameFrame = new JFrame("A Chess Game !");
         this.gameFrame.setLayout(new BorderLayout());
         this.menuBar = populateMenuBar();
@@ -40,8 +47,8 @@ public class ChessGui {
 
         this.boardPanel = new BoardPanel();
         this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
-        this.gameFrame.add(new CaptureWindow(game.getPlayerWhite()), BorderLayout.WEST);
-        this.gameFrame.add(new CaptureWindow(game.getPlayerBlack()), BorderLayout.EAST);
+        this.gameFrame.add((CaptureWindow) captureCallBackWhite, BorderLayout.WEST);
+        this.gameFrame.add((CaptureWindow) captureCallBackBlack, BorderLayout.EAST);
         this.gameFrame.pack();
 
         this.state = new State();
@@ -82,6 +89,8 @@ public class ChessGui {
 
     public void render() {
         this.boardPanel.render();
+        gameFrame.validate();
+        gameFrame.pack();
     }
 
     private class BoardPanel extends JPanel {
@@ -261,6 +270,5 @@ public class ChessGui {
             }
         }
     }
-
 
 }
