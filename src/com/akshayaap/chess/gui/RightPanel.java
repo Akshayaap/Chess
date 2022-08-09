@@ -8,6 +8,8 @@ import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 
 public class RightPanel extends JPanel {
     private ChessGame game;
@@ -57,12 +59,23 @@ public class RightPanel extends JPanel {
 
     private class ChatPane extends JPanel {
         private final JButton send = new JButton("Send");
-        private final JPanel chat = new JPanel();
+        private final JScrollPane scrollPane;
+        private final JPanel chat;
         private JTextField message = new JTextField();
         private int messageCount = 0;
 
         public ChatPane() {
             super();
+            chat = new JPanel();
+            //chat.setPreferredSize(new Dimension(200, 150));
+            chat.setLayout(new BoxLayout(chat, BoxLayout.Y_AXIS));
+            scrollPane = new JScrollPane(chat);
+            scrollPane.setWheelScrollingEnabled(true);
+            scrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+                public void adjustmentValueChanged(AdjustmentEvent e) {
+                    e.getAdjustable().setValue(e.getAdjustable().getMaximum());
+                }
+            });
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             setBorder(BasicBorders.getInternalFrameBorder());
             send.addActionListener(new ActionListener() {
@@ -70,11 +83,14 @@ public class RightPanel extends JPanel {
                 public void actionPerformed(ActionEvent e) {
                     JLabel next = new JLabel("Message :#" + ++messageCount);
                     next.setBorder(new LineBorder(Color.BLACK, 1));
-                    add(next);
+                    next.setSize(new Dimension(200, 200));
+                    chat.add(next);
+                    chat.validate();
                     validate();
                 }
             });
-            message.setPreferredSize(new Dimension(200, 10));
+            message.setSize(new Dimension(200, 10));
+            add(scrollPane);
             add(message);
             add(send);
             validate();
