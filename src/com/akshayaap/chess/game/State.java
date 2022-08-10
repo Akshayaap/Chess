@@ -12,9 +12,9 @@ public class State {
 
     public static final int WHITE_CHECK = -100;
     public static final int BLACK_CHECK = 101;
-    public static final int WHITE_CHECKMATE = -102;
+    public static final int WHITE_CHECKMATE = 102;
     public static final int BLACK_CHECKMATE = 103;
-    public static final int WHITE_STALEMATE = -104;
+    public static final int WHITE_STALEMATE = 104;
     public static final int BLACK_STALEMATE = 105;
 
 

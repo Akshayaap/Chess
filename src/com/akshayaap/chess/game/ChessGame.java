@@ -34,19 +34,19 @@ public class ChessGame {
         move.reset();
         switch (this.state.getState()) {
             case State.INVALID:
-                logger.log("Invalid state");
+                logger.log(Thread.currentThread().getStackTrace()[1] + "::Invalid state");
                 move.setState(Move.INVALID_SELECTION);
                 move.setSource(x, y);
                 move.setDestination(-1, -1);
                 break;
             case State.NORMAL:
                 if (this.board.getPiece(x, y) == null) {
-                    logger.log("No piece selected");
+                    logger.log(Thread.currentThread().getStackTrace()[1] + "::No piece selected");
                     move.setState(Move.INVALID_SELECTION);
                     move.setSource(x, y);
                     move.setDestination(-1, -1);
                 } else if (this.state.getTurn() == this.board.getPiece(x, y).getColor()) {
-                    logger.log("Piece Selected:" + this.board.getPiece(x, y).getType() + " " + this.board.getPiece(x, y).getColor() + " " + x + " " + y);
+                    logger.log(Thread.currentThread().getStackTrace()[1] + "::Piece Selected:" + this.board.getPiece(x, y).getType() + " " + this.board.getPiece(x, y).getColor() + " " + x + " " + y);
                     this.state.setChXYPrev(x, y);
                     this.state.setState(State.SELECTED);
                     this.state.setChXY(-1, -1);
@@ -57,7 +57,7 @@ public class ChessGame {
                     move.setTurn(this.state.getTurn());
                     move.setMap(board.getPiece(x, y).getMoveMap());
                 } else {
-                    logger.log("Invalid selection");
+                    logger.log(Thread.currentThread().getStackTrace()[1] + "::Invalid selection");
                     move.setState(Move.INVALID_SELECTION);
                     move.setSource(x, y);
                     move.setDestination(-1, -1);
@@ -70,12 +70,12 @@ public class ChessGame {
                     this.state.fallBack();
                     move.setTurn(this.state.getTurn());
                     if (move.getState() != Move.ILLEGAL_MOVE && move.getState() != Move.SOURCE_IS_EMPTY && move.getState() != Move.INVALID_SELECTION && move.getState() != Move.NOT_APPLICABLE) {
-                        logger.log("Normal Move:" + move.getState() + " " + move.getX1() + " " + move.getY1() + " " + move.getX2() + " " + move.getY2());
+                        logger.log(Thread.currentThread().getStackTrace()[1] + "::Normal Move:" + move.getState() + " " + move.getX1() + " " + move.getY1() + " " + move.getX2() + " " + move.getY2());
                         this.state.toggleTurn();
-                        logger.log("Turn:" + this.state.getTurn());
+                        logger.log(Thread.currentThread().getStackTrace()[1] + "::Turn:" + this.state.getTurn());
                         update();
                     } else {
-                        logger.log("Illegal Move:" + move.getState() + " " + move.getX1() + " " + move.getY1() + " " + move.getX2() + " " + move.getY2());
+                        logger.log(Thread.currentThread().getStackTrace()[1] + "::Illegal Move:" + move.getState() + " " + move.getX1() + " " + move.getY1() + " " + move.getX2() + " " + move.getY2());
                     }
                 } else {
                     if (this.board.getPiece(x, y).getColor() != this.state.getTurn()) {
@@ -85,14 +85,14 @@ public class ChessGame {
                         move.setTurn(this.state.getTurn());
                         if (move.getState() != Move.ILLEGAL_MOVE && move.getState() != Move.SOURCE_IS_EMPTY && move.getState() != Move.INVALID_SELECTION && move.getState() != Move.NOT_APPLICABLE) {
                             move.setState(Move.CAPTURE_MOVE);
-                            logger.log("Capture Move:" + move.getState() + " " + move.getX1() + " " + move.getY1() + " " + move.getX2() + " " + move.getY2());
+                            logger.log(Thread.currentThread().getStackTrace()[1] + "::Capture Move:" + move.getState() + " " + move.getX1() + " " + move.getY1() + " " + move.getX2() + " " + move.getY2());
                             this.state.toggleTurn();
                             update();
                         } else {
-                            logger.log("Illegal Move:" + move.getState() + " " + move.getX1() + " " + move.getY1() + " " + move.getX2() + " " + move.getY2());
+                            logger.log(Thread.currentThread().getStackTrace()[1] + "::Illegal Move:" + move.getState() + " " + move.getX1() + " " + move.getY1() + " " + move.getX2() + " " + move.getY2());
                         }
                     } else {
-                        logger.log("Piece Selected:" + this.board.getPiece(x, y).getType() + " " + this.board.getPiece(x, y).getColor() + " " + x + " " + y);
+                        logger.log(Thread.currentThread().getStackTrace()[1] + "::Piece Selected:" + this.board.getPiece(x, y).getType() + " " + this.board.getPiece(x, y).getColor() + " " + x + " " + y);
 
                         this.state.fallBack();
                         this.state.setChXYPrev(x, y);
@@ -114,35 +114,35 @@ public class ChessGame {
 
     public void update() {
         if (state.getTurn()) {
-            logger.log("Updating Black's aattackMap...");
+            logger.log(Thread.currentThread().getStackTrace()[1] + "::Updating Black's aattackMap...");
             playerBlack.updateAttackMap();
-            logger.log("Updating White's moveMap...");
+            logger.log(Thread.currentThread().getStackTrace()[1] + "::Updating White's moveMap...");
             playerWhite.updateMoveMap();
 
-            if (playerBlack.isCheckMate()) {
-                logger.log("Black is CheckMate");
-                state.setCheckState(State.BLACK_CHECKMATE);
-            } else if (playerBlack.isCheck()) {
-                logger.log("Black is Check");
-                state.setCheckState(State.BLACK_CHECK);
-            } else if (playerBlack.isStallMate()) {
-                logger.log("Black is Stalemate");
-                state.setCheckState(State.BLACK_STALEMATE);
-            }
-        } else {
-            logger.log("Updating White's aattackMap...");
-            playerWhite.updateAttackMap();
-            logger.log("Updating Black's moveMap...");
-            playerBlack.updateMoveMap();
             if (playerWhite.isCheckMate()) {
-                logger.log("Black is CheckMate");
+                logger.log(Thread.currentThread().getStackTrace()[1] + "::White is CheckMate");
                 state.setCheckState(State.WHITE_CHECKMATE);
             } else if (playerWhite.isCheck()) {
-                logger.log("Black is Check");
-                state.setCheckState(State.WHITE_CHECK);
+                logger.log(Thread.currentThread().getStackTrace()[1] + "::White is Check");
+                state.setCheckState(State.WHITE_CHECKMATE);
             } else if (playerWhite.isStallMate()) {
-                logger.log("Black is Stalemate");
-                state.setCheckState(State.WHITE_STALEMATE);
+                logger.log(Thread.currentThread().getStackTrace()[1] + "::White is Stalemate");
+                state.setCheckState(State.WHITE_CHECKMATE);
+            }
+        } else {
+            logger.log(Thread.currentThread().getStackTrace()[1] + "::Updating White's aattackMap...");
+            playerWhite.updateAttackMap();
+            logger.log(Thread.currentThread().getStackTrace()[1] + "::Updating Black's moveMap...");
+            playerBlack.updateMoveMap();
+            if (playerBlack.isCheckMate()) {
+                logger.log(Thread.currentThread().getStackTrace()[1] + "::Black is CheckMate");
+                state.setCheckState(State.BLACK_CHECKMATE);
+            } else if (playerWhite.isCheck()) {
+                logger.log(Thread.currentThread().getStackTrace()[1] + "::Black is Check");
+                state.setCheckState(State.BLACK_CHECK);
+            } else if (playerBlack.isStallMate()) {
+                logger.log(Thread.currentThread().getStackTrace()[1] + "::Black is Stalemate");
+                state.setCheckState(State.BLACK_STALEMATE);
             }
         }
     }
@@ -161,12 +161,16 @@ public class ChessGame {
     }
 
     public void reset() {
-        logger.log("Resetting game");
+        logger.log(Thread.currentThread().getStackTrace()[1] + "::Resetting game");
         this.move.reset();
         this.state.reset();
         this.board.resetBoard();
         this.playerWhite.reset();
-        this.playerWhite.reset();
+        this.playerBlack.reset();
+        this.playerWhite.updateAttackMap();
+        this.playerBlack.updateAttackMap();
+        this.playerWhite.updateMoveMap();
+        this.playerBlack.updateMoveMap();
     }
 
     public void setLogable(Logable logable) {

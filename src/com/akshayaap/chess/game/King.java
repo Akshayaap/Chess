@@ -6,8 +6,6 @@ package com.akshayaap.chess.game;
 public class King extends Piece {
 
     private boolean check = false;
-    private boolean checkMate = false;
-    private boolean stallMate = false;
 
     public King(int x, int y, Player player) {
         super(x, y, player, 0);
@@ -62,8 +60,6 @@ public class King extends Piece {
             }
         }
         updateCheck();
-        updateCheckMate();
-        updateStallMate();
         return this.moveMap;
     }
 
@@ -103,25 +99,9 @@ public class King extends Piece {
         return this.check;
     }
 
-    public boolean isCheckMate() {
-        return this.checkMate;
-    }
-
     public boolean updateCheck() {
-        if (this.player.getThreatMap()[x][y]) {
-            this.check = true;
-        } else {
-            this.check = false;
-        }
+        this.check = this.player.getThreatMap()[x][y];
         return this.check;
     }
 
-    public boolean updateCheckMate() {
-        this.checkMate = this.check && this.player.getLegalMoves() == 0;
-        return this.checkMate;
-    }
-
-    public boolean updateStallMate() {
-        return this.stallMate;
-    }
 }

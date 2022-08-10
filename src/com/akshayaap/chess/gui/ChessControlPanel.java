@@ -1,11 +1,9 @@
 package com.akshayaap.chess.gui;
 
-import com.akshayaap.chess.game.ChessGame;
-
 import javax.swing.*;
 
 public class ChessControlPanel extends JPanel {
-    private final ChessGame game;
+    private final ChessGui game;
     private final JButton newGame = new JButton("New Game");
     private final JButton open = new JButton("Open");
     private final JButton save = new JButton("Save");
@@ -15,7 +13,7 @@ public class ChessControlPanel extends JPanel {
     private final JButton exit = new JButton("Exit");
     private final JButton about = new JButton("About");
 
-    public ChessControlPanel(ChessGame game) {
+    public ChessControlPanel(ChessGui game) {
         this.game = game;
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         add(newGame);
@@ -27,5 +25,7 @@ public class ChessControlPanel extends JPanel {
         add(exit);
         add(about);
         validate();
+
+        reset.addActionListener(e -> game.reset());
     }
 }

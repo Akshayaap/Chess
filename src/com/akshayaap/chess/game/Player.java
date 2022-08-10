@@ -118,20 +118,29 @@ public class Player {
     public void reset() {
         for (int j = 0; j < 8; j++) {
             pieces[0][j].giveLife(this.color ? 1 : 6, j);
+            pieces[0][j].reset();
         }
 
         pieces[1][0].giveLife(this.color ? 0 : 7, 1);
+        pieces[1][0].reset();
         pieces[1][1].giveLife(this.color ? 0 : 7, 6);
+        pieces[1][1].reset();
 
         pieces[2][0].giveLife(this.color ? 0 : 7, 2);
+        pieces[2][0].reset();
         pieces[2][1].giveLife(this.color ? 0 : 7, 5);
+        pieces[2][1].reset();
 
         pieces[3][0].giveLife(this.color ? 0 : 7, 0);
+        pieces[3][0].reset();
         pieces[3][1].giveLife(this.color ? 0 : 7, 7);
+        pieces[3][1].reset();
 
         pieces[4][0].giveLife(this.color ? 0 : 7, 4);
+        pieces[4][0].reset();
 
         pieces[5][0].giveLife(this.color ? 0 : 7, 3);
+        pieces[5][0].reset();
         resetMoveMap();
         resetAttackMap();
     }
@@ -156,32 +165,19 @@ public class Player {
         return check;
     }
 
-    public void setCheck(boolean check) {
-        this.check = check;
-    }
 
     public boolean isCheckMate() {
         return this.checkMate;
     }
 
-    public void setCheckMate(boolean checkMate) {
-        this.checkMate = checkMate;
-    }
 
     public boolean isStallMate() {
         return this.stallMate;
     }
 
-    public void setStallMate(boolean stallMate) {
-        this.stallMate = stallMate;
-    }
 
     public boolean[][] getThreatMap() {
         return threatMap;
-    }
-
-    public void setThreatMap(boolean[][] threatMap) {
-        this.threatMap = threatMap;
     }
 
     public boolean[][] getAttackMap() {
@@ -237,12 +233,12 @@ public class Player {
     }
 
     public boolean updateCheckMate() {
-        this.checkMate = ((King) pieces[5][0]).updateCheckMate();
+        this.checkMate = legalMoves == 0 && this.check;
         return this.checkMate;
     }
 
     public boolean updateStallMate() {
-        this.stallMate = ((King) pieces[5][0]).updateStallMate();
+        this.stallMate = legalMoves == 0 && !this.check;
         return this.stallMate;
     }
 

@@ -24,6 +24,7 @@ public class ChessGui {
     private CaptureCallBack captureCallBackBlack = null;
     private CaptureCallBack captureCallBackWhite = null;
     private Move move;
+    private Logger logger = new Logger();
 
     public ChessGui() throws IOException {
         try {
@@ -42,6 +43,7 @@ public class ChessGui {
         game.setPromotionCallback(promotionCallback);
         game.getPlayerWhite().setCaptrueCallback(captureCallBackWhite);
         game.getPlayerBlack().setCaptrueCallback(captureCallBackBlack);
+        game.setLogable(logger);
         this.gameFrame = new JFrame("A Chess Game !");
         this.gameFrame.setLayout(new FlowLayout());
         this.menuBar = new ChessMenu(game);
@@ -53,15 +55,16 @@ public class ChessGui {
 
         this.boardPanel = new BoardPanel();
         this.gamePanel.setLayout(new BorderLayout());
-        controlPanel = new ChessControlPanel(game);
+        controlPanel = new ChessControlPanel(this);
         this.gamePanel.add(controlPanel, BorderLayout.NORTH);
         this.gamePanel.add(this.boardPanel, BorderLayout.CENTER);
         this.gamePanel.add((CaptureWindow) captureCallBackWhite, BorderLayout.WEST);
         this.gamePanel.add((CaptureWindow) captureCallBackBlack, BorderLayout.EAST);
+        this.gamePanel.add(logger, BorderLayout.SOUTH);
 
         this.gameFrame.add(this.gamePanel, BorderLayout.CENTER);
         rightPanel = new RightPanel(game);
-        controlPanel = new ChessControlPanel(game);
+        controlPanel = new ChessControlPanel(this);
         this.gameFrame.add(rightPanel);
 
         this.gameFrame.validate();
@@ -83,6 +86,12 @@ public class ChessGui {
 
     private void update() {
         rightPanel.update();
+    }
+
+    public void reset() {
+        game.reset();
+        update();
+        render();
     }
 
     private class BoardPanel extends JPanel {

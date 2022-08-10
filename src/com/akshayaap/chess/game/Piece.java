@@ -88,6 +88,7 @@ public abstract class Piece {
         this.x = x;
         this.y = y;
         alive = true;
+        this.board[x][y].setPiece(this);
     }
 
     public boolean[][] getMoveMap() {
@@ -151,7 +152,6 @@ public abstract class Piece {
         if (temp != null) {
             temp.giveLife(x, y);
         }
-
         board[x][y].setPiece(temp);
         board[pX][pY].setPiece(this);
 
@@ -159,5 +159,10 @@ public abstract class Piece {
         this.y = pY;
 
         return legal;
+    }
+
+    public void reset() {
+        this.resetMoveMap();
+        this.resetAttackMap();
     }
 }

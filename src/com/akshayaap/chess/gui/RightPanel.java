@@ -2,7 +2,6 @@ package com.akshayaap.chess.gui;
 
 import com.akshayaap.chess.game.ChessGame;
 import com.akshayaap.chess.game.State;
-import com.akshayaap.chess.game.util.Logable;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -15,7 +14,6 @@ import java.awt.event.AdjustmentListener;
 
 public class RightPanel extends JPanel {
     private ChessGame game;
-    private Logger logger = new Logger();
     private ChatPane chatPane = new ChatPane();
     private StatusBar statusBar = new StatusBar();
 
@@ -26,14 +24,9 @@ public class RightPanel extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         add(statusBar);
         add(chatPane);
-        add(logger);
         validate();
-        game.setLogable(logger);
     }
 
-    public Logable getLogable() {
-        return logger;
-    }
 
     public void update() {
         statusBar.update();
@@ -65,17 +58,29 @@ public class RightPanel extends JPanel {
         public void update() {
             switch (game.getState().getState()) {
                 case State.NORMAL -> status.setText("Normal");
-                case State.SELECTED -> status.setText("Setected Piece: " + game.getState().getChX() + " " + game.getState().getChY());
+                case State.SELECTED -> status.setText("Setected Piece: " + game.getState().getChXPrev() + " " + game.getState().getChYPrev());
                 case State.INVALID -> status.setText("INVALID");
 
             }
             switch (game.getState().getCheckState()) {
-                case State.WHITE_CHECKMATE -> turnValue.setText("White Checkmate");
-                case State.BLACK_CHECKMATE -> turnValue.setText("Black Checkmate");
-                case State.WHITE_CHECK -> turnValue.setText("White Check");
-                case State.BLACK_CHECK -> turnValue.setText("Black Check");
-                case State.WHITE_STALEMATE -> turnValue.setText("White Stalemate");
-                case State.BLACK_STALEMATE -> turnValue.setText("Black Stalemate");
+                case State.WHITE_CHECKMATE:
+                    status.setText("White Checkmate");
+                    break;
+                case State.BLACK_CHECKMATE:
+                    status.setText("Black Checkmate");
+                    break;
+                case State.WHITE_CHECK:
+                    status.setText("White Check");
+                    break;
+                case State.BLACK_CHECK:
+                    status.setText("Black Check");
+                    break;
+                case State.WHITE_STALEMATE:
+                    status.setText("White Stalemate");
+                    break;
+                case State.BLACK_STALEMATE:
+                    status.setText("Black Stalemate");
+                    break;
             }
             if (game.getState().getTurn()) {
                 turnColor.setText("Color: White");
@@ -83,33 +88,6 @@ public class RightPanel extends JPanel {
                 turnColor.setText("Color: Black");
             }
             validate();
-        }
-    }
-
-    private class Logger extends JPanel implements Logable {
-        private final JTextArea log = new JTextArea();
-        private final JScrollPane scroll = new JScrollPane(log);
-
-        public Logger() {
-            super();
-            setLayout(new BorderLayout());
-            setPreferredSize(new Dimension(400, 200));
-            setBorder(BasicBorders.getInternalFrameBorder());
-            scroll.setWheelScrollingEnabled(true);
-            scroll.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
-                public void adjustmentValueChanged(AdjustmentEvent e) {
-                    e.getAdjustable().setValue(e.getAdjustable().getMaximum());
-                }
-            });
-            add(scroll, BorderLayout.CENTER);
-
-            validate();
-        }
-
-        @Override
-        public void log(String message) {
-            log.append(message + "\n");
-            log.setCaretPosition(log.getDocument().getLength());
         }
     }
 
