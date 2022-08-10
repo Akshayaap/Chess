@@ -4,7 +4,6 @@ import com.akshayaap.chess.game.ChessGame;
 import com.akshayaap.chess.game.State;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,11 +18,11 @@ public class RightPanel extends JPanel {
 
     public RightPanel(ChessGame game) {
         super();
-        setPreferredSize(new Dimension(400, 800));
+        setLayout(new BorderLayout());
+        //setPreferredSize(new Dimension(400, 800));
         this.game = game;
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        add(statusBar);
-        add(chatPane);
+        add(statusBar, BorderLayout.NORTH);
+        add(chatPane, BorderLayout.SOUTH);
         validate();
     }
 
@@ -41,8 +40,8 @@ public class RightPanel extends JPanel {
 
         public StatusBar() {
             super();
-            setPreferredSize(new Dimension(400, 200));
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+            //setSize(new Dimension(400, 400));
             setBorder(BasicBorders.getInternalFrameBorder());
 
             status.setFont(font);
@@ -101,10 +100,12 @@ public class RightPanel extends JPanel {
         public ChatPane() {
             super();
             chat = new JPanel();
-            //chat.setPreferredSize(new Dimension(200, 150));
+            //chat.setSize(new Dimension(400, 520));
+            //padding for BoxLayout
             chat.setLayout(new BoxLayout(chat, BoxLayout.Y_AXIS));
             scrollPane = new JScrollPane(chat);
             scrollPane.setWheelScrollingEnabled(true);
+            scrollPane.setPreferredSize(new Dimension(400, 520));
             scrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
                 public void adjustmentValueChanged(AdjustmentEvent e) {
                     e.getAdjustable().setValue(e.getAdjustable().getMaximum());
@@ -116,14 +117,15 @@ public class RightPanel extends JPanel {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     JLabel next = new JLabel("Message :#" + ++messageCount);
-                    next.setBorder(new LineBorder(Color.BLACK, 1));
-                    next.setSize(new Dimension(400, 200));
+                    next.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+                    //next.setSize(new Dimension(400, 80));
+                    next.setFont(new Font("Arial", Font.PLAIN, 15));
                     chat.add(next);
                     chat.validate();
                     validate();
                 }
             });
-            message.setSize(new Dimension(400, 10));
+            //message.setPreferredSize(new Dimension(400, 40));
             add(scrollPane);
             add(message);
             add(send);
