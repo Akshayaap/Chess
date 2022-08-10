@@ -1,6 +1,5 @@
 package com.akshayaap.chess.gui;
 
-import com.akshayaap.chess.game.CaptureCallBack;
 import com.akshayaap.chess.game.ChessGame;
 import com.akshayaap.chess.game.Move;
 
@@ -21,8 +20,8 @@ public class ChessGui {
     private final ChessGame game;
     private ChessControlPanel controlPanel;
     private RightPanel rightPanel;
-    private CaptureCallBack captureCallBackBlack = null;
-    private CaptureCallBack captureCallBackWhite = null;
+    private CaptureWindow captureCallBackBlack = null;
+    private CaptureWindow captureCallBackWhite = null;
     private Move move;
     private Logger logger = new Logger();
 
@@ -90,6 +89,12 @@ public class ChessGui {
 
     public void reset() {
         game.reset();
+        captureCallBackWhite.removeAll();
+        captureCallBackBlack.removeAll();
+        captureCallBackWhite.revalidate();
+        captureCallBackBlack.revalidate();
+        captureCallBackBlack.repaint();
+        captureCallBackWhite.repaint();
         update();
         render();
     }

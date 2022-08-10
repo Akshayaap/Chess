@@ -154,10 +154,9 @@ public abstract class Piece {
         }
         board[x][y].setPiece(temp);
         board[pX][pY].setPiece(this);
-
         this.x = pX;
         this.y = pY;
-
+        player.getOpponent().updateAttackMap();
         return legal;
     }
 
