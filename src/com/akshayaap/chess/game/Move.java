@@ -21,7 +21,6 @@ public class Move {
 
     public static final int TEST_MOVE = 200;
 
-
     private int state;
 
     private int checkState;
@@ -33,6 +32,7 @@ public class Move {
     private boolean[][] map;
 
     private boolean turn;
+    private Piece capturedPiece;  //if nay
 
     public Move() {
         this.reset();

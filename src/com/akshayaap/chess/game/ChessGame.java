@@ -3,6 +3,9 @@ package com.akshayaap.chess.game;
 import com.akshayaap.chess.game.util.Logable;
 import com.akshayaap.chess.gui.Promotion;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ChessGame {
     private final State state;
     private final ChessBoard board;
@@ -10,6 +13,7 @@ public class ChessGame {
     private final Player playerBlack;
     private Move move = new Move();
     private Logable logger;
+    private List<Move> moveHistory = new ArrayList<>();
 
     public ChessGame() {
         this.state = new State();
@@ -181,5 +185,28 @@ public class ChessGame {
 
     public State getState() {
         return this.state;
+    }
+
+    public void playBlack(Move move) {
+        Move tmp;
+        if (!state.getTurn()) {
+            logger.log(Thread.currentThread().getStackTrace()[1] + "::Playing Black's move");
+            tmp = this.board.moveTo(move.getX1(), move.getY1(), move.getX2(), move.getY2());
+            this.state.toggleTurn();
+            update();
+        } else {
+            logger.log(Thread.currentThread().getStackTrace()[1] + "::Black's move is not applicable");
+        }
+    }
+
+    public void playWhite(Move move) {
+        if (state.getTurn()) {
+            logger.log(Thread.currentThread().getStackTrace()[1] + "::Playing White's move");
+            this.board.moveTo(move.getX1(), move.getY1(), move.getX2(), move.getY2());
+            this.state.toggleTurn();
+            update();
+        } else {
+            logger.log(Thread.currentThread().getStackTrace()[1] + "::White's move is not applicable");
+        }
     }
 }

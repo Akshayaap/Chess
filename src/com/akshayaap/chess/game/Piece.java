@@ -164,4 +164,5 @@ public abstract class Piece {
         this.resetMoveMap();
         this.resetAttackMap();
     }
+
 }
