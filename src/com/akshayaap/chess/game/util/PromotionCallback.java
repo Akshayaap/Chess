@@ -1,4 +1,6 @@
-package com.akshayaap.chess.game;
+package com.akshayaap.chess.game.util;
+
+import com.akshayaap.chess.game.Player;
 
 import java.io.IOException;
 

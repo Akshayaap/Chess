@@ -2,7 +2,7 @@ package com.akshayaap.chess.gui;
 
 import com.akshayaap.chess.game.Piece;
 import com.akshayaap.chess.game.Player;
-import com.akshayaap.chess.game.PromotionCallback;
+import com.akshayaap.chess.game.util.PromotionCallback;
 
 import javax.swing.*;
 import java.awt.*;

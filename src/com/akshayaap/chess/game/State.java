@@ -6,11 +6,12 @@ package com.akshayaap.chess.game;
  */
 public class State {
 
-    public static final int INVALID = 0;
-    public static final int NORMAL = 1;
-    public static final int SELECTED = 2;
+    public static final int INVALID = -1;
+    public static final int NORMAL = 0;
+    public static final int SELECTED = 1;
 
-    public static final int WHITE_CHECK = -100;
+    public static final int NONE_CHECK = 0;
+    public static final int WHITE_CHECK = 100;
     public static final int BLACK_CHECK = 101;
     public static final int WHITE_CHECKMATE = 102;
     public static final int BLACK_CHECKMATE = 103;
@@ -49,7 +50,7 @@ public class State {
 
     public void reset() {
         this.state = NORMAL;
-
+        this.checkState = NONE_CHECK;
         this.chX = -1;
         this.chY = -1;
 

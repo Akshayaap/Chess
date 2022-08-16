@@ -2,6 +2,7 @@ package com.akshayaap.chess.game;
 
 
 import com.akshayaap.chess.game.util.Logable;
+import com.akshayaap.chess.game.util.PromotionCallback;
 
 public class Player {
 
