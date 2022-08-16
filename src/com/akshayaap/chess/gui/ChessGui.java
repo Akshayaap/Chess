@@ -2,9 +2,12 @@ package com.akshayaap.chess.gui;
 
 import com.akshayaap.chess.game.ChessGame;
 import com.akshayaap.chess.game.Move;
+import com.akshayaap.chess.game.State;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -149,7 +152,28 @@ public class ChessGui {
                     this.grid[ChessGui.this.move.getX1()][ChessGui.this.move.getY1()].setSourceTile();
                     this.grid[ChessGui.this.move.getX2()][ChessGui.this.move.getY2()].setDestinationTile();
                     break;
+                case Move.CAPTURE_MOVE:
+                    this.grid[ChessGui.this.move.getX1()][ChessGui.this.move.getY1()].setSourceTile();
+                    this.grid[ChessGui.this.move.getX2()][ChessGui.this.move.getY2()].setThreatenTile();
                 default:
+                    break;
+            }
+            switch (game.getState().getCheckState()) {
+                case State.WHITE_CHECKMATE:
+                    this.grid[ChessGui.this.game.getPlayerWhite().getPieces()[5][0].getX()][ChessGui.this.game.getPlayerWhite().getPieces()[5][0].getY()].setCheckMateTile();
+                    break;
+                case State.BLACK_CHECKMATE:
+                    this.grid[ChessGui.this.game.getPlayerBlack().getPieces()[5][0].getX()][ChessGui.this.game.getPlayerBlack().getPieces()[5][0].getY()].setCheckMateTile();
+                    break;
+                case State.WHITE_CHECK:
+                    this.grid[ChessGui.this.game.getPlayerWhite().getPieces()[5][0].getX()][ChessGui.this.game.getPlayerWhite().getPieces()[5][0].getY()].setCheckTile();
+                    break;
+                case State.BLACK_CHECK:
+                    this.grid[ChessGui.this.game.getPlayerBlack().getPieces()[5][0].getX()][ChessGui.this.game.getPlayerBlack().getPieces()[5][0].getY()].setCheckTile();
+                    break;
+                case State.WHITE_STALEMATE:
+                    break;
+                case State.BLACK_STALEMATE:
                     break;
             }
             if (ChessGui.this.move.getMap() != null) {
@@ -165,13 +189,22 @@ public class ChessGui {
     }
 
     private class TilePanel extends JPanel {
-        public static final Color DESTINATION_TILE = new Color(0, 255, 0);
-        public static final Color THREATEN_TILE = new Color(255, 0, 0, 255);
+        public static final Color DESTINATION_TILE = new Color(1, 255, 255);
+        public static final Color THREATEN_TILE = new Color(188, 136, 9, 255);
+        public static final Color CHECK_TILE = new Color(255, 255, 0);
+        public static final Color CHECKMATE_TILE = new Color(255, 0, 0);
         private static final Dimension TILE_DIMENSION = new Dimension(10, 10);
         private static final Color DARK_SQUARE = new Color(50, 0, 20);
         private static final Color LIGHT_SQUARE = new Color(255, 255, 200);
-        private static final Color SELECT_TILE = new Color(255, 255, 0);
-        private static final Color SOURCE_TILE = new Color(0, 0, 255);
+        private static final Color SELECT_TILE = new Color(131, 255, 77);
+        private static final Color SOURCE_TILE = new Color(110, 132, 241);
+
+        private static final Color light = new Color(156, 156, 156);
+        private static final Color dark = new Color(97, 97, 97);
+        private static final Color lightHigh = new Color(255, 255, 255);
+        private static final Color darkHigh = new Color(0, 0, 0);
+
+
         private static final ImageIcon[][] IMGS = new ImageIcon[2][6];
         private static ImageIcon CIRCLE_GREEN;
         private static ImageIcon CIRCLE;
@@ -183,7 +216,7 @@ public class ChessGui {
                 for (int j = 0; j < 6; j++) {
                     try {
                         path = (i == 1 ? "white_" : "black_") + j + ".png";
-                        IMGS[i][j] = new ImageIcon(ImageIO.read(new File("res/" + path)).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
+                        IMGS[i][j] = new ImageIcon(ImageIO.read(new File("res/pieces/" + path)).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -191,8 +224,8 @@ public class ChessGui {
             }
 
             try {
-                CIRCLE = new ImageIcon(ImageIO.read(new File("res/circle.png")).getScaledInstance(100, 100, Image.SCALE_SMOOTH));
-                CIRCLE_GREEN = new ImageIcon(ImageIO.read(new File("res/circle_green.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
+                CIRCLE = new ImageIcon(ImageIO.read(new File("res/pieces/circle.png")).getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+                CIRCLE_GREEN = new ImageIcon(ImageIO.read(new File("res/pieces/circle_green.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -211,6 +244,8 @@ public class ChessGui {
             setBackground((this.x + this.y) % 2 == 0 ? LIGHT_SQUARE : DARK_SQUARE);
             setVisible(true);
             addMouseListener(new Input());
+            Border border = new BasicBorders.FieldBorder(dark, light, lightHigh, darkHigh);
+            setBorder(border);
             validate();
         }
 
@@ -221,6 +256,7 @@ public class ChessGui {
                 JLabel label = new JLabel(IMGS[ChessGui.this.game.getPiece(this.x, this.y).getColor() ? 1 : 0][ChessGui.this.game.getPiece(this.x, this.y).getType()]);
                 label.setAlignmentX(CENTER_ALIGNMENT);
                 label.setAlignmentY(CENTER_ALIGNMENT);
+
                 add(label);
             }
             revalidate();
@@ -244,6 +280,18 @@ public class ChessGui {
             label.setAlignmentX(CENTER_ALIGNMENT);
             label.setAlignmentY(CENTER_ALIGNMENT);
             this.add(label);
+        }
+
+        public void setThreatenTile() {
+            this.setBackground(THREATEN_TILE);
+        }
+
+        public void setCheckTile() {
+            this.setBackground(CHECK_TILE);
+        }
+
+        public void setCheckMateTile() {
+            this.setBackground(CHECKMATE_TILE);
         }
 
         private class Input implements MouseListener {

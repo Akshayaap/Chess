@@ -19,19 +19,19 @@ public class Promotion implements PromotionCallback {
     static {
         try {
             objsW = new Object[]
-                    {new ImageIcon(read(new File("res/white_4.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
-                            new ImageIcon(read(new File("res/white_3.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
-                            new ImageIcon(read(new File("res/white_2.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
-                            new ImageIcon(read(new File("res/white_1.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
-                            new ImageIcon(read(new File("res/white_0.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
-                            new ImageIcon(read(new File("res/white_5.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH))};
+                    {new ImageIcon(read(new File("res/pieces/white_4.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
+                            new ImageIcon(read(new File("res/pieces/white_3.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
+                            new ImageIcon(read(new File("res/pieces/white_2.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
+                            new ImageIcon(read(new File("res/pieces/white_1.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
+                            new ImageIcon(read(new File("res/pieces/white_0.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
+                            new ImageIcon(read(new File("res/pieces/white_5.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH))};
             objsB = new Object[]
-                    {new ImageIcon(read(new File("res/black_4.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
-                            new ImageIcon(read(new File("res/black_3.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
-                            new ImageIcon(read(new File("res/black_2.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
-                            new ImageIcon(read(new File("res/black_1.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
-                            new ImageIcon(read(new File("res/black_0.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
-                            new ImageIcon(read(new File("res/black_5.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH))};
+                    {new ImageIcon(read(new File("res/pieces/black_4.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
+                            new ImageIcon(read(new File("res/pieces/black_3.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
+                            new ImageIcon(read(new File("res/pieces/black_2.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
+                            new ImageIcon(read(new File("res/pieces/black_1.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
+                            new ImageIcon(read(new File("res/pieces/black_0.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
+                            new ImageIcon(read(new File("res/pieces/black_5.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH))};
 
         } catch (IOException e) {
             e.printStackTrace();

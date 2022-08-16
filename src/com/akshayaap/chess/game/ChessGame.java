@@ -128,11 +128,15 @@ public class ChessGame {
                 state.setCheckState(State.WHITE_CHECKMATE);
             } else if (playerWhite.isCheck()) {
                 logger.log(Thread.currentThread().getStackTrace()[1] + "::White is Check");
-                state.setCheckState(State.WHITE_CHECKMATE);
+                state.setCheckState(State.WHITE_CHECK);
             } else if (playerWhite.isStallMate()) {
                 logger.log(Thread.currentThread().getStackTrace()[1] + "::White is Stalemate");
-                state.setCheckState(State.WHITE_CHECKMATE);
+                state.setCheckState(State.WHITE_STALEMATE);
+            } else {
+                state.setCheckState(State.NONE_CHECK);
             }
+            logger.log(Thread.currentThread().getStackTrace()[1] + "::White's Legal Moves:" + playerWhite.getLegalMoves());
+
         } else {
             logger.log(Thread.currentThread().getStackTrace()[1] + "::Updating White's aattackMap...");
             playerWhite.updateAttackMap();
@@ -141,14 +145,18 @@ public class ChessGame {
             if (playerBlack.isCheckMate()) {
                 logger.log(Thread.currentThread().getStackTrace()[1] + "::Black is CheckMate");
                 state.setCheckState(State.BLACK_CHECKMATE);
-            } else if (playerWhite.isCheck()) {
+            } else if (playerBlack.isCheck()) {
                 logger.log(Thread.currentThread().getStackTrace()[1] + "::Black is Check");
                 state.setCheckState(State.BLACK_CHECK);
             } else if (playerBlack.isStallMate()) {
                 logger.log(Thread.currentThread().getStackTrace()[1] + "::Black is Stalemate");
                 state.setCheckState(State.BLACK_STALEMATE);
+            } else {
+                state.setCheckState(State.NONE_CHECK);
             }
+            logger.log(Thread.currentThread().getStackTrace()[1] + "::Black's Legal Moves:" + playerBlack.getLegalMoves());
         }
+
     }
 
     public Piece getPiece(int x, int y) {
