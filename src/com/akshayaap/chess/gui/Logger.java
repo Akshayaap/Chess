@@ -5,8 +5,6 @@ import com.akshayaap.chess.game.util.Logable;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 
 public class Logger extends JPanel implements Logable {
     private final JTextArea log = new JTextArea();
@@ -18,11 +16,6 @@ public class Logger extends JPanel implements Logable {
         setPreferredSize(new Dimension(400, 150));
         setBorder(BasicBorders.getInternalFrameBorder());
         scroll.setWheelScrollingEnabled(true);
-        scroll.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
-            public void adjustmentValueChanged(AdjustmentEvent e) {
-                e.getAdjustable().setValue(e.getAdjustable().getMaximum());
-            }
-        });
         add(scroll, BorderLayout.CENTER);
 
         validate();
@@ -30,7 +23,7 @@ public class Logger extends JPanel implements Logable {
 
     @Override
     public void log(String message) {
-        log.append(message + "\n");
+        log.append(Thread.currentThread().getStackTrace()[2] + "::" + message + "\n");
         log.setCaretPosition(log.getDocument().getLength());
     }
 }

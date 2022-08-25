@@ -2,7 +2,6 @@ package com.akshayaap.chess.gui;
 
 import com.akshayaap.chess.game.ChessGame;
 import com.akshayaap.chess.game.Move;
-import com.akshayaap.chess.game.State;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -25,8 +24,9 @@ public class ChessGui {
     private RightPanel rightPanel;
     private CaptureWindow captureCallBackBlack = null;
     private CaptureWindow captureCallBackWhite = null;
-    private Move move;
+    private Move move = new Move();
     private Logger logger = new Logger();
+    private State state = new State();
 
     public ChessGui() throws IOException {
         try {
@@ -294,6 +294,7 @@ public class ChessGui {
             this.setBackground(CHECKMATE_TILE);
         }
 
+
         private class Input implements MouseListener {
 
             @Override
@@ -303,26 +304,26 @@ public class ChessGui {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON1) {
-                    ChessGui.this.move = ChessGui.this.game.onClick(TilePanel.this.x, TilePanel.this.y);
-
-                    switch (ChessGui.this.move.getState()) {
-
-                        case Move.ILLEGAL_MOVE:
-                            break;
-                        case Move.SELECT_MOVE:
-                            break;
-                        case Move.NORMAL_MOVE:
-
-                            break;
-
-                        default:
-                            break;
-                    }
-                    ChessGui.this.update();
-                    ChessGui.this.render();
+                move.reset();
+                switch (ChessGui.this.state.getState()) {
+                    case State.INVALID:
+                        return;
+                    case State.NORMAL:
+                        move.setTurn(state.getTurn());
+                        move.setSource(TilePanel.this.x, TilePanel.this.y);
+                        move.setState(Move.SELECT_MOVE);
+                        break;
+                    case State.SELECTED:
+                        move.setTurn(state.getTurn());
+                        move.setState(Move.NORMAL_MOVE);
+                        move.setSource(state.getChX(), state.getChY());
+                        move.setDestination(TilePanel.this.x, TilePanel.this.y);
+                        break;
+                    default:
+                        break;
                 }
-
+                move = game.move(move);
+                ChessGui.this.update();
             }
 
             @Override
