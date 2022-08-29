@@ -3,6 +3,8 @@ package com.akshayaap.chess.gui;
 public class State {
 
     public static final int INVALID = -1;
+    public static final int EMPTY_SELECTION = -2;
+    public static final int INVALID_SELECTION = -3;
     public static final int NORMAL = 0;
     public static final int SELECTED = 1;
 
@@ -14,7 +16,6 @@ public class State {
     public static final int WHITE_STALEMATE = 104;
     public static final int BLACK_STALEMATE = 105;
 
-    private int state = -1;
 
     private int chX = -1;
     private int chY = -1;
@@ -27,11 +28,17 @@ public class State {
 
     private boolean turn = true;
 
+    private int state = INVALID;
+    private int checkState = NONE_CHECK;
+
     public State() {
 
     }
 
     public void reset() {
+        this.state = NORMAL;
+        this.checkState = NONE_CHECK;
+
         this.chX = -1;
         this.chY = -1;
 
@@ -108,5 +115,24 @@ public class State {
 
     public void setChXNext(int chXNext) {
         this.chXNext = chXNext;
+    }
+
+    public void setChXY(int x, int y) {
+        this.chX = x;
+        this.chY = y;
+    }
+
+    public void setChXYPrev(int x, int y) {
+        this.chXprev = x;
+        this.chYprev = y;
+    }
+
+    public void setChXYNext(int x, int y) {
+        this.chXNext = x;
+        this.chYNext = y;
+    }
+
+    public int getCheckState() {
+        return this.checkState;
     }
 }

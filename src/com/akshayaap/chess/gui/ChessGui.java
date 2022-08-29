@@ -87,11 +87,36 @@ public class ChessGui {
     }
 
     private void update() {
+        switch (this.move.getState()) {
+            case Move.NOT_APPLICABLE:
+            case Move.INVALID_SELECTION:
+            case Move.ILLEGAL_MOVE:
+            case Move.SOURCE_IS_EMPTY:
+                this.state.reset();
+                this.state.setState(State.NORMAL);
+                break;
+            case Move.SELECT_MOVE:
+                this.state.setChXYPrev(move.getX1(), move.getY1());
+                this.state.setState(State.SELECTED);
+                break;
+            case Move.NORMAL_MOVE:
+            case Move.CAPTURE_MOVE:
+            case Move.PROMOTION_MOVE:
+                this.state.reset();
+                this.state.setState(State.NORMAL);
+                this.state.toggleTurn();
+                break;
+            default:
+                break;
+        }
         rightPanel.update();
+        this.render();
     }
 
     public void reset() {
         game.reset();
+        state.reset();
+        move.reset();
         captureCallBackWhite.removeAll();
         captureCallBackBlack.removeAll();
         captureCallBackWhite.revalidate();
@@ -158,7 +183,7 @@ public class ChessGui {
                 default:
                     break;
             }
-            switch (game.getState().getCheckState()) {
+            switch (state.getCheckState()) {
                 case State.WHITE_CHECKMATE:
                     this.grid[ChessGui.this.game.getPlayerWhite().getPieces()[5][0].getX()][ChessGui.this.game.getPlayerWhite().getPieces()[5][0].getY()].setCheckMateTile();
                     break;
@@ -294,51 +319,76 @@ public class ChessGui {
             this.setBackground(CHECKMATE_TILE);
         }
 
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
 
         private class Input implements MouseListener {
+
+            update();
 
             @Override
             public void mouseClicked(MouseEvent e) {
                 //throw new UnsupportedOperationException("This bullshit is not supported yet you fool");
             }
 
+
             @Override
             public void mousePressed(MouseEvent e) {
-                move.reset();
+                Move move;
                 switch (ChessGui.this.state.getState()) {
                     case State.INVALID:
                         return;
                     case State.NORMAL:
-                        move.setTurn(state.getTurn());
-                        move.setSource(TilePanel.this.x, TilePanel.this.y);
-                        move.setState(Move.SELECT_MOVE);
+                        ChessGui.this.state.reset();
+                        ChessGui.this.state.setChXYPrev(TilePanel.this.x, TilePanel.this.y);
+                        if (game.getPiece(TilePanel.this.x, TilePanel.this.y) == null) {
+                            ChessGui.this.state.setState(State.EMPTY_SELECTION);
+                        } else if (game.getPiece(TilePanel.this.x, TilePanel.this.y).getColor() == ChessGui.this.state.getTurn()) {
+                            ChessGui.this.state.setState(State.SELECTED);
+                        } else {
+                            ChessGui.this.state.setState(State.INVALID_SELECTION);
+                        }
                         break;
                     case State.SELECTED:
-                        move.setTurn(state.getTurn());
-                        move.setState(Move.NORMAL_MOVE);
-                        move.setSource(state.getChX(), state.getChY());
-                        move.setDestination(TilePanel.this.x, TilePanel.this.y);
+                        if (game.getPiece(TilePanel.this.x, TilePanel.this.y) != null &&
+                                game.getPiece(TilePanel.this.x, TilePanel.this.y).getColor() == ChessGui.this.state.getTurn()) {
+                            ChessGui.this.state.reset();
+                            ChessGui.this.state.setState(State.SELECTED);
+                            ChessGui.this.state.setChXYPrev(TilePanel.this.x, TilePanel.this.y);
+                        } else {
+                            ChessGui.this.state.setChXY(TilePanel.this.x, TilePanel.this.y);
+                            move = new Move();
+                            move.setTurn(ChessGui.this.state.getTurn());
+                            move.setSource();
+                        }
+                        if (game.getPiece(TilePanel.this.x, TilePanel.this.y) == null) {
+                            ChessGui.this.state.setState(State.EMPTY_SELECTION);
+                        } else if (game.getPiece(TilePanel.this.x, TilePanel.this.y).getColor() == ChessGui.this.state.getTurn()) {
+                            move.setTurn(state.getTurn());
+                            move.setSource(TilePanel.this.x, TilePanel.this.y);
+                            move.setState(Move.SELECT_MOVE);
+                        } else {
+                            move.setTurn(state.getTurn());
+                            move.setState(Move.NORMAL_MOVE);
+                            move.setSource(state.getChXprev(), state.getChYprev());
+                            move.setDestination(TilePanel.this.x, TilePanel.this.y);
+                        }
                         break;
                     default:
                         break;
                 }
-                move = game.move(move);
-                ChessGui.this.update();
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
             }
         }
     }

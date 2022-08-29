@@ -131,31 +131,31 @@ public class ChessGame {
                 logger.log("White is Check");
                 state.setCheckState(State.WHITE_CHECK);
             } else if (playerWhite.isStallMate()) {
-                logger.log(Thread.currentThread().getStackTrace()[1] + "::White is Stalemate");
+                logger.log("White is Stalemate");
                 state.setCheckState(State.WHITE_STALEMATE);
             } else {
                 state.setCheckState(State.NONE_CHECK);
             }
-            logger.log(Thread.currentThread().getStackTrace()[1] + "::White's Legal Moves:" + playerWhite.getLegalMoves());
+            logger.log("White's Legal Moves:" + playerWhite.getLegalMoves());
 
         } else {
-            logger.log(Thread.currentThread().getStackTrace()[1] + "::Updating White's aattackMap...");
+            logger.log("Updating White's aattackMap...");
             playerWhite.updateAttackMap();
-            logger.log(Thread.currentThread().getStackTrace()[1] + "::Updating Black's moveMap...");
+            logger.log("Updating Black's moveMap...");
             playerBlack.updateMoveMap();
             if (playerBlack.isCheckMate()) {
-                logger.log(Thread.currentThread().getStackTrace()[1] + "::Black is CheckMate");
+                logger.log("Black is CheckMate");
                 state.setCheckState(State.BLACK_CHECKMATE);
             } else if (playerBlack.isCheck()) {
-                logger.log(Thread.currentThread().getStackTrace()[1] + "::Black is Check");
+                logger.log("Black is Check");
                 state.setCheckState(State.BLACK_CHECK);
             } else if (playerBlack.isStallMate()) {
-                logger.log(Thread.currentThread().getStackTrace()[1] + "::Black is Stalemate");
+                logger.log("Black is Stalemate");
                 state.setCheckState(State.BLACK_STALEMATE);
             } else {
                 state.setCheckState(State.NONE_CHECK);
             }
-            logger.log(Thread.currentThread().getStackTrace()[1] + "::Black's Legal Moves:" + playerBlack.getLegalMoves());
+            logger.log("Black's Legal Moves:" + playerBlack.getLegalMoves());
         }
     }
 
@@ -196,13 +196,17 @@ public class ChessGame {
     }
 
     public Move move(Move move) {
+        logger.log("move");
         this.move.reset();
         this.move.setSource(move.getX1(), move.getY1());
         this.move.setDestination(move.getX2(), move.getY2());
         switch (move.getState()) {
             case Move.SELECT_MOVE:
+                logger.log("move|SELECT_MOVE");
                 if (this.state.getTurn() == move.getTurn()) {
-                    if (move.getTurn() == this.board.getPiece(move.getX1(), move.getY1()).getColor()) {
+                    if (this.board.getPiece(move.getX1(), move.getY1()) == null) {
+                        this.move.setState(Move.SOURCE_IS_EMPTY);
+                    } else if (move.getTurn() == this.board.getPiece(move.getX1(), move.getY1()).getColor()) {
                         this.move.setState(Move.SELECT_MOVE);
                         this.move.setMap(this.board.getPiece(move.getX1(), move.getY1()).getMoveMap());
                     } else {
@@ -215,8 +219,11 @@ public class ChessGame {
                 }
                 break;
             case Move.NORMAL_MOVE:
+                logger.log("move|NORMAL_MOVE");
                 if (this.state.getTurn() == move.getTurn()) {
                     this.move = this.board.moveTo(move.getX1(), move.getY1(), move.getX2(), move.getY2());
+                    this.state.toggleTurn();
+                    this.update();
                 } else {
                     this.move.setState(Move.ILLEGAL_MOVE);
                 }
@@ -224,7 +231,6 @@ public class ChessGame {
             default:
                 break;
         }
-        this.update();
         return this.move;
     }
 
