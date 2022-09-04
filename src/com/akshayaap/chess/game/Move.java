@@ -1,29 +1,12 @@
 package com.akshayaap.chess.game;
 
+import com.akshayaap.chess.game.util.ChessState;
+
 public class Move {
 
-    public static final int NOT_APPLICABLE = -1;
-    public static final int ILLEGAL_MOVE = 0;
-    public static final int SOURCE_IS_EMPTY = 1;
-    public static final int INVALID_SELECTION = 2;
-    public static final int SELECT_MOVE = 13;
-    public static final int NORMAL_MOVE = 10;
-    public static final int CAPTURE_MOVE = 11;
-    public static final int PROMOTION_MOVE = 12;
+    private ChessState state;
 
-
-    public static final int WHITE_STALMATE = 100;
-    public static final int BLACK_STALMATE = 101;
-    public static final int WHITE_CHECK = 102;
-    public static final int BLACK_CHECK = 103;
-    public static final int WHITE_CHECKMATE = 104;
-    public static final int BLACK_CHECKMATE = 105;
-
-    public static final int TEST_MOVE = 200;
-
-    private int state;
-
-    private int checkState;
+    private ChessState checkState;
     private int x1;
     private int y1;
     private int x2;
@@ -48,11 +31,11 @@ public class Move {
         this.y2 = y2;
     }
 
-    public int getState() {
+    public ChessState getState() {
         return state;
     }
 
-    public void setState(int state) {
+    public void setState(ChessState state) {
         this.state = state;
     }
 
@@ -73,8 +56,8 @@ public class Move {
     }
 
     public void reset() {
-        this.state = NOT_APPLICABLE;
-        this.checkState = NOT_APPLICABLE;
+        this.state = ChessState.NOT_APPLICABLE;
+        this.checkState = ChessState.CHECK_NONE;
         this.x1 = -1;
         this.y1 = -1;
         this.x2 = -1;
@@ -100,11 +83,11 @@ public class Move {
         this.turn = turn;
     }
 
-    public int getCheckState() {
+    public ChessState getCheckState() {
         return checkState;
     }
 
-    public void setCheckState(int checkState) {
+    public void setCheckState(ChessState checkState) {
         this.checkState = checkState;
     }
 

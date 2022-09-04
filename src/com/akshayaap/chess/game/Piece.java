@@ -1,6 +1,8 @@
 package com.akshayaap.chess.game;
 
 
+import com.akshayaap.chess.game.util.ChessState;
+
 public abstract class Piece {
 
 
@@ -111,11 +113,11 @@ public abstract class Piece {
 
         if (this.moveMap[x][y]) {
             if (this.board[x][y].getPiece() != null) {
-                move.setState(Move.CAPTURE_MOVE);
+                move.setState(ChessState.CAPTURE_MOVE);
                 this.player.capture(this.board[x][y].getPiece());
                 this.board[x][y].getPiece().capture();
             } else {
-                move.setState(Move.NORMAL_MOVE);
+                move.setState(ChessState.NORMAL_MOVE);
             }
 
             this.board[x][y].setPiece(this);
@@ -124,7 +126,7 @@ public abstract class Piece {
             this.y = y;
 
         } else {
-            move.setState(Move.ILLEGAL_MOVE);
+            move.setState(ChessState.ILLEGAL_MOVE);
         }
         return move;
     }

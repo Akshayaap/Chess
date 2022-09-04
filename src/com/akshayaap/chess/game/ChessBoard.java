@@ -1,5 +1,7 @@
 package com.akshayaap.chess.game;
 
+import com.akshayaap.chess.game.util.ChessState;
+
 public class ChessBoard {
 
     public final Tile[][] board;
@@ -82,7 +84,7 @@ public class ChessBoard {
             return move;
         }
         move.reset();
-        move.setState(Move.SOURCE_IS_EMPTY);
+        move.setState(ChessState.EMPTY_SELECTION);
         move.setSource(chXPrev, chYPrev);
         move.setDestination(x, y);
         return move;

@@ -1,7 +1,6 @@
 package com.akshayaap.chess.gui;
 
 import com.akshayaap.chess.game.ChessGame;
-import com.akshayaap.chess.game.State;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicBorders;
@@ -56,28 +55,28 @@ public class RightPanel extends JPanel {
 
         public void update() {
             switch (game.getState().getState()) {
-                case State.NORMAL -> status.setText("Normal");
-                case State.SELECTED -> status.setText("Setected Piece: " + game.getState().getChXPrev() + " " + game.getState().getChYPrev());
-                case State.INVALID -> status.setText("INVALID");
+                case NORMAL_STATE -> status.setText("Normal");
+                case SELECTED_STATE -> status.setText("Setected Piece: " + game.getState().getChXPrev() + " " + game.getState().getChYPrev());
+                case INVALID_STATE -> status.setText("INVALID");
 
             }
             switch (game.getState().getCheckState()) {
-                case State.WHITE_CHECKMATE:
+                case WHITE_CHECKMATE:
                     status.setText("White Checkmate");
                     break;
-                case State.BLACK_CHECKMATE:
+                case BLACK_CHECKMATE:
                     status.setText("Black Checkmate");
                     break;
-                case State.WHITE_CHECK:
+                case WHITE_CHECK:
                     status.setText("White Check");
                     break;
-                case State.BLACK_CHECK:
+                case BLACK_CHECK:
                     status.setText("Black Check");
                     break;
-                case State.WHITE_STALEMATE:
+                case WHITE_STALEMATE:
                     status.setText("White Stalemate");
                     break;
-                case State.BLACK_STALEMATE:
+                case BLACK_STALEMATE:
                     status.setText("Black Stalemate");
                     break;
             }

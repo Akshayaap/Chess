@@ -2,6 +2,7 @@ package com.akshayaap.chess.gui;
 
 import com.akshayaap.chess.game.ChessGame;
 import com.akshayaap.chess.game.Move;
+import com.akshayaap.chess.game.util.ChessState;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -60,8 +61,8 @@ public class ChessGui {
         controlPanel = new ChessControlPanel(this);
         this.gamePanel.add(controlPanel, BorderLayout.NORTH);
         this.gamePanel.add(this.boardPanel, BorderLayout.CENTER);
-        this.gamePanel.add((CaptureWindow) captureCallBackWhite, BorderLayout.WEST);
-        this.gamePanel.add((CaptureWindow) captureCallBackBlack, BorderLayout.EAST);
+        this.gamePanel.add(captureCallBackWhite, BorderLayout.WEST);
+        this.gamePanel.add(captureCallBackBlack, BorderLayout.EAST);
         this.gamePanel.add(logger, BorderLayout.SOUTH);
 
         this.gameFrame.add(this.gamePanel, BorderLayout.CENTER);
@@ -87,28 +88,6 @@ public class ChessGui {
     }
 
     private void update() {
-        switch (this.move.getState()) {
-            case Move.NOT_APPLICABLE:
-            case Move.INVALID_SELECTION:
-            case Move.ILLEGAL_MOVE:
-            case Move.SOURCE_IS_EMPTY:
-                this.state.reset();
-                this.state.setState(State.NORMAL);
-                break;
-            case Move.SELECT_MOVE:
-                this.state.setChXYPrev(move.getX1(), move.getY1());
-                this.state.setState(State.SELECTED);
-                break;
-            case Move.NORMAL_MOVE:
-            case Move.CAPTURE_MOVE:
-            case Move.PROMOTION_MOVE:
-                this.state.reset();
-                this.state.setState(State.NORMAL);
-                this.state.toggleTurn();
-                break;
-            default:
-                break;
-        }
         rightPanel.update();
         this.render();
     }
@@ -116,6 +95,7 @@ public class ChessGui {
     public void reset() {
         game.reset();
         state.reset();
+        state.setTurn(true);
         move.reset();
         captureCallBackWhite.removeAll();
         captureCallBackBlack.removeAll();
@@ -136,7 +116,7 @@ public class ChessGui {
 
         private final TilePanel[][] grid;
 
-        public BoardPanel() throws IOException {
+        public BoardPanel() {
             super(new GridLayout(8, 8));
             this.grid = new TilePanel[8][8];
             for (int i = 0; i < 8; i++) {
@@ -149,7 +129,6 @@ public class ChessGui {
             setVisible(true);
             validate();
         }
-
 
         public void render() {
             for (int i = 0; i < 8; i++) {
@@ -166,39 +145,36 @@ public class ChessGui {
                 return;
             }
             switch (ChessGui.this.move.getState()) {
-                case Move.ILLEGAL_MOVE:
+                case ILLEGAL_MOVE:
                     break;
-                case Move.INVALID_SELECTION:
+                case INVALID_SELECTION:
                     break;
-                case Move.SELECT_MOVE:
-                    this.grid[ChessGui.this.move.getX1()][ChessGui.this.move.getY1()].setSelectTile();
-                    break;
-                case Move.NORMAL_MOVE:
+                case NORMAL_MOVE:
                     this.grid[ChessGui.this.move.getX1()][ChessGui.this.move.getY1()].setSourceTile();
                     this.grid[ChessGui.this.move.getX2()][ChessGui.this.move.getY2()].setDestinationTile();
                     break;
-                case Move.CAPTURE_MOVE:
+                case CAPTURE_MOVE:
                     this.grid[ChessGui.this.move.getX1()][ChessGui.this.move.getY1()].setSourceTile();
                     this.grid[ChessGui.this.move.getX2()][ChessGui.this.move.getY2()].setThreatenTile();
                 default:
                     break;
             }
             switch (state.getCheckState()) {
-                case State.WHITE_CHECKMATE:
+                case WHITE_CHECKMATE:
                     this.grid[ChessGui.this.game.getPlayerWhite().getPieces()[5][0].getX()][ChessGui.this.game.getPlayerWhite().getPieces()[5][0].getY()].setCheckMateTile();
                     break;
-                case State.BLACK_CHECKMATE:
+                case BLACK_CHECKMATE:
                     this.grid[ChessGui.this.game.getPlayerBlack().getPieces()[5][0].getX()][ChessGui.this.game.getPlayerBlack().getPieces()[5][0].getY()].setCheckMateTile();
                     break;
-                case State.WHITE_CHECK:
+                case WHITE_CHECK:
                     this.grid[ChessGui.this.game.getPlayerWhite().getPieces()[5][0].getX()][ChessGui.this.game.getPlayerWhite().getPieces()[5][0].getY()].setCheckTile();
                     break;
-                case State.BLACK_CHECK:
+                case BLACK_CHECK:
                     this.grid[ChessGui.this.game.getPlayerBlack().getPieces()[5][0].getX()][ChessGui.this.game.getPlayerBlack().getPieces()[5][0].getY()].setCheckTile();
                     break;
-                case State.WHITE_STALEMATE:
+                case WHITE_STALEMATE:
                     break;
-                case State.BLACK_STALEMATE:
+                case BLACK_STALEMATE:
                     break;
             }
             if (ChessGui.this.move.getMap() != null) {
@@ -319,24 +295,7 @@ public class ChessGui {
             this.setBackground(CHECKMATE_TILE);
         }
 
-        @Override
-        public void mouseReleased(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-
-        }
-
         private class Input implements MouseListener {
-
-            update();
 
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -346,51 +305,61 @@ public class ChessGui {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                Move move;
+                Move move = null;
                 switch (ChessGui.this.state.getState()) {
-                    case State.INVALID:
+                    case INVALID_STATE:
                         return;
-                    case State.NORMAL:
+                    case NORMAL_STATE:
                         ChessGui.this.state.reset();
                         ChessGui.this.state.setChXYPrev(TilePanel.this.x, TilePanel.this.y);
                         if (game.getPiece(TilePanel.this.x, TilePanel.this.y) == null) {
-                            ChessGui.this.state.setState(State.EMPTY_SELECTION);
+                            ChessGui.this.state.setState(ChessState.EMPTY_SELECTION);
                         } else if (game.getPiece(TilePanel.this.x, TilePanel.this.y).getColor() == ChessGui.this.state.getTurn()) {
-                            ChessGui.this.state.setState(State.SELECTED);
+                            ChessGui.this.state.setState(ChessState.SELECTED_STATE);
                         } else {
-                            ChessGui.this.state.setState(State.INVALID_SELECTION);
+                            ChessGui.this.state.setState(ChessState.INVALID_SELECTION);
                         }
                         break;
-                    case State.SELECTED:
-                        if (game.getPiece(TilePanel.this.x, TilePanel.this.y) != null &&
-                                game.getPiece(TilePanel.this.x, TilePanel.this.y).getColor() == ChessGui.this.state.getTurn()) {
+                    case SELECTED_STATE:
+                        if (game.getPiece(TilePanel.this.x, TilePanel.this.y) != null && game.getPiece(TilePanel.this.x, TilePanel.this.y).getColor() == ChessGui.this.state.getTurn()) {
                             ChessGui.this.state.reset();
-                            ChessGui.this.state.setState(State.SELECTED);
+                            ChessGui.this.state.setState(ChessState.SELECTED_STATE);
                             ChessGui.this.state.setChXYPrev(TilePanel.this.x, TilePanel.this.y);
                         } else {
                             ChessGui.this.state.setChXY(TilePanel.this.x, TilePanel.this.y);
                             move = new Move();
                             move.setTurn(ChessGui.this.state.getTurn());
-                            move.setSource();
-                        }
-                        if (game.getPiece(TilePanel.this.x, TilePanel.this.y) == null) {
-                            ChessGui.this.state.setState(State.EMPTY_SELECTION);
-                        } else if (game.getPiece(TilePanel.this.x, TilePanel.this.y).getColor() == ChessGui.this.state.getTurn()) {
-                            move.setTurn(state.getTurn());
-                            move.setSource(TilePanel.this.x, TilePanel.this.y);
-                            move.setState(Move.SELECT_MOVE);
-                        } else {
-                            move.setTurn(state.getTurn());
-                            move.setState(Move.NORMAL_MOVE);
-                            move.setSource(state.getChXprev(), state.getChYprev());
-                            move.setDestination(TilePanel.this.x, TilePanel.this.y);
+                            move.setSource(ChessGui.this.state.getChXPrev(), ChessGui.this.state.getChYPrev());
+                            move.setDestination(ChessGui.this.state.getChX(), ChessGui.this.state.getChY());
+                            move.setState(ChessState.NORMAL_MOVE);
+                            ChessGui.this.move = ChessGui.this.game.move(move);
+                            switch (ChessGui.this.move.getState()) {
+                                case NORMAL_MOVE -> {
+
+                                }
+                            }
                         }
                         break;
                     default:
                         break;
                 }
+                ChessGui.this.update();
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
             }
         }
     }
-
 }

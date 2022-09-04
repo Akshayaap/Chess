@@ -1,5 +1,7 @@
 package com.akshayaap.chess.game;
 
+import com.akshayaap.chess.game.util.ChessState;
+
 import java.io.IOException;
 
 public class Pawn extends Piece {
@@ -93,7 +95,7 @@ public class Pawn extends Piece {
                     player.setPromotionPawn(this);
                     try {
                         player.getPromotionCallback().prompt(this.player);
-                        move.setState(Move.PROMOTION_MOVE);
+                        move.setState(ChessState.PROMOTION_MOVE);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -103,7 +105,7 @@ public class Pawn extends Piece {
                     player.setPromotionPawn(this);
                     try {
                         player.getPromotionCallback().prompt(this.player);
-                        move.setState(Move.PROMOTION_MOVE);
+                        move.setState(ChessState.PROMOTION_MOVE);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

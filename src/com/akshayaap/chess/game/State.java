@@ -1,22 +1,12 @@
 package com.akshayaap.chess.game;
 
+import com.akshayaap.chess.game.util.ChessState;
+
 /**
  * @Author Akshay
  * A class for state information
  */
 public class State {
-
-    public static final int INVALID = -1;
-    public static final int NORMAL = 0;
-    public static final int SELECTED = 1;
-
-    public static final int NONE_CHECK = 0;
-    public static final int WHITE_CHECK = 100;
-    public static final int BLACK_CHECK = 101;
-    public static final int WHITE_CHECKMATE = 102;
-    public static final int BLACK_CHECKMATE = 103;
-    public static final int WHITE_STALEMATE = 104;
-    public static final int BLACK_STALEMATE = 105;
 
 
     private int chX;
@@ -28,19 +18,19 @@ public class State {
     private int chXNext;
     private int chYNext;
 
-    private int state;
-    private int checkState;
+    private ChessState state;
+    private ChessState checkState;
     private boolean turn;
 
     public State() {
         this.reset();
     }
 
-    public int getCheckState() {
+    public ChessState getCheckState() {
         return checkState;
     }
 
-    public void setCheckState(int checkState) {
+    public void setCheckState(ChessState checkState) {
         this.checkState = checkState;
     }
 
@@ -49,8 +39,8 @@ public class State {
     }
 
     public void reset() {
-        this.state = NORMAL;
-        this.checkState = NONE_CHECK;
+        this.state = ChessState.NORMAL_STATE;
+        this.checkState = ChessState.CHECK_NONE;
         this.chX = -1;
         this.chY = -1;
 
@@ -134,11 +124,11 @@ public class State {
         this.chYNext = y;
     }
 
-    public int getState() {
+    public ChessState getState() {
         return state;
     }
 
-    public void setState(int state) {
+    public void setState(ChessState state) {
         this.state = state;
     }
 
@@ -147,7 +137,7 @@ public class State {
     }
 
     public void fallBack() {
-        this.state = NORMAL;
+        this.state = ChessState.NORMAL_STATE;
 
         this.chX = -1;
         this.chY = -1;
@@ -157,7 +147,6 @@ public class State {
 
         this.chXNext = -1;
         this.chYNext = -1;
-
     }
 
 }

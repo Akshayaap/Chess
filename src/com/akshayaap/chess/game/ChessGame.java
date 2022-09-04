@@ -1,5 +1,6 @@
 package com.akshayaap.chess.game;
 
+import com.akshayaap.chess.game.util.ChessState;
 import com.akshayaap.chess.game.util.Logable;
 import com.akshayaap.chess.gui.Promotion;
 
@@ -34,47 +35,48 @@ public class ChessGame {
         return playerWhite;
     }
 
+
     @Deprecated
     public Move onClick(int x, int y) {
         move.reset();
         switch (this.state.getState()) {
-            case State.INVALID:
+            case INVALID_STATE:
                 logger.log("Invalid state");
-                move.setState(Move.INVALID_SELECTION);
+                move.setState(ChessState.INVALID_SELECTION);
                 move.setSource(x, y);
                 move.setDestination(-1, -1);
                 break;
-            case State.NORMAL:
+            case NORMAL_STATE:
                 if (this.board.getPiece(x, y) == null) {
                     logger.log("No piece selected");
-                    move.setState(Move.INVALID_SELECTION);
+                    move.setState(ChessState.INVALID_SELECTION);
                     move.setSource(x, y);
                     move.setDestination(-1, -1);
                 } else if (this.state.getTurn() == this.board.getPiece(x, y).getColor()) {
                     logger.log("Piece Selected:" + this.board.getPiece(x, y).getType() + " " + this.board.getPiece(x, y).getColor() + " " + x + " " + y);
                     this.state.setChXYPrev(x, y);
-                    this.state.setState(State.SELECTED);
+                    this.state.setState(ChessState.SELECTED_STATE);
                     this.state.setChXY(-1, -1);
                     this.state.setChXYNext(-1, -1);
-                    move.setState(Move.SELECT_MOVE);
+                    move.setState(ChessState.SELECTED_STATE);
                     move.setSource(x, y);
                     move.setDestination(-1, -1);
                     move.setTurn(this.state.getTurn());
                     move.setMap(board.getPiece(x, y).getMoveMap());
                 } else {
                     logger.log("Invalid selection");
-                    move.setState(Move.INVALID_SELECTION);
+                    move.setState(ChessState.INVALID_SELECTION);
                     move.setSource(x, y);
                     move.setDestination(-1, -1);
                 }
                 break;
-            case State.SELECTED:
+            case SELECTED_STATE:
                 if (this.board.getPiece(x, y) == null) {
                     this.state.setChXY(x, y);
                     move = this.board.moveTo(this.state.getChXPrev(), this.state.getChYPrev(), x, y);
                     this.state.fallBack();
                     move.setTurn(this.state.getTurn());
-                    if (move.getState() != Move.ILLEGAL_MOVE && move.getState() != Move.SOURCE_IS_EMPTY && move.getState() != Move.INVALID_SELECTION && move.getState() != Move.NOT_APPLICABLE) {
+                    if (move.getState() != ChessState.ILLEGAL_MOVE && move.getState() != ChessState.EMPTY_SELECTION && move.getState() != ChessState.INVALID_SELECTION && move.getState() != ChessState.NOT_APPLICABLE) {
                         logger.log("Normal Move:" + move.getState() + " " + move.getX1() + " " + move.getY1() + " " + move.getX2() + " " + move.getY2());
                         this.state.toggleTurn();
                         logger.log("Turn:" + this.state.getTurn());
@@ -88,8 +90,8 @@ public class ChessGame {
                         move = this.board.moveTo(this.state.getChXPrev(), this.state.getChYPrev(), x, y);
                         this.state.fallBack();
                         move.setTurn(this.state.getTurn());
-                        if (move.getState() != Move.ILLEGAL_MOVE && move.getState() != Move.SOURCE_IS_EMPTY && move.getState() != Move.INVALID_SELECTION && move.getState() != Move.NOT_APPLICABLE) {
-                            move.setState(Move.CAPTURE_MOVE);
+                        if (move.getState() != ChessState.ILLEGAL_MOVE && move.getState() != ChessState.EMPTY_SELECTION && move.getState() != ChessState.INVALID_SELECTION && move.getState() != ChessState.NOT_APPLICABLE) {
+                            move.setState(ChessState.CAPTURE_MOVE);
                             logger.log("Capture Move:" + move.getState() + " " + move.getX1() + " " + move.getY1() + " " + move.getX2() + " " + move.getY2());
                             this.state.toggleTurn();
                             update();
@@ -101,9 +103,9 @@ public class ChessGame {
 
                         this.state.fallBack();
                         this.state.setChXYPrev(x, y);
-                        this.state.setState(State.SELECTED);
+                        this.state.setState(ChessState.SELECTED_STATE);
 
-                        move.setState(Move.SELECT_MOVE);
+                        move.setState(ChessState.SELECTED_STATE);
                         move.setSource(this.state.getChXPrev(), this.state.getChYPrev());
                         move.setDestination(-1, -1);
                         move.setMap(board.getPiece(x, y).getMoveMap());
@@ -126,15 +128,15 @@ public class ChessGame {
 
             if (playerWhite.isCheckMate()) {
                 logger.log("White is CheckMate");
-                state.setCheckState(State.WHITE_CHECKMATE);
+                state.setCheckState(ChessState.WHITE_CHECKMATE);
             } else if (playerWhite.isCheck()) {
                 logger.log("White is Check");
-                state.setCheckState(State.WHITE_CHECK);
+                state.setCheckState(ChessState.WHITE_CHECK);
             } else if (playerWhite.isStallMate()) {
                 logger.log("White is Stalemate");
-                state.setCheckState(State.WHITE_STALEMATE);
+                state.setCheckState(ChessState.WHITE_STALEMATE);
             } else {
-                state.setCheckState(State.NONE_CHECK);
+                state.setCheckState(ChessState.CHECK_NONE);
             }
             logger.log("White's Legal Moves:" + playerWhite.getLegalMoves());
 
@@ -145,15 +147,15 @@ public class ChessGame {
             playerBlack.updateMoveMap();
             if (playerBlack.isCheckMate()) {
                 logger.log("Black is CheckMate");
-                state.setCheckState(State.BLACK_CHECKMATE);
+                state.setCheckState(ChessState.BLACK_CHECKMATE);
             } else if (playerBlack.isCheck()) {
                 logger.log("Black is Check");
-                state.setCheckState(State.BLACK_CHECK);
+                state.setCheckState(ChessState.BLACK_CHECK);
             } else if (playerBlack.isStallMate()) {
                 logger.log("Black is Stalemate");
-                state.setCheckState(State.BLACK_STALEMATE);
+                state.setCheckState(ChessState.BLACK_STALEMATE);
             } else {
-                state.setCheckState(State.NONE_CHECK);
+                state.setCheckState(ChessState.CHECK_NONE);
             }
             logger.log("Black's Legal Moves:" + playerBlack.getLegalMoves());
         }
@@ -201,31 +203,14 @@ public class ChessGame {
         this.move.setSource(move.getX1(), move.getY1());
         this.move.setDestination(move.getX2(), move.getY2());
         switch (move.getState()) {
-            case Move.SELECT_MOVE:
-                logger.log("move|SELECT_MOVE");
-                if (this.state.getTurn() == move.getTurn()) {
-                    if (this.board.getPiece(move.getX1(), move.getY1()) == null) {
-                        this.move.setState(Move.SOURCE_IS_EMPTY);
-                    } else if (move.getTurn() == this.board.getPiece(move.getX1(), move.getY1()).getColor()) {
-                        this.move.setState(Move.SELECT_MOVE);
-                        this.move.setMap(this.board.getPiece(move.getX1(), move.getY1()).getMoveMap());
-                    } else {
-                        this.move.setState(Move.INVALID_SELECTION);
-                    }
-                    this.move.setTurn(this.state.getTurn());
-                } else {
-                    this.move.setState(Move.ILLEGAL_MOVE);
-                    this.move.setTurn(move.getTurn());
-                }
-                break;
-            case Move.NORMAL_MOVE:
+            case NORMAL_MOVE:
                 logger.log("move|NORMAL_MOVE");
                 if (this.state.getTurn() == move.getTurn()) {
                     this.move = this.board.moveTo(move.getX1(), move.getY1(), move.getX2(), move.getY2());
                     this.state.toggleTurn();
                     this.update();
                 } else {
-                    this.move.setState(Move.ILLEGAL_MOVE);
+                    this.move.setState(ChessState.ILLEGAL_MOVE);
                 }
                 break;
             default:

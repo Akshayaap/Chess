@@ -1,59 +1,47 @@
 package com.akshayaap.chess.gui;
 
+import com.akshayaap.chess.game.util.ChessState;
+
 public class State {
-
-    public static final int INVALID = -1;
-    public static final int EMPTY_SELECTION = -2;
-    public static final int INVALID_SELECTION = -3;
-    public static final int NORMAL = 0;
-    public static final int SELECTED = 1;
-
-    public static final int NONE_CHECK = 0;
-    public static final int WHITE_CHECK = 100;
-    public static final int BLACK_CHECK = 101;
-    public static final int WHITE_CHECKMATE = 102;
-    public static final int BLACK_CHECKMATE = 103;
-    public static final int WHITE_STALEMATE = 104;
-    public static final int BLACK_STALEMATE = 105;
 
 
     private int chX = -1;
     private int chY = -1;
 
-    private int chXprev = -1;
-    private int chYprev = -1;
+    private int chXPrev = -1;
+    private int chYPrev = -1;
 
     private int chXNext = -1;
     private int chYNext = -1;
 
     private boolean turn = true;
 
-    private int state = INVALID;
-    private int checkState = NONE_CHECK;
+    private ChessState state = ChessState.INVALID_STATE;
+    private ChessState checkState = ChessState.CHECK_NONE;
 
     public State() {
 
     }
 
     public void reset() {
-        this.state = NORMAL;
-        this.checkState = NONE_CHECK;
+        this.state = ChessState.NORMAL_STATE;
+        this.checkState = ChessState.CHECK_NONE;
 
         this.chX = -1;
         this.chY = -1;
 
-        this.chXprev = -1;
-        this.chYprev = -1;
+        this.chXPrev = -1;
+        this.chYPrev = -1;
 
         this.chXNext = -1;
         this.chYNext = -1;
     }
 
-    public int getState() {
+    public ChessState getState() {
         return this.state;
     }
 
-    public void setState(int state) {
+    public void setState(ChessState state) {
         this.state = state;
     }
 
@@ -73,12 +61,12 @@ public class State {
         this.chY = chY;
     }
 
-    public int getChXprev() {
-        return this.chXprev;
+    public int getChXPrev() {
+        return this.chXPrev;
     }
 
-    public void setChXprev(int chXprev) {
-        this.chXprev = chXprev;
+    public void setChXPrev(int chXPrev) {
+        this.chXPrev = chXPrev;
     }
 
     public int getChYNext() {
@@ -101,12 +89,12 @@ public class State {
         this.turn = !this.turn;
     }
 
-    public int getChYprev() {
-        return this.chYprev;
+    public int getChYPrev() {
+        return this.chYPrev;
     }
 
-    public void setChYprev(int chYprev) {
-        this.chYprev = chYprev;
+    public void setChYPrev(int chYPrev) {
+        this.chYPrev = chYPrev;
     }
 
     public int getChXNext() {
@@ -123,8 +111,8 @@ public class State {
     }
 
     public void setChXYPrev(int x, int y) {
-        this.chXprev = x;
-        this.chYprev = y;
+        this.chXPrev = x;
+        this.chYPrev = y;
     }
 
     public void setChXYNext(int x, int y) {
@@ -132,7 +120,7 @@ public class State {
         this.chYNext = y;
     }
 
-    public int getCheckState() {
+    public ChessState getCheckState() {
         return this.checkState;
     }
 }
