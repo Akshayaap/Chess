@@ -141,12 +141,12 @@ public class ChessGui {
         }
 
         public void setAnnotatted() {
+            int x = ChessGui.this.state.getChXPrev();
+            int y = ChessGui.this.state.getChYPrev();
             if (ChessGui.this.move == null) {
                 return;
             }
             switch (ChessGui.this.move.getState()) {
-                case ILLEGAL_MOVE:
-                    break;
                 case INVALID_SELECTION:
                     break;
                 case NORMAL_MOVE:
@@ -176,29 +176,43 @@ public class ChessGui {
                     break;
                 case BLACK_STALEMATE:
                     break;
+
+                default:
+                    break;
             }
-            if (ChessGui.this.move.getMap() != null) {
-                for (int i = 0; i < 8; i++) {
-                    for (int j = 0; j < 8; j++) {
-                        if (ChessGui.this.move.getMap()[i][j]) {
-                            this.grid[i][j].setPossibleTile();
+            switch (ChessGui.this.state.getState()) {
+                case SELECTED_STATE:
+                    this.grid[ChessGui.this.state.getChXPrev()][ChessGui.this.state.getChYPrev()].setSelectTile();
+                    for (int i = 0; i < 8; i++) {
+                        for (int j = 0; j < 8; j++) {
+                            if (ChessGui.this.game.getPiece(ChessGui.this.state.getChXPrev(), ChessGui.this.state.getChYPrev()).getMoveMap()[i][j]) {
+                                this.grid[i][j].setPossibleTile();
+                            }
                         }
                     }
-                }
+                    break;
+                case EMPTY_SELECTION:
+                    this.grid[ChessGui.this.state.getChXPrev()][ChessGui.this.state.getChYPrev()].setEmptyTile();
+                    break;
+                case INVALID_SELECTION:
+                    this.grid[ChessGui.this.state.getChXPrev()][ChessGui.this.state.getChYPrev()].setInvalidTile();
+                    break;
             }
         }
     }
 
     private class TilePanel extends JPanel {
         public static final Color DESTINATION_TILE = new Color(1, 255, 255);
-        public static final Color THREATEN_TILE = new Color(188, 136, 9, 255);
-        public static final Color CHECK_TILE = new Color(255, 255, 0);
+        public static final Color THREATEN_TILE = new Color(255, 221, 75, 255);
+        public static final Color CHECK_TILE = new Color(255, 118, 45);
         public static final Color CHECKMATE_TILE = new Color(255, 0, 0);
         private static final Dimension TILE_DIMENSION = new Dimension(10, 10);
         private static final Color DARK_SQUARE = new Color(50, 0, 20);
         private static final Color LIGHT_SQUARE = new Color(255, 255, 200);
         private static final Color SELECT_TILE = new Color(131, 255, 77);
         private static final Color SOURCE_TILE = new Color(110, 132, 241);
+        private static final Color EMPTY_TILE = new Color(237, 112, 112);
+        private static final Color INVALID_TILE = new Color(68, 107, 113);
 
         private static final Color light = new Color(156, 156, 156);
         private static final Color dark = new Color(97, 97, 97);
@@ -295,6 +309,14 @@ public class ChessGui {
             this.setBackground(CHECKMATE_TILE);
         }
 
+        public void setEmptyTile() {
+            this.setBackground(EMPTY_TILE);
+        }
+
+        public void setInvalidTile() {
+            this.setBackground(INVALID_TILE);
+        }
+
         private class Input implements MouseListener {
 
             @Override
@@ -308,7 +330,9 @@ public class ChessGui {
                 Move move = null;
                 switch (ChessGui.this.state.getState()) {
                     case INVALID_STATE:
-                        return;
+                        break;
+                    case EMPTY_SELECTION:
+                    case INVALID_SELECTION:
                     case NORMAL_STATE:
                         ChessGui.this.state.reset();
                         ChessGui.this.state.setChXYPrev(TilePanel.this.x, TilePanel.this.y);
@@ -333,11 +357,16 @@ public class ChessGui {
                             move.setDestination(ChessGui.this.state.getChX(), ChessGui.this.state.getChY());
                             move.setState(ChessState.NORMAL_MOVE);
                             ChessGui.this.move = ChessGui.this.game.move(move);
+                            ChessGui.this.state.reset();
                             switch (ChessGui.this.move.getState()) {
-                                case NORMAL_MOVE -> {
-
+                                case NORMAL_MOVE, CAPTURE_MOVE, CHECK_MOVE, PROMOTION_MOVE -> {
+                                    ChessGui.this.state.toggleTurn();
+                                }
+                                case ILLEGAL_MOVE -> {
+                                    game.getLogger().log("Illegal move");
                                 }
                             }
+                            ChessGui.this.state.reset();
                         }
                         break;
                     default:

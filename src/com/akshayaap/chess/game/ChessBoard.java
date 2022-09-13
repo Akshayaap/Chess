@@ -84,7 +84,7 @@ public class ChessBoard {
             return move;
         }
         move.reset();
-        move.setState(ChessState.EMPTY_SELECTION);
+        move.setState(ChessState.ILLEGAL_MOVE);
         move.setSource(chXPrev, chYPrev);
         move.setDestination(x, y);
         return move;

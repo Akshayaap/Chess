@@ -16,7 +16,7 @@ public class State {
 
     private boolean turn = true;
 
-    private ChessState state = ChessState.INVALID_STATE;
+    private ChessState state = ChessState.NORMAL_STATE;
     private ChessState checkState = ChessState.CHECK_NONE;
 
     public State() {

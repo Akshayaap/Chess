@@ -178,6 +178,7 @@ public class ChessGame {
         logger.log("Resetting game");
         this.move.reset();
         this.state.reset();
+        this.state.setTurn(true);
         this.board.resetBoard();
         this.playerWhite.reset();
         this.playerBlack.reset();
@@ -207,7 +208,9 @@ public class ChessGame {
                 logger.log("move|NORMAL_MOVE");
                 if (this.state.getTurn() == move.getTurn()) {
                     this.move = this.board.moveTo(move.getX1(), move.getY1(), move.getX2(), move.getY2());
-                    this.state.toggleTurn();
+                    if (this.move.getState() != ChessState.ILLEGAL_MOVE) {
+                        this.state.toggleTurn();
+                    }
                     this.update();
                 } else {
                     this.move.setState(ChessState.ILLEGAL_MOVE);
@@ -240,5 +243,9 @@ public class ChessGame {
         } else {
             logger.log(Thread.currentThread().getStackTrace()[1] + "::White's move is not applicable");
         }
+    }
+
+    public Logable getLogger() {
+        return this.logger;
     }
 }
