@@ -3,13 +3,9 @@ package com.akshayaap.chess.gui;
 import com.akshayaap.chess.game.Piece;
 import com.akshayaap.chess.game.Player;
 import com.akshayaap.chess.game.util.PromotionCallback;
+import com.akshayaap.chess.util.ResourceManager;
 
 import javax.swing.*;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-
-import static javax.imageio.ImageIO.read;
 
 public class Promotion implements PromotionCallback {
 
@@ -17,33 +13,14 @@ public class Promotion implements PromotionCallback {
     private static Object[] objsB;
 
     static {
-        try {
-            objsW = new Object[]
-                    {new ImageIcon(read(new File("res/pieces/white_4.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
-                            new ImageIcon(read(new File("res/pieces/white_3.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
-                            new ImageIcon(read(new File("res/pieces/white_2.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
-                            new ImageIcon(read(new File("res/pieces/white_1.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
-                            new ImageIcon(read(new File("res/pieces/white_0.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
-                            new ImageIcon(read(new File("res/pieces/white_5.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH))};
-            objsB = new Object[]
-                    {new ImageIcon(read(new File("res/pieces/black_4.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
-                            new ImageIcon(read(new File("res/pieces/black_3.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
-                            new ImageIcon(read(new File("res/pieces/black_2.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
-                            new ImageIcon(read(new File("res/pieces/black_1.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
-                            new ImageIcon(read(new File("res/pieces/black_0.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
-                            new ImageIcon(read(new File("res/pieces/black_5.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH))};
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        objsW = new Object[]{ResourceManager.getResourceManager().getWhiteQ(), ResourceManager.getResourceManager().getWhiteR(), ResourceManager.getResourceManager().getWhiteB(), ResourceManager.getResourceManager().getWhiteN(), ResourceManager.getResourceManager().getWhiteP(), ResourceManager.getResourceManager().getWhiteK()};
+        objsB = new Object[]{ResourceManager.getResourceManager().getBlackQ(), ResourceManager.getResourceManager().getBlackR(), ResourceManager.getResourceManager().getBlackB(), ResourceManager.getResourceManager().getBlackN(), ResourceManager.getResourceManager().getBlackP(), ResourceManager.getResourceManager().getBlackK()};
     }
 
+
     @Override
-    public void prompt(Player player) throws IOException {
-        Object p = JOptionPane.showInputDialog(null, "Promote Pawn to",
-                "Promotion Time !", JOptionPane.QUESTION_MESSAGE, new ImageIcon(read(new File(player.getColor() ? "res/white_4.png" : "res/black_4.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH)),
-                player.getColor() ? objsW : objsB, player.getColor() ? objsW[0] : objsB[0]);
+    public void prompt(Player player) {
+        Object p = JOptionPane.showInputDialog(null, "Promote Pawn to", "Promotion Time !", JOptionPane.QUESTION_MESSAGE, player.getColor() ? ResourceManager.getResourceManager().getWhiteQ() : ResourceManager.getResourceManager().getWhiteQ(), player.getColor() ? objsW : objsB, player.getColor() ? objsW[0] : objsB[0]);
         if (p == objsW[0] || p == objsB[0]) {
             player.promot(Piece.QUEEN_TYPE);
         } else if (p == objsW[1] || p == objsB[1]) {

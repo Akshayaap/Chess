@@ -175,6 +175,10 @@ public class ChessGame {
     }
 
     public void reset() {
+
+        //TODO
+        // Reseting Game After promoting pawn leads Promoted Pawn Instead of Original Pawn
+
         logger.log("Resetting game");
         this.move.reset();
         this.state.reset();

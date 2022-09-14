@@ -3,15 +3,14 @@ package com.akshayaap.chess.gui;
 import com.akshayaap.chess.game.ChessGame;
 import com.akshayaap.chess.game.Move;
 import com.akshayaap.chess.game.util.ChessState;
+import com.akshayaap.chess.util.ResourceManager;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
 import java.io.IOException;
 
 public class ChessGui {
@@ -211,7 +210,7 @@ public class ChessGui {
         private static final Color LIGHT_SQUARE = new Color(255, 255, 200);
         private static final Color SELECT_TILE = new Color(131, 255, 77);
         private static final Color SOURCE_TILE = new Color(110, 132, 241);
-        private static final Color EMPTY_TILE = new Color(237, 112, 112);
+        private static final Color EMPTY_TILE = new Color(135, 135, 135);
         private static final Color INVALID_TILE = new Color(68, 107, 113);
 
         private static final Color light = new Color(156, 156, 156);
@@ -219,32 +218,6 @@ public class ChessGui {
         private static final Color lightHigh = new Color(255, 255, 255);
         private static final Color darkHigh = new Color(0, 0, 0);
 
-
-        private static final ImageIcon[][] IMGS = new ImageIcon[2][6];
-        private static ImageIcon CIRCLE_GREEN;
-        private static ImageIcon CIRCLE;
-
-        static {
-
-            String path = "";
-            for (int i = 0; i < 2; i++) {
-                for (int j = 0; j < 6; j++) {
-                    try {
-                        path = (i == 1 ? "white_" : "black_") + j + ".png";
-                        IMGS[i][j] = new ImageIcon(ImageIO.read(new File("res/pieces/" + path)).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            try {
-                CIRCLE = new ImageIcon(ImageIO.read(new File("res/pieces/circle.png")).getScaledInstance(100, 100, Image.SCALE_SMOOTH));
-                CIRCLE_GREEN = new ImageIcon(ImageIO.read(new File("res/pieces/circle_green.png")).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
 
         private final int x;
         private final int y;
@@ -268,7 +241,7 @@ public class ChessGui {
             removeAll();
             setBackground((this.x + this.y) % 2 == 0 ? LIGHT_SQUARE : DARK_SQUARE);
             if (ChessGui.this.game.getPiece(this.x, this.y) != null) {
-                JLabel label = new JLabel(IMGS[ChessGui.this.game.getPiece(this.x, this.y).getColor() ? 1 : 0][ChessGui.this.game.getPiece(this.x, this.y).getType()]);
+                JLabel label = new JLabel(ResourceManager.getResourceManager().getPieceImage(ChessGui.this.game.getPiece(this.x, this.y).getColor() ? 1 : 0, ChessGui.this.game.getPiece(this.x, this.y).getType()));
                 label.setAlignmentX(CENTER_ALIGNMENT);
                 label.setAlignmentY(CENTER_ALIGNMENT);
 
@@ -291,7 +264,7 @@ public class ChessGui {
         }
 
         public void setPossibleTile() {
-            JLabel label = new JLabel(CIRCLE);
+            JLabel label = new JLabel(ResourceManager.getResourceManager().getCircle());
             label.setAlignmentX(CENTER_ALIGNMENT);
             label.setAlignmentY(CENTER_ALIGNMENT);
             this.add(label);
