@@ -8,18 +8,19 @@ import java.util.Objects;
 
 public class ResourceManager {
     private static ResourceManager resources = null;
-    private final ImageIcon whiteP = new ImageIcon(ImageIO.read(Objects.requireNonNull(ResourceManager.class.getResource("/res/pieces/white_0.png"))).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
-    private final ImageIcon whiteN = new ImageIcon(ImageIO.read(Objects.requireNonNull(ResourceManager.class.getResource("/res/pieces/white_1.png"))).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
-    private final ImageIcon whiteB = new ImageIcon(ImageIO.read(Objects.requireNonNull(ResourceManager.class.getResource("/res/pieces/white_2.png"))).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
-    private final ImageIcon whiteR = new ImageIcon(ImageIO.read(Objects.requireNonNull(ResourceManager.class.getResource("/res/pieces/white_3.png"))).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
-    private final ImageIcon whiteQ = new ImageIcon(ImageIO.read(Objects.requireNonNull(ResourceManager.class.getResource("/res/pieces/white_4.png"))).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
-    private final ImageIcon whiteK = new ImageIcon(ImageIO.read(Objects.requireNonNull(ResourceManager.class.getResource("/res/pieces/white_5.png"))).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
-    private final ImageIcon blackP = new ImageIcon(ImageIO.read(Objects.requireNonNull(ResourceManager.class.getResource("/res/pieces/black_0.png"))).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
-    private final ImageIcon blackN = new ImageIcon(ImageIO.read(Objects.requireNonNull(ResourceManager.class.getResource("/res/pieces/black_1.png"))).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
-    private final ImageIcon blackB = new ImageIcon(ImageIO.read(Objects.requireNonNull(ResourceManager.class.getResource("/res/pieces/black_2.png"))).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
-    private final ImageIcon blackR = new ImageIcon(ImageIO.read(Objects.requireNonNull(ResourceManager.class.getResource("/res/pieces/black_3.png"))).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
-    private final ImageIcon blackQ = new ImageIcon(ImageIO.read(Objects.requireNonNull(ResourceManager.class.getResource("/res/pieces/black_4.png"))).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
-    private final ImageIcon blackK = new ImageIcon(ImageIO.read(Objects.requireNonNull(ResourceManager.class.getResource("/res/pieces/black_5.png"))).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
+    private final ImageIcon whiteP = new ImageIcon(ImageIO.read(Objects.requireNonNull(ResourceManager.class.getResource("/res/pieces/white_pawn.png"))).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
+    private final ImageIcon whiteN = new ImageIcon(ImageIO.read(Objects.requireNonNull(ResourceManager.class.getResource("/res/pieces/white_knight.png"))).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
+    private final ImageIcon whiteB = new ImageIcon(ImageIO.read(Objects.requireNonNull(ResourceManager.class.getResource("/res/pieces/white_bishop.png"))).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
+    private final ImageIcon whiteR = new ImageIcon(ImageIO.read(Objects.requireNonNull(ResourceManager.class.getResource("/res/pieces/white_rook.png"))).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
+    private final ImageIcon whiteQ = new ImageIcon(ImageIO.read(Objects.requireNonNull(ResourceManager.class.getResource("/res/pieces/white_queen.png"))).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
+    private final ImageIcon whiteK = new ImageIcon(ImageIO.read(Objects.requireNonNull(ResourceManager.class.getResource("/res/pieces/white_king.png"))).getScaledInstance(80, 80, Image.SCALE_SMOOTH));
+
+    private final ImageIcon blackP = new ImageIcon(ImageIO.read(Objects.requireNonNull(ResourceManager.class.getResource("/res/pieces/black_pawn.png"))).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
+    private final ImageIcon blackN = new ImageIcon(ImageIO.read(Objects.requireNonNull(ResourceManager.class.getResource("/res/pieces/black_knight.png"))).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
+    private final ImageIcon blackB = new ImageIcon(ImageIO.read(Objects.requireNonNull(ResourceManager.class.getResource("/res/pieces/black_bishop.png"))).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
+    private final ImageIcon blackR = new ImageIcon(ImageIO.read(Objects.requireNonNull(ResourceManager.class.getResource("/res/pieces/black_rook.png"))).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
+    private final ImageIcon blackQ = new ImageIcon(ImageIO.read(Objects.requireNonNull(ResourceManager.class.getResource("/res/pieces/black_queen.png"))).getScaledInstance(60, 60, Image.SCALE_SMOOTH));
+    private final ImageIcon blackK = new ImageIcon(ImageIO.read(Objects.requireNonNull(ResourceManager.class.getResource("/res/pieces/black_king.png"))).getScaledInstance(80, 80, Image.SCALE_SMOOTH));
     private final ImageIcon circle = new ImageIcon(ImageIO.read(Objects.requireNonNull(ResourceManager.class.getResource("/res/pieces/circle.png"))).getScaledInstance(80, 80, Image.SCALE_SMOOTH));
     private ImageIcon IMGS[][] = new ImageIcon[2][6];
 
